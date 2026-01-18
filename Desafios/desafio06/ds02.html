@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+           margin: 0; 
+           padding: 0;
+        }
+        body{
+            font: normal 18px arial;
+        }
+
+        input{
+            width: 200px;
+            margin: 5px;
+            padding: 2px;
+            border: 1px solid black;
+            align-self: center;
+        }
+
+        div#form{
+            display: flex;
+            width: 500px;
+            margin: 15px auto;
+            padding: 10px;
+            
+            border-radius: 5px;
+            background-color: rgb(0, 119, 255);
+            flex-direction: column;
+        }
+
+        div#form h1{
+            text-align: center;
+            margin-bottom: 10px;
+            font-family: 'Times New Roman', Times, serif;
+            box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.336);
+        }
+
+        div#form p{
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        button{
+            width: 200px;
+            align-self: center;
+            border: 1px solid black;
+            padding: 2px;
+        }
+
+        div#res{
+            margin-top: 20px;
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+            
+        }
+    </style>
+</head>
+<body>
+    <div id="form">
+        <h1>Classificador de Nadador</h1>
+        <p>Qual a idade do aluno ?</p>
+        <input type="number" name="idade" id="idade">
+        <button type="button" onclick="check()"><strong>Verificar</strong></button>
+        
+        <div id="res">
+        </div>
+    </div>
+
+    <script>
+        function check(){
+            var idade = Number(window.document.getElementById('idade').value)
+            var msg = window.document.getElementById('res')
+
+            if(idade >= 5 && idade <= 7){
+                msg.innerHTML = `<p>${idade} anos <strong>Categoria Infantil A</strong></p>`
+            }else if(idade >= 8 && idade <= 10){
+                msg.innerHTML = `<p>${idade} anos <strong>Categoria Infantil B</strong></p>`
+            }else if(idade >= 11 && idade <= 13){
+                msg.innerHTML = `<p>${idade} anos <strong>Categoria Juvenil A</strong></p>`
+            }else if(idade >= 14 && idade <= 17){
+                msg.innerHTML = `<p>${idade} anos <strong>Categoria Juvenil B</strong></p>`
+            }else if(idade >= 18){
+                msg.innerHTML = `<p>${idade} anos <strong>Categoria Adulto</strong></p>`
+            }else{
+                msg.innerHTML = `<p>${idade} anos <strong>Não tem idade suficiente!</strong></p>`
+            }
+
+        }
+    </script>
+</body>
+</html>

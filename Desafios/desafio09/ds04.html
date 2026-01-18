@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+        let num = [10, 20, 30, 40, 50]
+        let busca = Number(window.prompt('Qual numero você quer encontar ?'))
+        let valor = num.indexOf(busca)
+        if(valor != -1){
+            window.alert(`O número ${busca} se encntra na posição ${valor}.`)
+        }else{
+            window.alert('Valor não encontrado!')
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de login</title>
+    <style>
+        *{
+           margin: 0; 
+           padding: 0;
+        }
+        body{
+            font: normal 18px arial;
+        }
+
+        input{
+            width: 200px;
+            margin: 5px;
+            padding: 2px;
+            border: 1px solid black;
+            align-self: center;
+        }
+
+        div#form{
+            display: flex;
+            width: 500px;
+            margin: 15px auto;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: rgb(0, 119, 255);
+            flex-direction: column;
+        }
+
+        div#form h1{
+            text-align: center;
+            margin-bottom: 10px;
+            font-family: 'Times New Roman', Times, serif;
+            box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.336);
+        }
+
+        button{
+            width: 200px;
+            align-self: center;
+            border: 1px solid black;
+            padding: 2px;
+        }
+
+        div#text{
+            margin-top: 20px;
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+            
+        }
+    </style>
+</head>
+<body>
+    <div id="form">
+        <h1>Faça o seu login</h1>
+        <input type="text" name="login" id="login" placeholder="Usuário">
+        <input type="password" name="senha" id="senha" placeholder="Senha"  autocomplete="off">
+        <button type="button" onclick="logar()">Login</button>
+
+        <div id="text">
+        
+        </div>
+    </div>
+
+    <script>
+        function logar() {
+            var usuario = window.document.getElementById('login').value
+            var senha = window.document.getElementById('senha').value
+            var txt = window.document.getElementById('text')
+
+            if(usuario == 'admin' && senha == '1234'){
+                txt.style.color = 'green'
+                txt.style.background = 'black'
+                txt.innerHTML = `<p>Acesso Concedido! Bem-vindo, mestre.</p>`
+            }else if(usuario == '' || senha == ''){
+                txt.style.color = 'yellow'
+                txt.style.background = 'black'
+                txt.innerHTML = `<p>Por favor, preencha todos os dados.</p>`
+            }else{
+                txt.style.color = 'red'
+                txt.style.background = 'black'
+                txt.innerHTML = `<p>Acesso Negado!</p>`
+            }
+        }
+    </script>
+</body>
+</html>

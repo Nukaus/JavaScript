@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <input type="number" name="txtn1" id="txtn1" onmouseenter="entrou()">
+
+    <script>
+        function entrou(){
+            var tn1 = window.document.getElementById('txtn1')
+            var n1 = Number(tn1.value)
+            var doble = n1 * 2
+
+            window.alert(doble)
+
+        }
+    </script>
+</body>
+</html>

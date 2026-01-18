@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="tabuada">
+
+    </div>
+
+    <script>
+        var n1 = Number(window.prompt('Digite um número:'))
+        var res = window.document.getElementById('tabuada')
+        var texto = ''
+
+        var tab = 1
+
+        while(tab <= 10){
+            var mult = n1 * tab
+            texto += `${n1} x ${tab} = ${mult} <br>`
+            tab++
+        }
+        
+        res.innerHTML = texto
+    </script>
+</body>
+</html>

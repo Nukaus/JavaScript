@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+           margin: 0; 
+           padding: 0;
+        }
+        body{
+            font: normal 18px arial;
+        }
+
+        input{
+            width: 200px;
+            margin: 5px;
+            padding: 2px;
+            border: 1px solid black;
+            align-self: center;
+        }
+
+        div#form{
+            display: flex;
+            width: 500px;
+            margin: 15px auto;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: rgb(0, 119, 255);
+            flex-direction: column;
+        }
+
+        div#form h1{
+            text-align: center;
+            margin-bottom: 10px;
+            font-family: 'Times New Roman', Times, serif;
+            box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.336);
+        }
+
+        button{
+            width: 200px;
+            align-self: center;
+            border: 1px solid black;
+            padding: 2px;
+        }
+
+        div#text{
+            margin-top: 20px;
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+            
+        }
+    </style>
+</head>
+<body>
+    <div id="form">
+        <h1>Calculadora de IMC (Básico)</h1>
+        <input type="number" name="peso" id="peso" placeholder="Peso:">
+        <input type="number" name="altura" id="altura" placeholder="Altura:">
+        <button type="button" onclick="check()"><strong>Verificar</strong></button>
+
+        <div id="text">
+
+        </div>
+
+        <script>
+            function check(){
+                var peso = Number(window.document.getElementById('peso').value)
+                var altura = Number(window.document.getElementById('altura').value)
+                var res = window.document.getElementById('text')
+
+                var calc = peso/altura**2
+                var imc = calc.toFixed(2)
+
+                if(imc < 18.5){
+                    res.innerHTML = `<p>Seu IMC é ${imc} você está <strong>abaixo do peso!</strong></p>`
+                }else if(imc >= 18.5 && imc <= 24.9){
+                    res.innerHTML = `<p>Seu IMC é ${imc} você está <strong>no peso ideal!</strong></p>`
+                }else{
+                    res.innerHTML = `<p>Seu IMC é ${imc} você está <strong>acima do peso!</strong></p>`
+                }
+            }
+        </script>
+    </div>
+</body>
+</html>

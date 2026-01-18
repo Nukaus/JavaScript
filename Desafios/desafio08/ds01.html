@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <script>
+        var n1 = Number(window.prompt('Digite o valor de inicio:'))
+        var n2 = Number(window.prompt('Digite o valor de fim:'))
+        var pas = Number(window.prompt('Digite de quanto em quanto vai pular'))
+
+        while(pas == 0){
+            window.alert('O valor do passo deve ser diferente de 0')
+
+            var pas = Number(window.prompt('Digite de quanto em quanto vai pular'))
+        }
+
+        for(var c = n1; c <= n2; c += pas){
+            window.alert(c)
+        }
+    </script>
+</body>
+</html>

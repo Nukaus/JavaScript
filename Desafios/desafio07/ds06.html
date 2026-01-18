@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            font: normal 15pt arial;
+            background-color: black;
+        }
+
+        div#central{
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        div#res{
+            background-color: white;
+            width: 500px;
+            margin: auto;
+            padding: 15px;
+            box-shadow: 2px 2px 5px rgba(255, 255, 255, 0.589);
+            border-radius: 5px;
+        }
+
+        button{
+        width: 150px;
+        margin: auto;
+        border-radius: 5px;
+        border: 1px solid white;
+        }
+    </style>
+</head>
+<body>
+    <div id="central">
+        <button type="button" onclick="play()">Começar Contagem</button>
+        <div id="res">
+        </div>
+    </div>
+
+    <script>
+        var res = window.document.getElementById('res')
+        function play(){
+            var cont = 1
+            while(cont <= 50){
+                res.innerHTML += `Passo ${cont}... `
+
+                cont ++
+            }
+        }
+    </script>
+</body>
+</html>

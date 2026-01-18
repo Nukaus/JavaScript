@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1 id="Boas-vindas"></h1>
+
+    <script>
+        var nome = String(window.prompt('Qual é o seu nome ?'))
+        var cumprimento = window.document.querySelector('h1#Boas-vindas')
+        var real = nome.toUpperCase() == 'CRISTIANO' ? 'SEU LINDOO' : '' 
+        cumprimento.innerHTML = `Olá ${nome} ${real}, seja bem-vindo!`
+    </script>
+</body>
+</html>

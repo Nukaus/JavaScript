@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="res">
+
+    </div>
+
+    <script>
+        var n1 = Number(window.prompt('Digite um numero entre 0 e 10'))
+        while(n1 > 10){
+            window. alert('O nomero deve estar entre 0 e 10')
+            var n1 = Number(window.prompt('Digite um numero entre 0 e 10'))
+        }
+        var res = window.document.getElementById('res')
+
+        var texto = ''
+
+        do{
+            texto += `${n1} <br>`
+            n1 --
+            
+        }while(n1 >= 0)
+
+        res.innerHTML = texto
+        window.alert('FOGO! 🚀')
+    
+        
+    </script>
+</body>
+</html>

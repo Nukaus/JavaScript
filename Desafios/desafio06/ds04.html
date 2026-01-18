@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Que bicho é esse?</title>
+    <style>
+        *{
+           margin: 0; 
+           padding: 0;
+        }
+        body{
+            font: normal 18px arial;
+        }
+
+        input{
+            width: 200px;
+            margin: 5px;
+            padding: 2px;
+            border: 1px solid black;
+            align-self: center;
+        }
+
+        div#form{
+            display: flex;
+            width: 500px;
+            margin: 15px auto;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: rgb(0, 119, 255);
+            flex-direction: column;
+        }
+
+        div#form h1{
+            text-align: center;
+            margin-bottom: 10px;
+            font-family: 'Times New Roman', Times, serif;
+            box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.336);
+        }
+
+        button{
+            width: 200px;
+            align-self: center;
+            border: 1px solid black;
+            padding: 2px;
+        }
+
+        div#text{
+            margin-top: 20px;
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+            
+        }
+    </style>
+</head>
+<body>
+    <div id="form">
+        <h1>Que bicho é esse?</h1>
+        <input type="text" name="animal" id="animal">
+        <button type="button" onclick="check()">Verificar</button>
+        <div id="text">
+
+        </div>
+    </div>
+
+    <script>
+        function check(){
+            var animal = window.document.getElementById('animal').value
+            var bixo = animal.toLowerCase()
+            var res = window.document.getElementById('text')
+
+            switch(bixo){
+                case 'leão':
+                        res.innerHTML = `O ${animal.toUpperCase()} é um <strong>mamífero!</strong>`
+                    break
+                case 'cavalo':
+                    res.innerHTML = `O ${animal.toUpperCase()} é um <strong>mamífero!</strong>`
+                break
+                case 'arara':
+                        res.innerHTML = `A ${animal.toUpperCase()} é um <strong>ave!</strong>`
+                    break
+                case 'pinguin':
+                    res.innerHTML = `O ${animal.toUpperCase()} é um <strong>ave!</strong>`
+                break
+                case 'cobra':
+                    res.innerHTML = `A ${animal.toUpperCase()} é um <strong>réptil!</strong>`
+                break
+                case 'jacaré':
+                    res.innerHTML = `O ${animal.toUpperCase()} é um <strong>réptil!</strong>`
+                break
+                default:
+                    res.innerHTML = 'Animal não catalogado.'
+            }
+        }
+    </script>
+</body>
+</html>

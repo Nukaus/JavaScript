@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+           margin: 0; 
+           padding: 0;
+        }
+        body{
+            font: normal 18px arial;
+        }
+
+        input{
+            width: 100px;
+            margin: 5px;
+            padding: 2px;
+            border: 1px solid black;
+            align-self: center;
+        }
+
+        div#form{
+            display: flex;
+            width: 500px;
+            margin: 15px auto;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: rgb(0, 119, 255);
+            flex-direction: column;
+        }
+
+        div#form h1{
+            text-align: center;
+            margin-bottom: 10px;
+            font-family: 'Times New Roman', Times, serif;
+            box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.336);
+        }
+
+        button{
+            width: 110px;
+            align-self: center;
+            border: 1px solid black;
+            border-radius: 8px;
+            padding: 5px;
+            margin: 20px 5px 0px 5px;
+        }
+
+        div#text{
+            margin-top: 20px;
+            text-align: center;
+            background-color: rgb(243, 243, 243);
+            padding: 10px;
+            border-radius: 5px;
+            
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="form">
+        <h1>Calculadora</h1>
+        <input type="number" name="n1" id="n1">
+
+        <div id="botoes">
+            <button onclick="check(1)">Soma</button>
+            <button onclick="check(2)">Subtração</button>
+            <button onclick="check(3)">Divisão</button>
+            <button onclick="check(4)">Multiplicação</button>
+        </div>
+
+        <div id="text">
+
+        </div>
+    </div>
+    
+
+    <script>
+        var res = window.document.getElementById('res')
+        function check(cod){
+            var n1 = Number(window.document.querySelector('input#n1').value)
+            text.innerHTML = ''
+            switch(cod){
+                case 1:
+                    for(c = 1; c <=10; c++){
+                        var soma = n1 + c
+                        text.innerHTML += `${n1} + ${c} = ${soma.toFixed(2)} <br>`
+                    }
+                    break
+                case 2:
+                    
+                    for(c = 1; c <=10; c++){
+                        var soma = n1 - c
+                        text.innerHTML += `${n1} - ${c} = ${soma.toFixed(2)} <br>`
+                    }
+                    break
+                case 3:
+                    
+                    for(c = 1; c <=10; c++){
+                        var soma = n1 / c
+                        text.innerHTML += `${n1} / ${c} = ${soma.toFixed(2)} <br>`
+                    }
+                    break
+                case 4:
+                    
+                    for(c = 1; c <=10; c++){
+                        var soma = n1 * c
+                        text.innerHTML += `${n1} * ${c} = ${soma.toFixed(2)} <br>`
+                    }
+                    break
+            }
+        }
+        
+        
+        
+    </script>
+</body>
+</html>

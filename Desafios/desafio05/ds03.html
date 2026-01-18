@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        button{
+            background: white;
+            border: 2px solid black;
+            border-radius: 6px;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <button onclick="modo()" id="modo">Modo Noturno</button>
+
+    <script>
+        function modo() {
+            var body = window.document.body
+            var modoescuro = window.document.getElementById('modo')
+            modoescuro.style.color = 'white'
+            modoescuro.style.background = 'black'
+            modoescuro.innerHTML = 'Modo Claro'
+            modoescuro.style.border = '2px solid white'
+            body.style.background = 'black'
+        }
+    </script>
+</body>
+</html>

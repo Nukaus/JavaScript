@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        div#interactve{
+            font: normal 20px arial;
+            width: 200px;
+            height: 200px;
+            line-height: 200px;
+            text-align: center;
+            background: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="interactve">
+        
+    </div>
+
+    <script>
+        var interactive = window.document.getElementById('interactve')
+        interactive.addEventListener('click', clicar)
+        interactive.addEventListener('mouseenter', entrar)
+        interactive.addEventListener('mouseout', sair)
+
+        function clicar(){
+            interactive.style.background = 'yellow'
+            interactive.innerText = 'Clicou'
+        }
+        function entrar(){
+            interactive.style.background = 'green'
+            interactive.innerText = 'Entrou'
+        }
+        function sair(){
+            interactive.style.background = 'red'
+            interactive.innerText = 'Saiu'
+        }
+    </script>
+</body>
+</html>

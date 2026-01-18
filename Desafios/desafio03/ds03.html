@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+        var idade = Number.parseInt(window.prompt(`Qual a sua idade ?`))
+        var temConvite = window.prompt(`Você tem convite ? (SIM/NÂO)`)
+        var podeEntrar = idade >= 18 && temConvite.toUpperCase() == 'SIM' ? "SIM" : "NÂO"
+
+        window.alert(`O usuario pode entrar ? ${podeEntrar}`)
+
+
+    </script>
+</body>
+</html>
