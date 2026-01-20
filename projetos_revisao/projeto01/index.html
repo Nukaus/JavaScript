@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>O Simulador de Estações (Revisão: Hora do Dia/DOM)</title>
+</head>
+<body>
+    <header>
+        <h1>Simulador de Estações</h1>
+    </header>
+    <section>
+        <div>
+            <select name="estacao" id="estacao">
+                <option value="0">Escolha uma opção</option>
+                <option value="1">Janeiro</option>
+                <option value="2">Fevereiro</option>
+                <option value="3">Março</option>
+                <option value="4">Abril</option>
+                <option value="5">Maio</option>
+                <option value="6">Junho</option>
+                <option value="7">Julho</option>
+                <option value="8">Agosto</option>
+                <option value="9">Stembro</option>
+                <option value="10">Outubro</option>
+                <option value="11">Novembro</option>
+                <option value="12">Dezembro</option>
+            </select>
+            <button type="button" onclick="verificar()">Verificar</button>
+        </div>
+        <div id="res">
+            
+        </div>
+        <div id="foto">
+            <img id="imagem" src="" alt="foto da estação">
+        </div>
+    </section>
+    <footer>
+        <p>&copy; Cristiano P. Santos</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
