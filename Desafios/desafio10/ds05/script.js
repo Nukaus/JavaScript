@@ -22,40 +22,47 @@ function inserir(){
             selnum.appendChild(item)
         }
     }
+    num.value = ''
+    num.focus()
 }
 
 function analisar(){
-    res.innerHTML = ''
-    let comprimento = valores.length
-    res.innerHTML += `Total de números cadastrados: ${comprimento} <br>`
+    if(valores.length == 0){
+        window.alert('Adicione valores antes de finalizar!')
+    }else{
+        res.innerHTML = ''
+        let comprimento = valores.length
+        res.innerHTML += `<p>Total de números cadastrados: ${comprimento}</p>`
 
-    function maiorMenor(valores){
-        let maior = valores[0]
-        let menor = valores[0]
-        for(let c = 0; c < valores.length; c++){
-            let valor = valores[c]
-            if( valor > maior){
-                maior = valor
-            }else if(valor < menor) {
-                menor = valor
+        function maiorMenor(valores){
+            let maior = valores[0]
+            let menor = valores[0]
+            for(let c = 0; c < valores.length; c++){
+                let valor = valores[c]
+                if( valor > maior){
+                    maior = valor
+                }else if(valor < menor) {
+                    menor = valor
+                }
             }
+            return{maior, menor}
         }
-        return{maior, menor}
-    }
 
-    function soma(valores){
-        let s = 0
-        for(let c= 0; c < valores.length; c++){
-            s += valores[c]
+        function soma(valores){
+            let s = 0
+            for(let c= 0; c < valores.length; c++){
+                s += valores[c]
+            }
+            return s
         }
-        return s
+        let resultado = maiorMenor(valores)
+        let somatorio = soma(valores)
+        res.innerHTML += `<p>O maior valor: ${resultado.maior}</p>`
+        res.innerHTML += `<p>O menor valor: ${resultado.menor}</p>`
+        res.innerHTML += `<p>A soma de todos valores é: ${somatorio}</p>`
+        res.innerHTML += `<p>A média dos valores é: ${somatorio/comprimento}</p>`
     }
-    let resultado = maiorMenor(valores)
-    let somatorio = soma(valores)
-    res.innerHTML += `O maior valor: ${resultado.maior} <br>`
-    res.innerHTML += `O menor valor: ${resultado.menor} <br>`
-    res.innerHTML += `A soma de todos valores é: ${somatorio} <br>`
-    res.innerHTML += `A média dos valores é: ${somatorio/comprimento} <br>`
+    
     
     
 }
