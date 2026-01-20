@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor de Idade</title>
+</head>
+<body>
+    <h1>Conversor de Idade</h1>
+    <input type="number" name="nasc" id="nasc" placeholder="Ano de nascimento:">
+    <button type="button" onclick="calcular()">Calcular</button>
+
+    <div id="res">
+
+    </div>
+
+    <script>
+        function calcular(){
+            let hoje = new Date()
+            let ano = hoje.getFullYear()
+            let res = window.document.getElementById('res')
+            let anoNasc = window.document.getElementById('nasc')
+            res.innerHTML = ''
+            if(anoNasc.value.length == 0 || anoNasc.value > ano){
+                res.innerHTML += `Impossivel calcular`
+            }else{
+                let nasc = Number(anoNasc.value)
+                function nascimento(n){
+                    return ano - n
+                }
+                let resultado = nascimento(nasc)
+                if( resultado < 18){
+                    res.innerHTML += `Você tem ${resultado} anos e sua situação é MENOR DE IDADE`
+                }else{
+                    res.innerHTML += `Você tem ${resultado} anos e sua situação é MAIOR DE IDADE`
+                }
+            } 
+        }
+    </script>
+</body>
+</html>

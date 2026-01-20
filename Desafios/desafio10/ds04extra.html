@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fatorial (Lógica Pura)</title>
+</head>
+<body>
+    <h1>Fatorial</h1>
+
+    <input type="number" name="n1" id="n1" placeholder="Digite um número:">
+    <button onclick="calc()">Calcular</button>
+
+    <div id="res">
+
+    </div>
+
+    <script>
+        function calc(){
+            let n1 = window.document.getElementById('n1')
+            let res = window.document.querySelector('#res')
+            if(n1.value.length == 0){
+                res.innerHTML += 'Impossivel calcular'
+            }else{
+                let num = Number(n1.value)
+                function fatorial(n1){
+                    if( n1 == 1){
+                        return 1
+                    }else{
+                        return n1 * fatorial (n1-1)
+                    }
+                }
+                let resultado = fatorial(num)
+                res.innerHTML = `${resultado}`
+            }
+        }
+    </script>
+</body>
+</html>
