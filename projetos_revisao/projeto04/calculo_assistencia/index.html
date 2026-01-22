@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orçamento para assistência</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>CONTROLE DE ORÇAMENTOS</h1>
+    </header>
+    <main>
+        <section>
+            <div id="form">
+                <select name="servicos" id="servicos">
+                    <option value="0">Troca de Tela Android</option>
+                    <option value="1">Troca de bateria Android</option>
+                    <option value="2">Troca de conector de carga Android</option>
+                    <option value="3">Troca de alto-falante Android</option>
+                    <option value="4">Troca de microfone Android</option>
+                    <option value="5">Troca de câmera Android</option>
+                    <option value="6">Troca de botão power/volume Android</option>
+                    <option value="7">Atualização/Reistalação sistema Android</option>
+                    <option value="8">Troca de Tela Iphone 8/SE</option>
+                    <option value="9">Troca de Tela Iphone X/XR/XS</option>
+                    <option value="10">Troca de Tela Iphone 11</option>
+                    <option value="11">Troca de Tela Iphone 12/13</option>
+                    <option value="12">Troca de Tela Iphone 14+</option>
+                    <option value="13">Troca de bateria Iphone 7/8</option>
+                    <option value="14">Troca de bateria Iphone X+</option>
+                    <option value="15">Troca tampa traseira Iphone(Já trocada)</option>
+                    <option value="16">Troca tampa traseira Iphone(Original)</option>
+                </select>
+                <select name="risco" id="risco">
+                    <option value="0">Máximo</option>
+                    <option value="1">Padrão</option>
+                </select>
+                <input type="number" name="peca" id="peca" placeholder="Valor da peça:">
+                <input type="number" name="entrega" id="entrega" placeholder="Taxa de entrega:">
+                <div>
+                    <button type="button" onclick="inserir()">Inserir</button>
+                    <button type="button" onclick="calcular()">Calcular</button>
+                    <button type="button" onclick="novo()">Novo</button>
+                </div>
+            </div>
+            <div id="res">
+
+            </div>
+        </section>
+    </main>
+    <footer>
+
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>

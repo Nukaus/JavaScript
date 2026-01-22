@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classificador de Bagagem (Revisão: Verificador de Idade/Radio Buttons)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Classificador de Bagagem</h1>
+    </header>
+    <main>
+        <section>
+            <div>
+                <input type="number" name="peso" id="peso">
+                <input type="radio" name="tipo" id="inter">
+                <label for="Internacional">Internacional</label>
+                <input type="radio" name="tipo" id="nacio" checked>
+                <label for="Nacional">Nacional</label>
+                <button type="button" onclick="verificar()">Verificar</button>
+            </div>
+            <div id="conteudo">
+                <div id="foto">
+                    <p></p>
+                    <img id="imagem" src="" alt="Malas">
+                </div>
+                <div id="res">
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; Cristiano P. Santos</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
