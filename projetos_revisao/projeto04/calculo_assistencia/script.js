@@ -7,6 +7,7 @@ function capturaDados(){
 
     return {
         nomeCliente: cliente.value,
+        cliente,
         entrega,
         peca,
         serv: Number(servicos.value), 
@@ -148,6 +149,10 @@ function calcular(){
 }
 
 function novo(){
+    let dados = capturaDados()
+    dados.cliente.value = ''
+    dados.peca.value = ''
+    dados.entrega.value = ''
     nome.innerHTML = ''
     res.innerHTML = ''
     totalCliente = []
