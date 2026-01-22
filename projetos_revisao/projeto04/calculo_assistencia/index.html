@@ -13,6 +13,7 @@
     <main>
         <section>
             <div id="form">
+                <input type="text" name="cliente" id="cliente" placeholder="Nome do cliente:">
                 <select name="servicos" id="servicos">
                     <option value="0">Troca de Tela Android</option>
                     <option value="1">Troca de bateria Android</option>
@@ -38,11 +39,14 @@
                 </select>
                 <input type="number" name="peca" id="peca" placeholder="Valor da peça:">
                 <input type="number" name="entrega" id="entrega" placeholder="Taxa de entrega:">
-                <div>
+                <div id="botoes">
                     <button type="button" onclick="inserir()">Inserir</button>
                     <button type="button" onclick="calcular()">Calcular</button>
                     <button type="button" onclick="novo()">Novo</button>
                 </div>
+            </div>
+            <div id="nome">
+
             </div>
             <div id="res">
 
