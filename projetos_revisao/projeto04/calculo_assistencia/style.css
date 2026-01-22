@@ -23,7 +23,7 @@ header h1{
 
 section{
     background-color: white;
-    width: 400px;
+    max-width: 400px;
     margin: auto;
     padding: 10px;
     border-radius: 10px;
