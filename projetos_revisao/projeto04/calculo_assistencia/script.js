@@ -126,8 +126,8 @@ function inserir(){
     dados.peca.value = ''
     dados.entrega.value = ''
 
-    nome.innerHTML = `${dados.nomeCliente}`
-    res.innerHTML += `<p>${dados.serv}: R$ ${total.toFixed(2)}</p>`
+    nome.innerHTML = `<strong>${dados.nomeCliente}</strong>`
+    res.innerHTML += `<p>- ${dados.serv}: R$ ${total.toFixed(2)}</p>`
 }
 
 function calcular(){
@@ -137,14 +137,14 @@ function calcular(){
         for(let valor of totalCliente){
             somaTotal += valor
         }
-        nome.innerHTML = `${dados.nomeCliente}`
+        nome.innerHTML = `<strong>${dados.nomeCliente}</strong>`
         res.innerHTML += `<p>Valor total:R$ ${somaTotal.toFixed(2)}</p>`
     }else{
         let dados = capturaDados()
         let total = calculoTotal(dados)
         dados.peca.value = ''
         dados.entrega.value = ''
-        nome.innerHTML = `${dados.nomeCliente}`
+        nome.innerHTML = `<strong>${dados.nomeCliente}</strong>`
         res.innerHTML += `<p>Valor total: R$ ${total.toFixed(2)}</p>`
     }
 }
