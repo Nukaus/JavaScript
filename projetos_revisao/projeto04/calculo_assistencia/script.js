@@ -135,12 +135,14 @@ function calcular(){
         for(let valor of totalCliente){
             somaTotal += valor
         }
+        nome.innerHTML = `${dados.nomeCliente}`
         res.innerHTML += `<p>Valor total:R$ ${somaTotal.toFixed(2)}</p>`
     }else{
         let dados = capturaDados()
         let total = calculoTotal(dados)
         dados.peca.value = ''
         dados.entrega.value = ''
+        nome.innerHTML = `${dados.nomeCliente}`
         res.innerHTML += `<p>Valor total: R$ ${total.toFixed(2)}</p>`
     }
 }
