@@ -131,6 +131,7 @@ function inserir(){
 }
 
 function calcular(){
+    let dados = capturaDados()
     if(totalCliente.length > 0){
         let somaTotal = 0
         for(let valor of totalCliente){
