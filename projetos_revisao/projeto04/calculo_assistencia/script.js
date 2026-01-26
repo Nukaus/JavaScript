@@ -108,6 +108,46 @@ function calculoTotal(dados){
             servMax = 400
             servMin= 250
             break
+        case 17:
+            dados.serv = 'Troca de carcaça Iphone(Original) X/XR/XS'
+            servMax = 500
+            servMin= 350
+            break
+        case 18:
+            dados.serv = 'Troca de carcaça Iphone(Original) 11'
+            servMax = 550
+            servMin= 400
+            break
+        case 19:
+            dados.serv = 'Troca de carcaça Iphone(Original) 12/13'
+            servMax = 700
+            servMin= 500
+            break
+        case 20:
+            dados.serv = 'Troca de carcaça Iphone(Original) 14+'
+            servMax = 850
+            servMin= 600
+            break
+        case 21:
+            dados.serv = 'Troca de carcaça Iphone(Estilo 17) X/XR/XS'
+            servMax = 450
+            servMin= 300
+            break
+        case 22:
+            dados.serv = 'Troca de carcaça Iphone(Estilo 17) 11'
+            servMax = 500
+            servMin= 350
+            break
+        case 23:
+            dados.serv = 'Troca de carcaça Iphone(Estilo 17) 12/13'
+            servMax = 650
+            servMin= 450
+            break
+        case 24:
+            dados.serv = 'Troca de carcaça Iphone(Estilo 17) 14+'
+            servMax = 800
+            servMin= 550
+            break
     }
 
     if(dados.risc == 0){
