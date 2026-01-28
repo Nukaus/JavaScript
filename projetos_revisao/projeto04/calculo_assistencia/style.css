@@ -8,17 +8,12 @@ body{
     background-color: aquamarine;
 }
 
-header{
-    background-color: lightslategray;
-    margin-bottom: 30px;
-    text-align: center;
-    box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.438);
-    padding: 10px;
-}
-
-header h1{
+h1{
     font-family: 'Times New Roman', Times, serif;
+    font-size: 1.2em;
+    text-align: center;
     text-shadow: 1px 3px 5px rgba(0, 0, 0, 0.438);
+    margin-bottom: 20px;
 }
 
 section{
@@ -28,11 +23,32 @@ section{
     padding: 10px;
     border-radius: 10px;
     box-shadow: 3px 5px 3px rgba(0, 0, 0, 0.438);
+
+    left: 50%;
+    top: 50%;
+    transform: translate(-0%, 15%);
+}
+
+#conteudo{
+    border: 1px solid rgba(0, 0, 0, 0.377);
+    box-shadow: 3px 5px 3px rgba(0, 0, 0, 0.137);
+    padding: 5px;
+    border-radius: 10px;
+}
+
+#cliente, #servicos, #servicospc, #risco{
+    margin-left: 10px;
+}
+
+
+p i{
+    font-size: 1.5em;
 }
 
 div#form{
     display: flex;
     flex-direction: column;
+    padding: 10px;
     gap: 15px;
 }
 
@@ -53,11 +69,19 @@ select, input{
 }
 
 button{
+    background-color: black;
+    color: white;
     width: 100px;
     margin: 5px;
     padding: 3px;
     font-size: 1em;
     border-radius: 5px;
+    transition: transform 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+button:hover{
+    transform: scale(1.1);
 }
 
 @media (max-width: 768px){
@@ -66,10 +90,7 @@ button{
     }
 
     select, input{
-        width: 250px;
+        width: 200px;
     }
 
-    button{
-        width: 85px;
-    }
 }

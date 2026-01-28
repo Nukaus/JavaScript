@@ -1,6 +1,7 @@
 function capturaDados(){
     let cliente =  window.document.getElementById('cliente')
     let servicos = window.document.getElementById('servicos')
+    let servicospc = window.document.getElementById('servicospc')
     let risco = window.document.getElementById('risco')
     let peca = window.document.getElementById('peca')
     let entrega = window.document.getElementById('entrega') 
@@ -8,9 +9,12 @@ function capturaDados(){
     return {
         nomeCliente: cliente.value,
         cliente,
+        servicos,
+        servicospc,
         entrega,
         peca,
-        serv: Number(servicos.value), 
+        serv: Number(servicos.value),
+        servpc: Number(servicospc.value),
         risc: Number(risco.value), 
         pec: Number(peca.value) || 0, 
         entr: Number(entrega.value) || 0
@@ -23,6 +27,10 @@ function calculoTotal(dados){
     var servMin = 0
 
     switch(dados.serv){
+        case 50:
+            servMax = 0
+            servMin= 0
+            break
         case 0:
             dados.serv = 'Troca de Tela Android'
             servMax = 200
@@ -150,11 +158,25 @@ function calculoTotal(dados){
             break
     }
 
+    switch(dados.servpc){
+        case 25:
+            dados.servpc = 'Troca de tela notebook'
+            servMax = 200
+            servMin= 120
+            break
+        case 27:
+            dados.servpc = 'Troca de bateria notebook'
+            servMax = 150
+            servMin= 80
+            break
+    }
+
     if(dados.risc == 0){
         return servMax + dados.pec + dados.entr
     }else{
         return ((servMax + servMin) / 2) + dados.pec + dados.entr
     }
+    
 }
 
 let totalCliente = []
@@ -162,12 +184,30 @@ let totalCliente = []
 function inserir(){
     let dados = capturaDados()
     let total = calculoTotal(dados)
-    totalCliente.push(total)
-    dados.peca.value = ''
-    dados.entrega.value = ''
-
-    nome.innerHTML = `<strong>${dados.nomeCliente}</strong>`
-    res.innerHTML += `<p>- ${dados.serv}: R$ ${total.toFixed(2)}</p>`
+    
+    if(dados.serv != 50 && dados.servpc == 50){
+        totalCliente.push(total)
+        dados.peca.value = ''
+        dados.entrega.value = ''
+        erro.innerHTML = ''
+    
+        nome.innerHTML = `<strong>${dados.nomeCliente}</strong>`
+        res.innerHTML += `<p>- ${dados.serv}: R$ ${total.toFixed(2)}</p>`
+    }else if(dados.serv == 50 && dados.servpc !=50){
+        totalCliente.push(total)
+        dados.peca.value = ''
+        dados.entrega.value = ''
+        erro.innerHTML = ''
+    
+        nome.innerHTML = `<strong>${dados.nomeCliente}</strong>`
+        res.innerHTML += `<p>- ${dados.servpc}: R$ ${total.toFixed(2)}</p>`
+        
+    }else{
+        erro.innerHTML = 'Escolha um serviço'
+    }
+    dados.servicospc.value = 50
+    dados.servicos.value = 50
+    
 }
 
 function calcular(){
@@ -178,14 +218,14 @@ function calcular(){
             somaTotal += valor
         }
         nome.innerHTML = `<strong>${dados.nomeCliente}</strong>`
-        res.innerHTML += `<p>Valor total:R$ ${somaTotal.toFixed(2)}</p>`
+        res.innerHTML += `<br><p><strong>Valor total:R$ ${somaTotal.toFixed(2)}</strong></p>`
     }else{
         let dados = capturaDados()
         let total = calculoTotal(dados)
         dados.peca.value = ''
         dados.entrega.value = ''
         nome.innerHTML = `<strong>${dados.nomeCliente}</strong>`
-        res.innerHTML += `<p>Valor total: R$ ${total.toFixed(2)}</p>`
+        res.innerHTML += `<p><strong>Valor total: R$ ${total.toFixed(2)}</strong></p>`
     }
 }
 
