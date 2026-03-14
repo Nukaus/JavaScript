@@ -156,6 +156,11 @@ function calculoTotal(dados){
             servMax = 800
             servMin= 550
             break
+        case 28:
+            dados.serv = 'Troca de conector de carga iPhone 13'
+            servMax = 150
+            servMin= 80
+            break
     }
 
     switch(dados.servpc){
