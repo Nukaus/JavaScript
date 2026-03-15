@@ -161,6 +161,11 @@ function calculoTotal(dados){
             servMax = 150
             servMin= 80
             break
+        case 29:
+            dados.serv = 'Limoeza de placa básica'
+            servMax = 120
+            servMin= 80
+            break
     }
 
     switch(dados.servpc){
