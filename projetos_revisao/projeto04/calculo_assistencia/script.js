@@ -162,7 +162,7 @@ function calculoTotal(dados){
             servMin= 80
             break
         case 29:
-            dados.serv = 'Limoeza de placa básica'
+            dados.serv = 'Limpeza de placa básica'
             servMax = 120
             servMin= 80
             break
