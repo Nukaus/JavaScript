@@ -102,7 +102,7 @@ function calculoTotal(dados){
             servMin= 100
             break
         case 14:
-            dados.serv = 'Troca de bateria Iphone X+'
+            dados.serv = 'Troca de bateria Iphone X e superiores'
             servMax = 180
             servMin= 120
             break
