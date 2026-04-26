@@ -63,19 +63,8 @@
                             <option value="22">Carcaça Estilo 17 11</option>
                             <option value="23">Carcaça Estilo 17 12/13</option>
                             <option value="24">Carcaça Estilo 17 14+</option>
-                            <option value="14">Troca de bateria Iphone X e superiores</option>
-                            <option value="15">Troca tampa traseira Iphone(Já trocada)</option>
-                            <option value="16">Troca tampa traseira Iphone(Original)</option>
-                            <option value="17">Troca de carcaça Iphone(Original) X/XR/XS</option>
-                            <option value="18">Troca de carcaça Iphone(Original) 11</option>
-                            <option value="19">Troca de carcaça Iphone(Original) 12/13</option>
-                            <option value="20">Troca de carcaça Iphone(Original) 14+</option>
-                            <option value="21">Troca de carcaça Iphone(Estilo 17) X/XR/XS</option>
-                            <option value="22">Troca de carcaça Iphone(Estilo 17) 11</option>
-                            <option value="23">Troca de carcaça Iphone(Estilo 17) 12/13</option>
-                            <option value="24">Troca de carcaça Iphone(Estilo 17) 14+</option>
-                            <option value="28">Troca conector de carga iPhone 13</option>
-                            <option value="29">Limpeza de placa básica</option>
+                            <option value="25">Troca conector de carga iPhone 12/13</option>
+                            <option value="26">Limpeza de placa básica</option>
                         </select>
                     </div>
 
@@ -83,8 +72,8 @@
                         <label for="servicospc"><i class="bi bi-pc-display"></i> Informática</label>
                         <select id="servicospc">
                             <option value="50">Selecione um serviço...</option>
-                            <option value="25">Troca de tela notebook</option>
-                            <option value="27">Troca de bateria notebook</option>
+                            <option value="27">Troca de tela notebook</option>
+                            <option value="28">Troca de bateria notebook</option>
                         </select>
                     </div>
 
@@ -141,19 +130,22 @@
             </div>
         </section>
 
-        <section class="container history-section" style="margin-top: 20px; max-width: 600px;">
+        <section class="container history-section" style="margin-top: 20px; max-width: 450px;">
             <header>
                 <h2><i class="bi bi-clock-history"></i> Histórico Recente</h2>
             </header>
             <div id="historico-lista">
                 <p style="text-align: center; color: #64748b; font-size: 0.9rem;">Nenhum orçamento salvo.</p>
             </div>
-            <button class="btn-new" onclick="limparHistorico()" style="margin-top: 15px; background: #94a3b8;">
-                <i class="bi bi-trash"></i> Limpar Histórico
-            </button>
-            <button class="btn-pdf" onclick="gerarPDF()" style="background: #e11d48; color: white;">
-                <i class="bi bi-file-earmark-pdf"></i> Gerar PDF
-            </button>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px;">
+                <button class="btn-new" onclick="limparHistorico()" style="background: #94a3b8; grid-column: span 1; margin:0;">
+                    <i class="bi bi-trash"></i> Limpar
+                </button>
+                <button class="btn-pdf" onclick="gerarPDF()" style="background: #e11d48; color: white; margin:0;">
+                    <i class="bi bi-file-earmark-pdf"></i> PDF
+                </button>
+            </div>
         </section>
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
