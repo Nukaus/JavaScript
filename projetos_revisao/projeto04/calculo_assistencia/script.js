@@ -23,8 +23,8 @@ function capturaDados() {
 
         nomeVal: document.getElementById('cliente').value,
         modeloVal: document.getElementById('modelo').value,
-        servId: Number(document.getElementById('servicos').value),
-        servPcId: Number(document.getElementById('servicospc').value),
+        servId: document.getElementById('servicos').value,
+        servPcId: document.getElementById('servicospc').value,
         riscId: Number(document.getElementById('risco').value),
         pecVal: Number(document.getElementById('peca').value) || 0,
         entrVal: Number(document.getElementById('entrega').value) || 0
@@ -35,45 +35,72 @@ function calculoTotal(d) {
     let sMax = 0, sMin = 0;
     let label = "";
 
-    if (d.servId !== 50) {
+    // Lógica para Celulares (usando os novos IDs de texto)
+    if (d.servId !== "50") {
         switch(d.servId) {
-            case 0: label = 'Troca de Tela Android'; sMax = 200; sMin = 120; break;
-            case 1: label = 'Troca de bateria Android'; sMax = 120; sMin = 80; break;
-            case 2: label = 'Troca de conector Android'; sMax = 150; sMin = 100; break;
-            case 3: label = 'Troca de alto-falante Android'; sMax = 120; sMin = 80; break;
-            case 4: label = 'Troca microfone Android'; sMax = 120; sMin = 80; break;
-            case 5: label = 'Troca câmera Android'; sMax = 150; sMin = 100; break;
-            case 6: label = 'Troca botão power/vol Android'; sMax = 150; sMin = 100; break;
-            case 7: label = 'Sistema Android'; sMax = 120; sMin = 80; break;
-            case 8: label = 'Tela iPhone 8/SE'; sMax = 150; sMin = 120; break;
-            case 9: label = 'Tela iPhone X/XR/XS'; sMax = 200; sMin = 150; break;
-            case 10: label = 'Tela iPhone 11'; sMax = 200; sMin = 150; break;
-            case 11: label = 'Tela iPhone 12/13'; sMax = 250; sMin = 180; break;
-            case 12: label = 'Tela iPhone 14+'; sMax = 300; sMin = 200; break;
-            case 13: label = 'Bateria iPhone 7/8'; sMax = 130; sMin = 100; break;
-            case 14: label = 'Bateria iPhone X+'; sMax = 180; sMin = 120; break;
-            case 15: label = 'Tampa traseira iPhone (Trocada)'; sMax = 200; sMin = 150; break;
-            case 16: label = 'Tampa traseira iPhone (Original)'; sMax = 400; sMin = 250; break;
-            case 17: label = 'Carcaça Original X/XR/XS'; sMax = 500; sMin = 350; break;
-            case 18: label = 'Carcaça Original 11'; sMax = 550; sMin = 400; break;
-            case 19: label = 'Carcaça Original 12/13'; sMax = 700; sMin = 500; break;
-            case 20: label = 'Carcaça Original 14+'; sMax = 850; sMin = 600; break;
-            case 21: label = 'Carcaça Estilo 17 X/XR/XS'; sMax = 450; sMin = 300; break;
-            case 22: label = 'Carcaça Estilo 17 11'; sMax = 500; sMin = 350; break;
-            case 23: label = 'Carcaça Estilo 17 12/13'; sMax = 650; sMin = 450; break;
-            case 24: label = 'Carcaça Estilo 17 14+'; sMax = 800; sMin = 550; break;
-            case 25: label = 'Troca conector de carga iPhone 12/13'; sMax = 500; sMin = 350; break;
-            case 26: label = 'Limpeza de placa básica'; sMax = 180; sMin = 130; break;
+            // --- IPHONE 17 ---
+            case 'ip_17pm_tela': label = 'Tela iPhone 17 Pro Max'; sMax = 1200; sMin = 800; break;
+            case 'ip_17p_tela':  label = 'Tela iPhone 17 Pro'; sMax = 1000; sMin = 750; break;
+            case 'ip_17_tela':   label = 'Tela iPhone 17/17 Plus'; sMax = 800; sMin = 600; break;
+            
+            // --- IPHONE 16 ---
+            case 'ip_16pm_tela': label = 'Tela iPhone 16 Pro Max'; sMax = 950; sMin = 700; break;
+            case 'ip_16p_tela':  label = 'Tela iPhone 16 Pro'; sMax = 850; sMin = 650; break;
+            case 'ip_16_tela':   label = 'Tela iPhone 16/16 Plus'; sMax = 700; sMin = 500; break;
+
+            // --- IPHONE 15 ---
+            case 'ip_15pm_tela': label = 'Tela iPhone 15 Pro Max'; sMax = 800; sMin = 600; break;
+            case 'ip_15p_tela':  label = 'Tela iPhone 15 Pro'; sMax = 700; sMin = 550; break;
+            case 'ip_15_tela':   label = 'Tela iPhone 15/15 Plus'; sMax = 500; sMin = 400; break;
+
+            // --- IPHONE 14 ---
+            case 'ip_14pm_tela': label = 'Tela iPhone 14 Pro Max'; sMax = 600; sMin = 450; break;
+            case 'ip_14p_tela':  label = 'Tela iPhone 14 Pro'; sMax = 550; sMin = 400; break;
+            case 'ip_14_tela':   label = 'Tela iPhone 14/14 Plus'; sMax = 400; sMin = 300; break;
+
+            // --- IPHONE ANTIGOS ---
+            case 'ip_13_tela':   label = 'Tela iPhone 13/13 Pro'; sMax = 350; sMin = 250; break;
+            case 'ip_12_tela':   label = 'Tela iPhone 12/12 Pro'; sMax = 300; sMin = 220; break;
+            case 'ip_11pm_tela': label = 'Tela iPhone 11 Pro Max'; sMax = 280; sMin = 200; break;
+            case 'ip_11_tela':   label = 'Tela iPhone 11'; sMax = 220; sMin = 160; break;
+            case 'ip_xr_tela':   label = 'Tela iPhone XR'; sMax = 200; sMin = 150; break;
+            case 'ip_x_tela':    label = 'Tela iPhone X/XS'; sMax = 200; sMin = 150; break;
+            case 'ip_8_tela':    label = 'Tela iPhone 8/SE'; sMax = 150; sMin = 120; break;
+
+            // --- BATERIAS IPHONE ---
+            case 'ip_16_17_bat': label = 'Bateria iPhone 16/17'; sMax = 300; sMin = 200; break;
+            case 'ip_14_15_bat': label = 'Bateria iPhone 14/15'; sMax = 250; sMin = 180; break;
+            case 'ip_12_13_bat': label = 'Bateria iPhone 12/13'; sMax = 200; sMin = 150; break;
+            case 'ip_11_bat':    label = 'Bateria iPhone 11 Series'; sMax = 180; sMin = 130; break;
+            case 'ip_x_bat':     label = 'Bateria iPhone X/XR/XS'; sMax = 160; sMin = 120; break;
+            case 'ip_8_bat':     label = 'Bateria iPhone 7/8/SE'; sMax = 120; sMin = 90; break;
+
+            // --- ANDROID E OUTROS ---
+            case 'and_tela_premium': label = 'Tela Android (OLED)'; sMax = 350; sMin = 200; break;
+            case 'and_tela_incell':  label = 'Tela Android (Simple)'; sMax = 180; sMin = 120; break;
+            case 'and_conector':     label = 'Conector de Carga'; sMax = 150; sMin = 100; break;
+            case 'desoxidacao':      label = 'Desoxidação / Limpeza'; sMax = 250; sMin = 150; break;
+            case 'conector_iphone':  label = 'Conector iPhone'; sMax = 180; sMin = 130; break;
         }
-    } else if (d.servPcId !== 50) {
+    } 
+    // Lógica para Informática
+    else if (d.servPcId !== "50") {
         switch(d.servPcId) {
-            case 27: label = 'Troca de tela notebook'; sMax = 200; sMin = 120; break;
-            case 28: label = 'Troca de bateria notebook'; sMax = 150; sMin = 80; break;
+            case 'nb_tela_14':  label = 'Tela Notebook 14"'; sMax = 250; sMin = 180; break;
+            case 'nb_tela_15':  label = 'Tela Notebook 15.6"'; sMax = 280; sMin = 200; break;
+            case 'nb_ssd':      label = 'SSD + Sistema'; sMax = 200; sMin = 150; break;
+            case 'nb_limpeza':  label = 'Limpeza + Pasta Térmica'; sMax = 180; sMin = 120; break;
         }
     }
 
+    // A Mágica do Risco: Se risco for 0 (Máximo), usa o valor cheio (sMax). 
+    // Se for 1 (Padrão), faz a média entre os dois.
     let maoDeObra = (d.riscId === 0) ? sMax : ((sMax + sMin) / 2);
-    return { valor: maoDeObra + d.pecVal + d.entrVal, servNome: label };
+    
+    return { 
+        valor: maoDeObra + d.pecVal + d.entrVal, 
+        servNome: label 
+    };
 }
 
 function inserir() {

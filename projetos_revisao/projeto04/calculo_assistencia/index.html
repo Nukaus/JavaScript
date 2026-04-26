@@ -35,36 +35,79 @@
                     </div>
 
                     <div class="input-group">
-                        <label for="servicos"><i class="bi bi-phone"></i> Celulares</label>
+                        <label for="servicos"><i class="bi bi-phone"></i> Manutenção de Celulares</label>
                         <select id="servicos">
-                            <option value="50">Selecione um serviço...</option>
-                            <option value="0">Troca de Tela Android</option>
-                            <option value="1">Troca de bateria Android</option>
-                            <option value="2">Troca de conector de carga Android</option>
-                            <option value="3">Troca de alto-falante Android</option>
-                            <option value="4">Troca de microfone Android</option>
-                            <option value="5">Troca de câmera Android</option>
-                            <option value="6">Troca de botão power/volume Android</option>
-                            <option value="7">Atualização sistema Android</option>
-                            <option value="8">Troca de Tela Iphone 8/SE</option>
-                            <option value="9">Troca de Tela Iphone X/XR/XS</option>
-                            <option value="10">Troca de Tela Iphone 11</option>
-                            <option value="11">Troca de Tela Iphone 12/13</option>
-                            <option value="12">Troca de Tela Iphone 14+</option>
-                            <option value="13">Troca de bateria Iphone 7/8</option>
-                            <option value="14">Troca de bateria Iphone X+</option>
-                            <option value="15">Troca tampa traseira (Já trocada)</option>
-                            <option value="16">Troca tampa traseira (Original)</option>
-                            <option value="17">Carcaça Original X/XR/XS</option>
-                            <option value="18">Carcaça Original 11</option>
-                            <option value="19">Carcaça Original 12/13</option>
-                            <option value="20">Carcaça Original 14+</option>
-                            <option value="21">Carcaça Estilo 17 X/XR/XS</option>
-                            <option value="22">Carcaça Estilo 17 11</option>
-                            <option value="23">Carcaça Estilo 17 12/13</option>
-                            <option value="24">Carcaça Estilo 17 14+</option>
-                            <option value="25">Troca conector de carga iPhone 12/13</option>
-                            <option value="26">Limpeza de placa básica</option>
+                            <option value="50">Selecione o modelo e serviço...</option>
+                            
+                            <optgroup label="IPHONE - TELAS (LINHA PREMIUM)">
+                                <option value="ip_17pm_tela">iPhone 17 Pro Max - Tela</option>
+                                <option value="ip_17p_tela">iPhone 17 Pro - Tela</option>
+                                <option value="ip_17_tela">iPhone 17 / 17 Plus - Tela</option>
+                                <option value="ip_16pm_tela">iPhone 16 Pro Max - Tela</option>
+                                <option value="ip_16p_tela">iPhone 16 Pro - Tela</option>
+                                <option value="ip_16_tela">iPhone 16 / 16 Plus - Tela</option>
+                                <option value="ip_15pm_tela">iPhone 15 Pro Max - Tela</option>
+                                <option value="ip_15p_tela">iPhone 15 Pro - Tela</option>
+                                <option value="ip_15_tela">iPhone 15 / 15 Plus - Tela</option>
+                                <option value="ip_14pm_tela">iPhone 14 Pro Max - Tela</option>
+                                <option value="ip_14p_tela">iPhone 14 Pro - Tela</option>
+                                <option value="ip_14_tela">iPhone 14 / 14 Plus - Tela</option>
+                            </optgroup>
+                    
+                            <optgroup label="IPHONE - TELAS (LINHA PADRÃO)">
+                                <option value="ip_13_tela">iPhone 13 / 13 Pro - Tela</option>
+                                <option value="ip_12_tela">iPhone 12 / 12 Pro - Tela</option>
+                                <option value="ip_11pm_tela">iPhone 11 Pro Max - Tela</option>
+                                <option value="ip_11_tela">iPhone 11 - Tela</option>
+                                <option value="ip_xr_tela">iPhone XR - Tela</option>
+                                <option value="ip_x_tela">iPhone X / XS - Tela</option>
+                                <option value="ip_8_tela">iPhone 8 / SE (2020/22) - Tela</option>
+                            </optgroup>
+                    
+                            <optgroup label="IPHONE - BATERIAS">
+                                <option value="ip_16_17_bat">iPhone 16 / 17 Series - Bateria</option>
+                                <option value="ip_14_15_bat">iPhone 14 / 15 Series - Bateria</option>
+                                <option value="ip_12_13_bat">iPhone 12 / 13 Series - Bateria</option>
+                                <option value="ip_11_bat">iPhone 11 Series - Bateria</option>
+                                <option value="ip_x_bat">iPhone X / XR / XS - Bateria</option>
+                                <option value="ip_8_bat">iPhone 7 / 8 / SE - Bateria</option>
+                            </optgroup>
+                    
+                            <optgroup label="IPHONE - CARCAÇAS E TAMPAS">
+                                <option value="ip_tampa_comum">Troca de Tampa Traseira (Vidro)</option>
+                                <option value="ip_carcaca_completa">Troca de Carcaça Completa</option>
+                            </optgroup>
+                    
+                            <optgroup label="ANDROID - SERVIÇOS">
+                                <option value="and_tela_premium">Android - Tela (OLED/Original)</option>
+                                <option value="and_tela_incell">Android - Tela (Incell/Simples)</option>
+                                <option value="and_bat">Android - Troca de Bateria</option>
+                                <option value="and_conector">Android - Conector de Carga</option>
+                                <option value="and_software">Android - Software / Desbloqueio</option>
+                            </optgroup>
+                    
+                            <optgroup label="OUTROS REPAROS">
+                                <option value="desoxidacao">Limpeza Química (Caiu na água)</option>
+                                <option value="conector_iphone">Conector de Carga iPhone</option>
+                                <option value="camera_reparo">Reparo de Câmeras</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="servicospc"><i class="bi bi-pc-display"></i> Informática / Notebooks</label>
+                        <select id="servicospc">
+                            <option value="50">Selecione o serviço...</option>
+                            <optgroup label="TELAS & DISPLAY">
+                                <option value="nb_tela_14">Troca de Tela Notebook 14"</option>
+                                <option value="nb_tela_15">Troca de Tela Notebook 15.6"</option>
+                            </optgroup>
+                            <optgroup label="HARDWARE & PERFORMANCE">
+                                <option value="nb_ssd">Instalação de SSD + Sistema</option>
+                                <option value="nb_ram">Upgrade de Memória RAM</option>
+                                <option value="nb_bat">Troca de Bateria Interna</option>
+                                <option value="nb_limpeza">Limpeza Interna + Pasta Térmica</option>
+                            </optgroup>
                         </select>
                     </div>
 
