@@ -3,23 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orçamento para assistência</title>
+    <title>Sistema de Orçamentos</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 </head>
 <body>
-    <header>
-        
-    </header>
     <main>
-        <section>
-            <h1>CALCULADORA DE ORÇAMENTOS</h1>
+        <section class="container">
+            <header>
+                <h1><i class="bi bi-calculator"></i> Calculadora de Orçamentos</h1>
+            </header>
+
             <div id="conteudo">
                 <div id="form">
-                   <p id="usuario"><i class="bi bi-person-circle"></i> <input type="text" name="cliente" id="cliente" placeholder="Nome do cliente:"></p>
-                    <p><i class="bi bi-phone"></i>
-                        <select name="servicos" id="servicos">
-                            <option value="50">Aparelhos Celulares</option>
+                    <div class="input-group">
+                        <label for="cliente"><i class="bi bi-person"></i> Cliente</label>
+                        <input type="text" id="cliente" placeholder="Nome completo">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="modelo"><i class="bi bi-phone-vibrate"></i> Modelo do Aparelho</label>
+                        <input type="text" id="modelo" placeholder="Ex: Samsung A54 / iPhone 11">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="telefone"><i class="bi bi-whatsapp"></i> WhatsApp do Cliente</label>
+                        <input type="number" id="telefone" placeholder="Ex: 31988887777">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="servicos"><i class="bi bi-phone"></i> Celulares</label>
+                        <select id="servicos">
+                            <option value="50">Selecione um serviço...</option>
                             <option value="0">Troca de Tela Android</option>
                             <option value="1">Troca de bateria Android</option>
                             <option value="2">Troca de conector de carga Android</option>
@@ -27,7 +45,7 @@
                             <option value="4">Troca de microfone Android</option>
                             <option value="5">Troca de câmera Android</option>
                             <option value="6">Troca de botão power/volume Android</option>
-                            <option value="7">Atualização/Reistalação sistema Android</option>
+                            <option value="7">Atualização sistema Android</option>
                             <option value="8">Troca de Tela Iphone 8/SE</option>
                             <option value="9">Troca de Tela Iphone X/XR/XS</option>
                             <option value="10">Troca de Tela Iphone 11</option>
@@ -35,52 +53,97 @@
                             <option value="12">Troca de Tela Iphone 14+</option>
                             <option value="13">Troca de bateria Iphone 7/8</option>
                             <option value="14">Troca de bateria Iphone X+</option>
-                            <option value="15">Troca tampa traseira Iphone(Já trocada)</option>
-                            <option value="16">Troca tampa traseira Iphone(Original)</option>
-                            <option value="17">Troca de carcaça Iphone(Original) X/XR/XS</option>
-                            <option value="18">Troca de carcaça Iphone(Original) 11</option>
-                            <option value="19">Troca de carcaça Iphone(Original) 12/13</option>
-                            <option value="20">Troca de carcaça Iphone(Original) 14+</option>
-                            <option value="21">Troca de carcaça Iphone(Estilo 17) X/XR/XS</option>
-                            <option value="22">Troca de carcaça Iphone(Estilo 17) 11</option>
-                            <option value="23">Troca de carcaça Iphone(Estilo 17) 12/13</option>
-                            <option value="24">Troca de carcaça Iphone(Estilo 17) 14+</option>
+                            <option value="15">Troca tampa traseira (Já trocada)</option>
+                            <option value="16">Troca tampa traseira (Original)</option>
+                            <option value="17">Carcaça Original X/XR/XS</option>
+                            <option value="18">Carcaça Original 11</option>
+                            <option value="19">Carcaça Original 12/13</option>
+                            <option value="20">Carcaça Original 14+</option>
+                            <option value="21">Carcaça Estilo 17 X/XR/XS</option>
+                            <option value="22">Carcaça Estilo 17 11</option>
+                            <option value="23">Carcaça Estilo 17 12/13</option>
+                            <option value="24">Carcaça Estilo 17 14+</option>
                         </select>
-                    </p>
-                    <p><i class="bi bi-pc-display"></i>
-                        <select name="servicospc" id="servicospc">
-                            <option value="50">Notebooks/Desktops</option>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="servicospc"><i class="bi bi-pc-display"></i> Informática</label>
+                        <select id="servicospc">
+                            <option value="50">Selecione um serviço...</option>
                             <option value="25">Troca de tela notebook</option>
                             <option value="27">Troca de bateria notebook</option>
                         </select>
-                    </p>
-                    <p><i class="bi bi-exclamation-triangle-fill"></i>
-                        <select name="risco" id="risco">
-                            <option value="1">Padrão</option>
-                            <option value="0">Máximo</option>
-                        </select>
-                    </p>
-                    <input type="number" name="peca" id="peca" placeholder="Valor da peça:">
-                    <input type="number" name="entrega" id="entrega" placeholder="Taxa de entrega:">
+                    </div>
+
+                    <div class="row">
+                        <div class="input-group">
+                            <label for="risco">Risco</label>
+                            <select id="risco">
+                                <option value="1">Padrão</option>
+                                <option value="0">Máximo</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="peca">Valor Peça</label>
+                            <input type="number" id="peca" placeholder="R$ 0,00">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="entrega">Taxa de Entrega</label>
+                        <input type="number" id="entrega" placeholder="R$ 0,00">
+                    </div>
+
+                    <div class="row">
+                        <div class="input-group">
+                            <label for="tipo_urgencia">Urgência</label>
+                            <select id="tipo_urgencia" onchange="toggleUrgencia()">
+                                <option value="0">Não (Padrão)</option>
+                                <option value="fixo">Valor Fixo (R$)</option>
+                                <option value="porcentagem">Porcentagem (%)</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="valor_urgencia">Valor Urgência</label>
+                            <input type="number" id="valor_urgencia" placeholder="0" disabled>
+                        </div>
+                    </div>
+
                     <div id="botoes">
-                        <button type="button" onclick="inserir()"><i class="bi bi-plus"></i> Inserir</button>
-                        <button type="button" onclick="calcular()"><i class="bi bi-calculator"></i> Calcular</button>
-                        <button type="button" onclick="novo()">Novo</button>
+                        <button class="btn-insert" onclick="inserir()"><i class="bi bi-plus-lg"></i> Inserir</button>
+                        <button class="btn-calc" onclick="calcular()"><i class="bi bi-check-all"></i> Finalizar</button>
+                        <button class="btn-new" onclick="novo()"><i class="bi bi-arrow-clockwise"></i> Novo</button>
+                        <button class="btn-whatsapp" onclick="enviarWhatsApp()" style="background: #25D366; color: white; grid-column: span 2;">
+                            <i class="bi bi-whatsapp"></i> Enviar Orçamento via WhatsApp
+                        </button>
                     </div>
                 </div>
-                <div id="nome">
-                </div>
-                <div id="erro">
-                </div>
-                <div id="res">
+
+                <div id="erro"></div>
                 
+                <div id="resultado-container">
+                    <div id="nome"></div>
+                    <div id="res"></div>
                 </div>
             </div>
         </section>
-    </main>
-    <footer>
 
-    </footer>
+        <section class="container history-section" style="margin-top: 20px; max-width: 600px;">
+            <header>
+                <h2><i class="bi bi-clock-history"></i> Histórico Recente</h2>
+            </header>
+            <div id="historico-lista">
+                <p style="text-align: center; color: #64748b; font-size: 0.9rem;">Nenhum orçamento salvo.</p>
+            </div>
+            <button class="btn-new" onclick="limparHistorico()" style="margin-top: 15px; background: #94a3b8;">
+                <i class="bi bi-trash"></i> Limpar Histórico
+            </button>
+            <button class="btn-pdf" onclick="gerarPDF()" style="background: #e11d48; color: white;">
+                <i class="bi bi-file-earmark-pdf"></i> Gerar PDF
+            </button>
+        </section>
+    </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
