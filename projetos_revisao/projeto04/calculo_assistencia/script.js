@@ -177,7 +177,7 @@ function toggleUrgencia() {
 
 function novo() {
     let d = capturaDados();
-    d.cliente.value = ''; d.modelo.value = ''; d.peca.value = ''; d.entrega.value = ''; d.telefone.value = '';
+    d.cliente.value = ''; d.modelo.value = ''; d.peca.value = ''; d.entrega.value = ''; d.telefone.value = ''; d.servicos.value = '50'; d.servicospc.value = '50'
     document.getElementById('nome').innerHTML = ''; document.getElementById('res').innerHTML = '';
     totalCliente = [];
 }
@@ -195,12 +195,76 @@ function gerarPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
     const d = capturaDados();
+    
+    if (totalCliente.length === 0) {
+        alert("Adicione serviços e calcule o total antes de gerar o PDF.");
+        return;
+    }
+
+    const dataAtual = new Date().toLocaleString('pt-BR');
     const somaTotal = totalCliente.reduce((a, b) => a + b, 0);
+
+    // --- CABEÇALHO ---
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(18);
+    doc.setTextColor(37, 99, 235); // Azul primário
+    doc.text("ORÇAMENTO DE ASSISTÊNCIA TÉCNICA", 105, 20, { align: "center" });
+    
+    doc.setFontSize(10);
+    doc.setTextColor(100, 116, 139);
+    doc.text(`Gerado em: ${dataAtual}`, 105, 27, { align: "center" });
+
+    // --- LINHA DIVISORA ---
+    doc.setDrawColor(203, 213, 225);
+    doc.line(10, 32, 200, 32);
+
+    // --- DADOS DO CLIENTE ---
+    doc.setFontSize(12);
+    doc.setTextColor(30, 41, 59);
+    doc.text("DADOS DO CLIENTE E APARELHO", 10, 42);
+    
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    doc.text(`Cliente: ${d.nomeVal || "Não informado"}`, 10, 50);
+    doc.text(`Aparelho: ${d.modeloVal || "Não informado"}`, 10, 56);
+    doc.text(`WhatsApp: ${document.getElementById('telefone').value || "Não informado"}`, 10, 62);
+
+    // --- TABELA DE SERVIÇOS ---
+    doc.setFont("helvetica", "bold");
+    doc.text("DESCRIÇÃO DOS SERVIÇOS", 10, 75);
+    doc.line(10, 77, 200, 77);
+    
+    doc.setFont("helvetica", "normal");
+    let yPos = 85;
+    
+    // Pegando os serviços do elemento 'res'
+    const linhas = document.querySelectorAll("#res p");
+    linhas.forEach((linha) => {
+        // Ignora a linha do total que já está no 'res' para tratar separado
+        if(!linha.innerText.includes("Total:")) {
+            doc.text(linha.innerText, 10, yPos);
+            yPos += 8;
+        }
+    });
+
+    // --- TOTAL ---
+    doc.setDrawColor(37, 99, 235);
+    doc.setLineWidth(0.5);
+    doc.line(10, yPos + 5, 200, yPos + 5);
     
     doc.setFont("helvetica", "bold");
-    doc.text("ORÇAMENTO DE ASSISTÊNCIA TÉCNICA", 105, 20, { align: "center" });
-    doc.setFontSize(10);
-    doc.text(`Cliente: ${d.nomeVal} | Aparelho: ${d.modeloVal}`, 10, 40);
-    doc.text(`Total: R$ ${somaTotal.toFixed(2)}`, 10, 50);
-    doc.save(`Orcamento_${d.nomeVal}.pdf`);
+    doc.setFontSize(14);
+    doc.setTextColor(22, 163, 74); // Verde sucesso
+    doc.text(`VALOR TOTAL: R$ ${somaTotal.toFixed(2)}`, 10, yPos + 15);
+
+    // --- RODAPÉ / GARANTIA ---
+    doc.setFontSize(9);
+    doc.setTextColor(100, 116, 139);
+    doc.setFont("helvetica", "italic");
+    const termoGarantia = "Este orçamento é válido por 7 dias. Serviços possuem garantia legal de 90 dias conforme o CDC.";
+    doc.text(termoGarantia, 105, 280, { align: "center" });
+
+    // Salvar o arquivo
+    const nomeArquivo = `Orcamento_${d.nomeVal.replace(/\s+/g, '_') || 'Cliente'}.pdf`;
+    doc.save(nomeArquivo);
 }
