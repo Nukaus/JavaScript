@@ -3,6 +3,7 @@ window.onload = function() {
 };
 
 let totalCliente = [];
+let itensOrcamento = []; // Lista para guardar os serviços antes de finalizar
 
 // --- CONFIGURAÇÃO DA LOGO (Coloque seu Base64 aqui se tiver) ---
 const logoBase64 = ""; 
@@ -95,36 +96,45 @@ function calculoTotal(d) {
         }
     }
 
-    // A Mágica do Risco: Se risco for 0 (Máximo), usa o valor cheio (sMax). 
-    // Se for 1 (Padrão), faz a média entre os dois.
-    let maoDeObra = (d.riscId === 0) ? sMax : ((sMax + sMin) / 2);
+       let maoDeObraBase = (d.riscId === 0) ? sMax : ((sMax + sMin) / 2);
     
-    return { 
-        valor: maoDeObra + d.pecVal + d.entrVal, 
-        servNome: label 
+    return {
+        maoDeObraBase: maoDeObraBase,
+        servNome: label
     };
+}
 }
 
 function inserir() {
-    let d = capturaDados();
-    let res = document.getElementById('res');
-    let nomeDiv = document.getElementById('nome');
-
-    if (d.servId === 50 && d.servPcId === 50) {
-        document.getElementById('erro').innerHTML = 'Escolha um serviço!';
+    const dados = capturaDados();
+    
+    if (dados.servId === "50" && dados.servPcId === "50") {
+        document.getElementById('erro').innerText = "Selecione um serviço primeiro!";
         return;
     }
-
-    let resultado = calculoTotal(d);
-    totalCliente.push(resultado.valor);
+ 
+    const infoServico = calculoTotal(dados);
     
-    document.getElementById('erro').innerHTML = '';
-    nomeDiv.innerHTML = `<strong><i class="bi bi-person-check"></i> ${d.nomeVal || 'Cliente'}</strong>`;
-    
-    let identificacaoAparelho = d.modeloVal ? `[${d.modeloVal}] ` : '';
-    res.innerHTML += `<p>${identificacaoAparelho}${resultado.servNome}: <strong>R$ ${resultado.valor.toFixed(2)}</strong></p>`;
-    
-    d.peca.value = '';
+    // REGRA DE OURO: Se já houver itens na lista, aplica 50% de desconto na Mão de Obra
+    let maoDeObraReal = infoServico.maoDeObraBase;
+    let temDesconto = false;
+ 
+    if (itensOrcamento.length > 0) {
+        maoDeObraReal = infoServico.maoDeObraBase * 0.5; // 50% de desconto
+        temDesconto = true;
+    }
+ 
+    const valorFinalItem = maoDeObraReal + dados.pecVal;
+ 
+    // Adiciona ao carrinho
+    itensOrcamento.push({
+        descricao: infoServico.servNome,
+        valor: valorFinalItem,
+        desconto: temDesconto
+    });
+ 
+    atualizarResumoVisual();
+    document.getElementById('erro').innerText = "";
 }
 
 function calcular() {
@@ -196,6 +206,25 @@ function limparHistorico() {
     }
 }
 
+function atualizarResumoVisual() {
+    let html = "";
+    let totalGeral = 0;
+    const entrega = Number(document.getElementById('entrega').value) || 0;
+ 
+    itensOrcamento.forEach((item, index) => {
+        totalGeral += item.valor;
+        html += `<p style="font-size: 0.85rem; border-bottom: 1px solid #eee; padding: 5px 0;">
+                    ${item.desconto ? '⭐ ' : ''}<strong>${item.descricao}:</strong>
+                    R$ ${item.valor.toFixed(2)}
+                    ${item.desconto ? '<span style="color: green;">(-50% M.O.)</span>' : ''}
+                 </p>`;
+    });
+ 
+    totalGeral += entrega;
+ 
+    document.getElementById('res').innerHTML = html;
+    document.ge
+
 // --- OUTRAS FUNÇÕES ---
 function toggleUrgencia() {
     const tipo = document.getElementById('tipo_urgencia').value;
@@ -206,6 +235,7 @@ function toggleUrgencia() {
 
 function novo() {
     let d = capturaDados();
+    itensOrcamento = [];
     d.cliente.value = ''; d.modelo.value = ''; d.peca.value = ''; d.entrega.value = ''; d.telefone.value = ''; d.servicos.value = '50'; d.servicospc.value = '50'
     document.getElementById('nome').innerHTML = ''; document.getElementById('res').innerHTML = '';
     totalCliente = [];
