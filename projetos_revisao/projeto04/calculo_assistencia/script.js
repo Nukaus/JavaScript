@@ -223,7 +223,8 @@ function atualizarResumoVisual() {
     totalGeral += entrega;
  
     document.getElementById('res').innerHTML = html;
-    document.ge
+    document.getElementById('nome').innerHTML = `Total: R$ ${totalGeral.toFixed(2)}`;
+}
 
 // --- OUTRAS FUNÇÕES ---
 function toggleUrgencia() {
