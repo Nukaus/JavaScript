@@ -1,8 +1,10 @@
 window.onload = function() {
     atualizarInterfaceHistorico();
 };
+window.idOrcamentoAtual = null;
 
 let itensOrcamento = []; // Agora usamos apenas esta lista para os serviços
+
 
 function capturaDados() {
     return {
@@ -141,18 +143,38 @@ function calcular() {
 }
 
 function salvarNoHistorico(nome, modelo, total) {
-    let d = capturaDados(); // Pega os dados atuais para salvar telefone e entrega
+    let d = capturaDados();
     let historico = JSON.parse(localStorage.getItem('orcamentos')) || [];
     
-    const novoRegistro = {
+    // Verifica se estamos editando um orçamento que já existe (pelo ID ou pela Data)
+    const dataAtual = new Date().toLocaleString('pt-BR');
+    
+    // Se o orçamento atual já tiver um ID global, vamos atualizar ele
+    const indexExistente = historico.findIndex(item => item.id === window.idOrcamentoAtual);
+ 
+    const registro = {
+        id: window.idOrcamentoAtual || Date.now(), // Se não tem ID, cria um baseado no tempo
         nome: nome || "Cliente não identificado",
         modelo: modelo || "Modelo não informado",
         telefone: d.telefone.value,
         entrega: d.entrVal,
         total: parseFloat(total).toFixed(2),
-        data: new Date().toLocaleString('pt-BR'),
-        servicosLista: [...itensOrcamento] // Salva uma cópia da lista de serviços atual
+        data: window.idOrcamentoAtual ? (historico[indexExistente]?.data || dataAtual) : dataAtual,
+        servicosLista: [...itensOrcamento]
     };
+ 
+    if (indexExistente !== -1) {
+        // Atualiza o existente
+        historico[indexExistente] = registro;
+    } else {
+        // Adiciona novo no topo
+        historico.unshift(registro);
+    }
+ 
+    if (historico.length > 10) historico.pop();
+    localStorage.setItem('orcamentos', JSON.stringify(historico));
+    atualizarInterfaceHistorico();
+}
  
     historico.unshift(novoRegistro);
     if (historico.length > 10) historico.pop();
@@ -209,25 +231,21 @@ function recuperarOrcamento(index) {
  
     if (!orc) return;
  
-    // 1. Limpa o que estiver na tela
-    novo();
+    novo(); // Limpa a tela
  
-    // 2. Preenche os campos básicos
+    // Guarda o ID para o sistema saber que estamos mexendo em um orçamento antigo
+    window.idOrcamentoAtual = orc.id;
+ 
     document.getElementById('cliente').value = orc.nome;
     document.getElementById('modelo').value = orc.modelo;
     document.getElementById('telefone').value = orc.telefone || "";
     document.getElementById('entrega').value = orc.entrega || 0;
  
-    // 3. Recupera a lista de serviços
     if (orc.servicosLista) {
-        itensOrcamento = orc.servicosLista;
+        itensOrcamento = [...orc.servicosLista];
         atualizarResumoVisual();
-        
-        // Força o cálculo do total final (com entrega e taxas se houver)
         calcular();
     }
- 
-    alert("Orçamento de " + orc.nome + " recuperado!");
 }
 
 function toggleUrgencia() {
@@ -238,6 +256,7 @@ function toggleUrgencia() {
 }
 
 function novo() {
+    window.idOrcamentoAtual = null; // ESSENCIAL: Resetar o ID
     itensOrcamento = [];
     document.getElementById('cliente').value = '';
     document.getElementById('modelo').value = '';
@@ -248,6 +267,7 @@ function novo() {
     document.getElementById('servicospc').value = '50';
     document.getElementById('nome').innerHTML = '';
     document.getElementById('res').innerHTML = '';
+    document.getElementById('erro').innerText = "";
 }
 
 function enviarWhatsApp() {
