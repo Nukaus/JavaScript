@@ -89,6 +89,8 @@ function calculoTotal(d) {
             case 'nb_tela_14':  label = 'Tela Notebook 14"'; sMax = 250; sMin = 180; break;
             case 'nb_tela_15':  label = 'Tela Notebook 15.6"'; sMax = 280; sMin = 200; break;
             case 'nb_ssd':      label = 'SSD + Sistema'; sMax = 200; sMin = 150; break;
+            case 'nb_ram':      label = 'Upgrade de Memória RAM'; sMax = 120; sMin = 80; break;
+            case 'nb_bat':      label = 'Troca de Bateria Interna'; sMax = 130; sMin = 90; break;
             case 'nb_limpeza':  label = 'Limpeza + Pasta Térmica'; sMax = 180; sMin = 120; break;
         }
     }
