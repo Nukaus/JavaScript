@@ -1,10 +1,9 @@
 window.onload = function() {
     atualizarInterfaceHistorico();
 };
+
 window.idOrcamentoAtual = null;
-
-let itensOrcamento = []; // Agora usamos apenas esta lista para os serviços
-
+let itensOrcamento = []; 
 
 function capturaDados() {
     return {
@@ -61,8 +60,8 @@ function calculoTotal(d) {
             case 'ip_11_bat':    label = 'Bateria iPhone 11 Series'; sMax = 180; sMin = 130; break;
             case 'ip_x_bat':     label = 'Bateria iPhone X/XR/XS'; sMax = 160; sMin = 120; break;
             case 'ip_8_bat':     label = 'Bateria iPhone 7/8/SE'; sMax = 120; sMin = 90; break;
-            case 'ip_tampa_comum':     label = 'Troca de Tampa Traseira (Vidro)'; sMax = 150; sMin = 350; break;
-            case 'ip_carcaca_completa':     label = 'Troca de Carcaça Completa'; sMax = 250; sMin = 600; break;
+            case 'ip_tampa_comum':     label = 'Tampa Traseira'; sMax = 350; sMin = 150; break;
+            case 'ip_carcaca_completa':     label = 'Carcaça Completa'; sMax = 600; sMin = 250; break;
             case 'and_tela_premium': label = 'Tela Android (OLED)'; sMax = 350; sMin = 200; break;
             case 'and_tela_incell':  label = 'Tela Android (Simple)'; sMax = 180; sMin = 120; break;
             case 'and_conector':     label = 'Conector de Carga'; sMax = 150; sMin = 100; break;
@@ -86,7 +85,7 @@ function calculoTotal(d) {
         maoDeObraBase: maoDeObraBase,
         servNome: label
     };
-} // Removi a chave extra que estava aqui
+}
 
 function inserir() {
     const dados = capturaDados();
@@ -118,7 +117,6 @@ function calcular() {
         return;
     }
     
-    // Soma os valores de todos os itens inseridos
     let somaServicos = itensOrcamento.reduce((acc, item) => acc + item.valor, 0);
     let taxa = 0;
 
@@ -129,7 +127,6 @@ function calcular() {
     let totalFinal = somaServicos + taxa + d.entrVal;
 
     const resDiv = document.getElementById('res');
-    // Remove linhas de total anteriores para não duplicar
     const existentes = resDiv.querySelectorAll('.linha-total');
     existentes.forEach(el => el.remove());
 
@@ -145,15 +142,12 @@ function calcular() {
 function salvarNoHistorico(nome, modelo, total) {
     let d = capturaDados();
     let historico = JSON.parse(localStorage.getItem('orcamentos')) || [];
-    
-    // Verifica se estamos editando um orçamento que já existe (pelo ID ou pela Data)
     const dataAtual = new Date().toLocaleString('pt-BR');
     
-    // Se o orçamento atual já tiver um ID global, vamos atualizar ele
     const indexExistente = historico.findIndex(item => item.id === window.idOrcamentoAtual);
  
     const registro = {
-        id: window.idOrcamentoAtual || Date.now(), // Se não tem ID, cria um baseado no tempo
+        id: window.idOrcamentoAtual || Date.now(),
         nome: nome || "Cliente não identificado",
         modelo: modelo || "Modelo não informado",
         telefone: d.telefone.value,
@@ -164,19 +158,11 @@ function salvarNoHistorico(nome, modelo, total) {
     };
  
     if (indexExistente !== -1) {
-        // Atualiza o existente
         historico[indexExistente] = registro;
     } else {
-        // Adiciona novo no topo
         historico.unshift(registro);
     }
  
-    if (historico.length > 10) historico.pop();
-    localStorage.setItem('orcamentos', JSON.stringify(historico));
-    atualizarInterfaceHistorico();
-}
- 
-    historico.unshift(novoRegistro);
     if (historico.length > 10) historico.pop();
     localStorage.setItem('orcamentos', JSON.stringify(historico));
     atualizarInterfaceHistorico();
@@ -195,13 +181,40 @@ function atualizarInterfaceHistorico() {
     divLista.innerHTML = '';
     historico.forEach((item, index) => {
         divLista.innerHTML += `
-            <div class="card-historico" onclick="recuperarOrcamento(${index})" style="cursor: pointer; transition: 0.3s;" title="Clique para recuperar este orçamento">
-                <span class="data-hora">${item.data}</span>
-                <strong>${item.nome}</strong><br>
-                <span>${item.modelo}</span><br>
-                <span style="color: var(--success); font-weight: bold;">R$ ${item.total}</span>
+            <div class="card-historico" onclick="recuperarOrcamento(${index})" style="cursor: pointer; margin-bottom: 8px; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px;">
+                <span style="font-size: 0.7rem; color: #94a3b8;">${item.data}</span><br>
+                <strong>${item.nome}</strong> - <span>${item.modelo}</span><br>
+                <span style="color: #16a34a; font-weight: bold;">R$ ${item.total}</span>
             </div>`;
     });
+}
+
+function recuperarOrcamento(index) {
+    let historico = JSON.parse(localStorage.getItem('orcamentos')) || [];
+    let orc = historico[index];
+    if (!orc) return;
+ 
+    novo(); 
+    window.idOrcamentoAtual = orc.id;
+ 
+    document.getElementById('cliente').value = orc.nome;
+    document.getElementById('modelo').value = orc.modelo;
+    document.getElementById('telefone').value = orc.telefone || "";
+    document.getElementById('entrega').value = orc.entrega || 0;
+ 
+    if (orc.servicosLista) {
+        itensOrcamento = [...orc.servicosLista];
+        atualizarResumoVisual();
+        
+        let somaServicos = itensOrcamento.reduce((acc, item) => acc + item.valor, 0);
+        let totalFinal = somaServicos + Number(orc.entrega || 0);
+        
+        const resDiv = document.getElementById('res');
+        resDiv.innerHTML += `<div class="linha-total" style="margin-top:10px; border-top:2px solid #2563eb; padding-top:10px;">
+                                <p style="color:var(--success); font-size:1.2rem"><strong>Total Final: R$ ${totalFinal.toFixed(2)}</strong></p>
+                             </div>`;
+        document.getElementById('nome').innerHTML = `Soma Serviços: R$ ${somaServicos.toFixed(2)}`;
+    }
 }
 
 function atualizarResumoVisual() {
@@ -218,45 +231,8 @@ function atualizarResumoVisual() {
     document.getElementById('nome').innerHTML = `Soma Serviços: R$ ${totalParcial.toFixed(2)}`;
 }
 
-function limparHistorico() {
-    if (confirm("Deseja apagar o histórico?")) {
-        localStorage.removeItem('orcamentos');
-        atualizarInterfaceHistorico();
-    }
-}
-
-function recuperarOrcamento(index) {
-    let historico = JSON.parse(localStorage.getItem('orcamentos')) || [];
-    let orc = historico[index];
- 
-    if (!orc) return;
- 
-    novo(); // Limpa a tela
- 
-    // Guarda o ID para o sistema saber que estamos mexendo em um orçamento antigo
-    window.idOrcamentoAtual = orc.id;
- 
-    document.getElementById('cliente').value = orc.nome;
-    document.getElementById('modelo').value = orc.modelo;
-    document.getElementById('telefone').value = orc.telefone || "";
-    document.getElementById('entrega').value = orc.entrega || 0;
- 
-    if (orc.servicosLista) {
-        itensOrcamento = [...orc.servicosLista];
-        atualizarResumoVisual();
-        calcular();
-    }
-}
-
-function toggleUrgencia() {
-    const tipo = document.getElementById('tipo_urgencia').value;
-    const campoValor = document.getElementById('valor_urgencia');
-    campoValor.disabled = (tipo === "0");
-    if (tipo === "0") campoValor.value = "";
-}
-
 function novo() {
-    window.idOrcamentoAtual = null; // ESSENCIAL: Resetar o ID
+    window.idOrcamentoAtual = null;
     itensOrcamento = [];
     document.getElementById('cliente').value = '';
     document.getElementById('modelo').value = '';
@@ -268,6 +244,13 @@ function novo() {
     document.getElementById('nome').innerHTML = '';
     document.getElementById('res').innerHTML = '';
     document.getElementById('erro').innerText = "";
+}
+
+function limparHistorico() {
+    if (confirm("Deseja apagar o histórico?")) {
+        localStorage.removeItem('orcamentos');
+        atualizarInterfaceHistorico();
+    }
 }
 
 function enviarWhatsApp() {
