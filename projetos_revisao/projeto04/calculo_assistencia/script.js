@@ -141,13 +141,19 @@ function calcular() {
 }
 
 function salvarNoHistorico(nome, modelo, total) {
+    let d = capturaDados(); // Pega os dados atuais para salvar telefone e entrega
     let historico = JSON.parse(localStorage.getItem('orcamentos')) || [];
+    
     const novoRegistro = {
         nome: nome || "Cliente não identificado",
         modelo: modelo || "Modelo não informado",
+        telefone: d.telefone.value,
+        entrega: d.entrVal,
         total: parseFloat(total).toFixed(2),
-        data: new Date().toLocaleString('pt-BR')
+        data: new Date().toLocaleString('pt-BR'),
+        servicosLista: [...itensOrcamento] // Salva uma cópia da lista de serviços atual
     };
+ 
     historico.unshift(novoRegistro);
     if (historico.length > 10) historico.pop();
     localStorage.setItem('orcamentos', JSON.stringify(historico));
@@ -158,14 +164,16 @@ function atualizarInterfaceHistorico() {
     let historico = JSON.parse(localStorage.getItem('orcamentos')) || [];
     let divLista = document.getElementById('historico-lista');
     if (!divLista) return;
+    
     if (historico.length === 0) {
         divLista.innerHTML = '<p style="text-align: center; color: #64748b; font-size: 0.9rem;">Nenhum orçamento salvo.</p>';
         return;
     }
+ 
     divLista.innerHTML = '';
-    historico.forEach(item => {
+    historico.forEach((item, index) => {
         divLista.innerHTML += `
-            <div class="card-historico">
+            <div class="card-historico" onclick="recuperarOrcamento(${index})" style="cursor: pointer; transition: 0.3s;" title="Clique para recuperar este orçamento">
                 <span class="data-hora">${item.data}</span>
                 <strong>${item.nome}</strong><br>
                 <span>${item.modelo}</span><br>
@@ -193,6 +201,33 @@ function limparHistorico() {
         localStorage.removeItem('orcamentos');
         atualizarInterfaceHistorico();
     }
+}
+
+function recuperarOrcamento(index) {
+    let historico = JSON.parse(localStorage.getItem('orcamentos')) || [];
+    let orc = historico[index];
+ 
+    if (!orc) return;
+ 
+    // 1. Limpa o que estiver na tela
+    novo();
+ 
+    // 2. Preenche os campos básicos
+    document.getElementById('cliente').value = orc.nome;
+    document.getElementById('modelo').value = orc.modelo;
+    document.getElementById('telefone').value = orc.telefone || "";
+    document.getElementById('entrega').value = orc.entrega || 0;
+ 
+    // 3. Recupera a lista de serviços
+    if (orc.servicosLista) {
+        itensOrcamento = orc.servicosLista;
+        atualizarResumoVisual();
+        
+        // Força o cálculo do total final (com entrega e taxas se houver)
+        calcular();
+    }
+ 
+    alert("Orçamento de " + orc.nome + " recuperado!");
 }
 
 function toggleUrgencia() {
