@@ -59,6 +59,8 @@ function calculoTotal(d) {
             case 'ip_11_bat':    label = 'Bateria iPhone 11 Series'; sMax = 180; sMin = 130; break;
             case 'ip_x_bat':     label = 'Bateria iPhone X/XR/XS'; sMax = 160; sMin = 120; break;
             case 'ip_8_bat':     label = 'Bateria iPhone 7/8/SE'; sMax = 120; sMin = 90; break;
+            case 'ip_tampa_comum':     label = 'Troca de Tampa Traseira (Vidro)'; sMax = 150; sMin = 350; break;
+            case 'ip_carcaca_completa':     label = 'Troca de Carcaça Completa'; sMax = 250; sMin = 600; break;
             case 'and_tela_premium': label = 'Tela Android (OLED)'; sMax = 350; sMin = 200; break;
             case 'and_tela_incell':  label = 'Tela Android (Simple)'; sMax = 180; sMin = 120; break;
             case 'and_conector':     label = 'Conector de Carga'; sMax = 150; sMin = 100; break;
