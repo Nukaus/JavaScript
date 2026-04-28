@@ -375,7 +375,7 @@ function gerarPDF() {
     doc.setFontSize(14);
     doc.setFont("helvetica", "bold");
     doc.setTextColor(azulPrimario[0], azulPrimario[1], azulPrimario[2]);
-    doc.text("VALOR TOTAL:", 135, y + 5);
+    doc.text("VALOR TOTAL:", 150, y + 5);
     doc.text(`R$ ${totalFinal.toFixed(2)}`, 195, y + 5, { align: "right" });
  
     // --- RODAPÉ E GARANTIA ---
