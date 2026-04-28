@@ -266,32 +266,133 @@ function gerarPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
     const d = capturaDados();
+    
     if (itensOrcamento.length === 0) {
         alert("Adicione serviços antes de gerar o PDF.");
         return;
     }
+ 
     const dataAtual = new Date().toLocaleString('pt-BR');
-    let totalFinal = itensOrcamento.reduce((acc, item) => acc + item.valor, 0) + d.entrVal;
-
+    let somaItens = itensOrcamento.reduce((acc, item) => acc + item.valor, 0);
+    let totalFinal = somaItens + d.entrVal;
+ 
+    // --- CONFIGURAÇÃO DE CORES E ESTILO ---
+    const azulPrimario = [37, 99, 235]; // #2563eb
+    const cinzaEscuro = [30, 41, 59];
+    const cinzaClaro = [241, 245, 249];
+ 
+    // --- CABEÇALHO ---
+    // Retângulo azul no topo
+    doc.setFillColor(azulPrimario[0], azulPrimario[1], azulPrimario[2]);
+    doc.rect(0, 0, 210, 40, 'F');
+ 
+    doc.setTextColor(255, 255, 255);
     doc.setFont("helvetica", "bold");
-    doc.text("ORÇAMENTO TÉCNICO - DIGITAL UNIVERSE", 105, 20, { align: "center" });
+    doc.setFontSize(22);
+    doc.text("DIGITAL UNIVERSE", 10, 20);
+    
     doc.setFontSize(10);
-    doc.text(`Data: ${dataAtual}`, 105, 27, { align: "center" });
-    doc.line(10, 32, 200, 32);
-
-    doc.text(`Cliente: ${d.nomeVal || "Não informado"}`, 10, 45);
-    doc.text(`Aparelho: ${d.modeloVal || "Não informado"}`, 10, 52);
-
-    let y = 65;
-    doc.text("Serviços:", 10, y);
-    y += 10;
     doc.setFont("helvetica", "normal");
-    itensOrcamento.forEach(item => {
-        doc.text(`- ${item.descricao}: R$ ${item.valor.toFixed(2)}`, 10, y);
-        y += 7;
-    });
-
+    doc.text("Assistência Técnica Especializada", 10, 26);
+    doc.text("Celulares | Computadores | Notebooks", 10, 31);
+ 
+    doc.setFontSize(9);
+    doc.text(`Data: ${dataAtual}`, 195, 20, { align: "right" });
+    doc.text("Betim - MG", 195, 26, { align: "right" });
+ 
+    // --- INFORMAÇÕES DO CLIENTE ---
+    doc.setTextColor(cinzaEscuro[0], cinzaEscuro[1], cinzaEscuro[2]);
+    doc.setFontSize(12);
     doc.setFont("helvetica", "bold");
-    doc.text(`TOTAL FINAL: R$ ${totalFinal.toFixed(2)}`, 10, y + 10);
-    doc.save(`Orcamento_${d.nomeVal}.pdf`);
+    doc.text("ORÇAMENTO DE SERVIÇO", 10, 50);
+ 
+    // Box cinza para os dados
+    doc.setFillColor(cinzaClaro[0], cinzaClaro[1], cinzaClaro[2]);
+    doc.roundedRect(10, 55, 190, 25, 3, 3, 'F');
+    
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "bold");
+    doc.text("CLIENTE:", 15, 62);
+    doc.text("APARELHO:", 15, 69);
+    doc.text("CONTATO:", 15, 76);
+ 
+    doc.setFont("helvetica", "normal");
+    doc.text(d.nomeVal || "Não informado", 45, 62);
+    doc.text(d.modeloVal || "Não informado", 45, 69);
+    doc.text(document.getElementById('telefone').value || "Não informado", 45, 76);
+ 
+    // --- TABELA DE SERVIÇOS ---
+    let y = 95;
+    doc.setFont("helvetica", "bold");
+    doc.setFillColor(azulPrimario[0], azulPrimario[1], azulPrimario[2]);
+    doc.setTextColor(255, 255, 255);
+    
+    // Cabeçalho da Tabela
+    doc.rect(10, y, 190, 8, 'F');
+    doc.text("DESCRIÇÃO DO SERVIÇO", 15, y + 5.5);
+    doc.text("VALOR", 195, y + 5.5, { align: "right" });
+ 
+    doc.setTextColor(cinzaEscuro[0], cinzaEscuro[1], cinzaEscuro[2]);
+    doc.setFont("helvetica", "normal");
+    
+    y += 15;
+    itensOrcamento.forEach((item, index) => {
+        // Linha zebrada (opcional, para facilitar leitura)
+        if (index % 2 === 0) {
+            doc.setFillColor(250, 250, 250);
+            doc.rect(10, y - 5, 190, 8, 'F');
+        }
+        
+        doc.text(item.descricao, 15, y);
+        doc.text(`R$ ${item.valor.toFixed(2)}`, 195, y, { align: "right" });
+        
+        if (item.desconto) {
+            y += 4;
+            doc.setFontSize(8);
+            doc.setTextColor(22, 163, 74); // Verde
+            doc.text("  * Desconto de combo aplicado na mão de obra", 15, y);
+            doc.setTextColor(cinzaEscuro[0], cinzaEscuro[1], cinzaEscuro[2]);
+            doc.setFontSize(10);
+        }
+        
+        y += 8;
+        
+        // Se a página estiver acabando, você pode adicionar uma lógica de nova página aqui
+    });
+ 
+    // --- TOTAIS ---
+    y += 5;
+    doc.line(10, y, 200, y);
+    y += 10;
+ 
+    if (d.entrVal > 0) {
+        doc.setFont("helvetica", "normal");
+        doc.text("Taxa de Entrega/Busca:", 140, y);
+        doc.text(`R$ ${d.entrVal.toFixed(2)}`, 195, y, { align: "right" });
+        y += 7;
+    }
+ 
+    doc.setFontSize(14);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(azulPrimario[0], azulPrimario[1], azulPrimario[2]);
+    doc.text("VALOR TOTAL:", 140, y + 5);
+    doc.text(`R$ ${totalFinal.toFixed(2)}`, 195, y + 5, { align: "right" });
+ 
+    // --- RODAPÉ E GARANTIA ---
+    y = 265;
+    doc.setDrawColor(200, 200, 200);
+    doc.line(10, y, 200, y);
+    
+    doc.setFontSize(8);
+    doc.setTextColor(100, 116, 139);
+    doc.setFont("helvetica", "italic");
+    const garantia = "Garantia legal de 90 dias sobre o serviço realizado. Orçamento válido por 5 dias.";
+    doc.text(garantia, 105, y + 7, { align: "center" });
+    
+    doc.setFont("helvetica", "bold");
+    doc.text("Obrigado pela confiança!", 105, y + 12, { align: "center" });
+ 
+    // Salvar o arquivo
+    const nomeArquivo = `Orcamento_${(d.nomeVal || "Cliente").replace(/\s+/g, '_')}.pdf`;
+    doc.save(nomeArquivo);
 }
