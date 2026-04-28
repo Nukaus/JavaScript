@@ -35,6 +35,7 @@ function calculoTotal(d) {
 
     if (d.servId !== "50") {
         switch(d.servId) {
+            // --- IPHONE TELAS ---
             case 'ip_17pm_tela': label = 'Tela iPhone 17 Pro Max'; sMax = 1200; sMin = 800; break;
             case 'ip_17p_tela':  label = 'Tela iPhone 17 Pro'; sMax = 1000; sMin = 750; break;
             case 'ip_17_tela':   label = 'Tela iPhone 17/17 Plus'; sMax = 800; sMin = 600; break;
@@ -54,19 +55,31 @@ function calculoTotal(d) {
             case 'ip_xr_tela':   label = 'Tela iPhone XR'; sMax = 200; sMin = 150; break;
             case 'ip_x_tela':    label = 'Tela iPhone X/XS'; sMax = 200; sMin = 150; break;
             case 'ip_8_tela':    label = 'Tela iPhone 8/SE'; sMax = 150; sMin = 120; break;
+
+            // --- IPHONE BATERIAS ---
             case 'ip_16_17_bat': label = 'Bateria iPhone 16/17'; sMax = 300; sMin = 200; break;
             case 'ip_14_15_bat': label = 'Bateria iPhone 14/15'; sMax = 250; sMin = 180; break;
             case 'ip_12_13_bat': label = 'Bateria iPhone 12/13'; sMax = 200; sMin = 150; break;
             case 'ip_11_bat':    label = 'Bateria iPhone 11 Series'; sMax = 180; sMin = 130; break;
             case 'ip_x_bat':     label = 'Bateria iPhone X/XR/XS'; sMax = 160; sMin = 120; break;
             case 'ip_8_bat':     label = 'Bateria iPhone 7/8/SE'; sMax = 120; sMin = 90; break;
+
+            // --- IPHONE CARCAÇAS ---
             case 'ip_tampa_comum':     label = 'Tampa Traseira'; sMax = 350; sMin = 150; break;
             case 'ip_carcaca_completa':     label = 'Carcaça Completa'; sMax = 600; sMin = 250; break;
+
+            // --- ANDROID ---
             case 'and_tela_premium': label = 'Tela Android (OLED)'; sMax = 350; sMin = 200; break;
             case 'and_tela_incell':  label = 'Tela Android (Simple)'; sMax = 180; sMin = 120; break;
-            case 'and_conector':     label = 'Conector de Carga'; sMax = 150; sMin = 100; break;
+            case 'and_bat':          label = 'Bateria Android'; sMax = 150; sMin = 100; break; // ADICIONADO
+            case 'and_conector':     label = 'Conector de Carga Android'; sMax = 150; sMin = 100; break;
+            case 'and_software':     label = 'Software/Desbloqueio'; sMax = 200; sMin = 120; break; // ADICIONADO
+
+            // --- OUTROS ---
             case 'desoxidacao':      label = 'Desoxidação / Limpeza'; sMax = 250; sMin = 150; break;
             case 'conector_iphone':  label = 'Conector iPhone'; sMax = 180; sMin = 130; break;
+            case 'camera_reparo':    label = 'Reparo de Câmeras'; sMax = 300; sMin = 150; break; // ADICIONADO
+            case 'camera_reparo':    label = 'Reparo de Câmeras'; sMax = 300; sMin = 150; break; // ADICIONADO
         }
     } else if (d.servPcId !== "50") {
         switch(d.servPcId) {
