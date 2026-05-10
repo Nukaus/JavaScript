@@ -79,7 +79,7 @@ function calculoTotal(d) {
             case 'desoxidacao':      label = 'Desoxidação / Limpeza'; sMax = 250; sMin = 150; break;
             case 'conector_iphone':  label = 'Conector iPhone'; sMax = 180; sMin = 130; break;
             case 'camera_reparo':    label = 'Reparo de Câmeras'; sMax = 300; sMin = 150; break; // ADICIONADO
-            case 'camera_reparo':    label = 'Reparo de Câmeras'; sMax = 300; sMin = 150; break; // ADICIONADO
+            case 'camera_reparo':    label = 'Reparo de Câmeras'; sMax = 220; sMin = 100; break; // ADICIONADO
         }
     } else if (d.servPcId !== "50") {
         switch(d.servPcId) {
