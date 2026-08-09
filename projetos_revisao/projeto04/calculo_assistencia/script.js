@@ -1655,50 +1655,294 @@ function obterDescontoCombo(numeroServico) {
 }
 
 
+// ================================================================
+// DESCONTO PROGRESSIVO PARA COMBOS
+//
+// 1º serviço  = 0%
+// 2º serviço  = 20%
+// 3º serviço  = 25%
+// 4º serviço em diante = 30%
+//
+// O desconto é aplicado SOMENTE sobre a mão de obra.
+// O valor da peça permanece integral.
+// ================================================================
+
+function obterDescontoCombo(numeroServico) {
+
+    if (numeroServico === 1) {
+        return 0;
+    }
+
+    if (numeroServico === 2) {
+        return 0.20;
+    }
+
+    if (numeroServico === 3) {
+        return 0.25;
+    }
+
+    return 0.30;
+}
+
+
+// ================================================================
+// INSERIR SERVIÇO
+// ================================================================
+
 function inserir() {
+
     const dados = capturaDados();
 
     if (dados.servId === "50" && dados.servPcId === "50") {
+
         document.getElementById('erro').innerText =
             "Selecione um serviço primeiro!";
+
         return;
     }
+
 
     const infoServico = calculoTotal(dados);
 
-    // Proteção contra opção inexistente no switch
+
+    // Proteção contra serviço sem configuração
     if (!infoServico.servNome) {
+
         document.getElementById('erro').innerText =
             "O serviço selecionado ainda não possui configuração de preço.";
+
         return;
     }
 
-    // Número do serviço que está sendo adicionado
-    const numeroServico = itensOrcamento.length + 1;
 
-    // Obtém o desconto progressivo
-    const descontoPercentual =
-        obterDescontoCombo(numeroServico);
+    // ============================================================
+    // VERIFICA SE O MESMO SERVIÇO JÁ FOI ADICIONADO
+    // ============================================================
 
-    // Desconto aplicado SOMENTE na mão de obra
-    const maoDeObraReal =
-        infoServico.maoDeObraBase *
-        (1 - descontoPercentual);
+    const servicoDuplicado = itensOrcamento.some(
+        item => item.servicoId === dados.servId &&
+                item.pecaId === dados.servPcId
+    );
 
-    // Peça permanece com o valor integral
-    const valorFinalItem =
-        maoDeObraReal + dados.pecVal;
+
+    if (servicoDuplicado) {
+
+        document.getElementById('erro').innerText =
+            "Este serviço já foi adicionado ao orçamento.";
+
+        return;
+    }
+
+
+    // ============================================================
+    // ADICIONA O SERVIÇO SEM DESCONTO PRIMEIRO
+    // O desconto será recalculado depois.
+    // ============================================================
 
     itensOrcamento.push({
+
         descricao: infoServico.servNome,
-        valor: valorFinalItem,
-        desconto: descontoPercentual > 0,
-        descontoPercentual: descontoPercentual * 100
+
+        // Guarda a mão de obra original
+        maoDeObraBase: infoServico.maoDeObraBase,
+
+        // Guarda o valor original da peça
+        valorPeca: dados.pecVal,
+
+        // IDs para evitar duplicação
+        servicoId: dados.servId,
+        pecaId: dados.servPcId,
+
+        // Será recalculado
+        valor: 0,
+
+        desconto: false,
+
+        descontoPercentual: 0
     });
+
+
+    // ============================================================
+    // RECALCULA TODOS OS DESCONTOS
+    // ============================================================
+
+    recalcularDescontosCombo();
+
 
     atualizarResumoVisual();
 
+
     document.getElementById('erro').innerText = "";
+}
+
+
+// ================================================================
+// RECALCULAR DESCONTOS DO COMBO
+//
+// Essa função é importante porque, se o usuário remover um serviço,
+// os serviços restantes precisam assumir novamente a posição correta
+// dentro do combo.
+// ================================================================
+
+function recalcularDescontosCombo() {
+
+    itensOrcamento.forEach((item, index) => {
+
+        const numeroServico = index + 1;
+
+        const descontoPercentual =
+            obterDescontoCombo(numeroServico);
+
+
+        // Aplica desconto somente na mão de obra
+        const maoDeObraComDesconto =
+            item.maoDeObraBase *
+            (1 - descontoPercentual);
+
+
+        // Peça permanece com valor integral
+        item.valor =
+            maoDeObraComDesconto +
+            item.valorPeca;
+
+
+        item.desconto =
+            descontoPercentual > 0;
+
+
+        item.descontoPercentual =
+            descontoPercentual * 100;
+    });
+}
+
+
+// ================================================================
+// REMOVER SERVIÇO
+// ================================================================
+
+function removerServico(index) {
+
+    // Verifica se o índice é válido
+    if (
+        index < 0 ||
+        index >= itensOrcamento.length
+    ) {
+        return;
+    }
+
+
+    const servicoRemovido =
+        itensOrcamento[index];
+
+
+    // Confirma antes de remover
+    const confirmar = confirm(
+        `Deseja remover o serviço "${servicoRemovido.descricao}"?`
+    );
+
+
+    if (!confirmar) {
+        return;
+    }
+
+
+    // Remove o serviço
+    itensOrcamento.splice(index, 1);
+
+
+    // ============================================================
+    // RECALCULA OS DESCONTOS DOS SERVIÇOS RESTANTES
+    // ============================================================
+
+    recalcularDescontosCombo();
+
+
+    // Atualiza o resumo
+    atualizarResumoVisual();
+
+
+    document.getElementById('erro').innerText = "";
+}
+
+
+// ================================================================
+// ATUALIZAR RESUMO VISUAL
+// ================================================================
+
+function atualizarResumoVisual() {
+
+    let html = "";
+
+    let totalParcial = 0;
+
+
+    itensOrcamento.forEach((item, index) => {
+
+        totalParcial += item.valor;
+
+
+        html += `
+
+            <div style="
+                font-size: 0.85rem;
+                border-bottom: 1px solid #eee;
+                padding: 8px 0;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 8px;
+            ">
+
+
+                <div style="
+                    flex: 1;
+                ">
+
+                    <strong>
+                        ${item.descricao}:
+                    </strong>
+
+                    R$ ${item.valor.toFixed(2)}
+
+                </div>
+
+
+                <button
+                    type="button"
+                    onclick="removerServico(${index})"
+                    title="Remover serviço"
+
+                    style="
+                        border: none;
+                        background: #dc3545;
+                        color: white;
+                        border-radius: 5px;
+                        padding: 5px 8px;
+                        cursor: pointer;
+                        font-size: 0.8rem;
+                        flex-shrink: 0;
+                    "
+                >
+
+                    🗑️
+
+                </button>
+
+
+            </div>
+
+        `;
+    });
+
+
+    // Atualiza lista de serviços
+    document.getElementById('res').innerHTML =
+        html;
+
+
+    // Atualiza total
+    document.getElementById('nome').innerHTML =
+        `Soma Serviços: R$ ${totalParcial.toFixed(2)}`;
 }
 
 
@@ -1934,37 +2178,6 @@ function recuperarOrcamento(index) {
         document.getElementById('nome').innerHTML =
             `Soma Serviços: R$ ${somaServicos.toFixed(2)}`;
     }
-}
-
-
-function atualizarResumoVisual() {
-
-    let html = "";
-    let totalParcial = 0;
-
-    itensOrcamento.forEach((item) => {
-
-        totalParcial += item.valor;
-
-        html += `
-            <p style="font-size: 0.85rem;
-                      border-bottom: 1px solid #eee;
-                      padding: 5px 0;">
-
-                <strong>
-                    ${item.descricao}:
-                </strong>
-
-                R$ ${item.valor.toFixed(2)}
-            </p>
-        `;
-    });
-
-    document.getElementById('res').innerHTML =
-        html;
-
-    document.getElementById('nome').innerHTML =
-        `Soma Serviços: R$ ${totalParcial.toFixed(2)}`;
 }
 
 
