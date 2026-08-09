@@ -1637,11 +1637,30 @@ function calculoTotal(d) {
 }
 
 
+// ================================================================
+// DESCONTO PROGRESSIVO PARA COMBOS
+// 1º serviço  = 0%
+// 2º serviço  = 20%
+// 3º serviço  = 25%
+// 4º serviço ou mais = 30%
+//
+// O desconto é aplicado SOMENTE sobre a mão de obra.
+// O valor das peças permanece integral.
+// ================================================================
+function obterDescontoCombo(numeroServico) {
+    if (numeroServico === 1) return 0;
+    if (numeroServico === 2) return 0.20;
+    if (numeroServico === 3) return 0.25;
+    return 0.30;
+}
+
+
 function inserir() {
     const dados = capturaDados();
 
     if (dados.servId === "50" && dados.servPcId === "50") {
-        document.getElementById('erro').innerText = "Selecione um serviço primeiro!";
+        document.getElementById('erro').innerText =
+            "Selecione um serviço primeiro!";
         return;
     }
 
@@ -1654,24 +1673,31 @@ function inserir() {
         return;
     }
 
-    let maoDeObraReal = infoServico.maoDeObraBase;
-    let temDesconto = false;
+    // Número do serviço que está sendo adicionado
+    const numeroServico = itensOrcamento.length + 1;
 
-    // DESCONTO ORIGINAL PRESERVADO
-    if (itensOrcamento.length > 0) {
-        maoDeObraReal = infoServico.maoDeObraBase * 0.5;
-        temDesconto = true;
-    }
+    // Obtém o desconto progressivo
+    const descontoPercentual =
+        obterDescontoCombo(numeroServico);
 
-    const valorFinalItem = maoDeObraReal + dados.pecVal;
+    // Desconto aplicado SOMENTE na mão de obra
+    const maoDeObraReal =
+        infoServico.maoDeObraBase *
+        (1 - descontoPercentual);
+
+    // Peça permanece com o valor integral
+    const valorFinalItem =
+        maoDeObraReal + dados.pecVal;
 
     itensOrcamento.push({
         descricao: infoServico.servNome,
         valor: valorFinalItem,
-        desconto: temDesconto
+        desconto: descontoPercentual > 0,
+        descontoPercentual: descontoPercentual * 100
     });
 
     atualizarResumoVisual();
+
     document.getElementById('erro').innerText = "";
 }
 
@@ -1925,24 +1951,11 @@ function atualizarResumoVisual() {
                       border-bottom: 1px solid #eee;
                       padding: 5px 0;">
 
-                ${item.desconto ? '⭐ ' : ''}
-
                 <strong>
                     ${item.descricao}:
                 </strong>
 
                 R$ ${item.valor.toFixed(2)}
-
-                ${
-                    item.desconto
-                    ? `<br>
-                       <span style="color: green;
-                                    font-size:0.75rem;">
-                            (Combo: -50% Mão de Obra)
-                       </span>`
-                    : ''
-                }
-
             </p>
         `;
     });
@@ -2305,32 +2318,6 @@ function gerarPDF() {
                 { align: "right" }
             );
             
-            if (item.desconto) {
-
-                y += 4;
-
-                doc.setFontSize(8);
-
-                doc.setTextColor(
-                    22,
-                    163,
-                    74
-                );
-
-                doc.text(
-                    "  * Desconto de combo aplicado na mão de obra",
-                    15,
-                    y
-                );
-
-                doc.setTextColor(
-                    cinzaEscuro[0],
-                    cinzaEscuro[1],
-                    cinzaEscuro[2]
-                );
-
-                doc.setFontSize(10);
-            }
             
             y += 8;
         }
