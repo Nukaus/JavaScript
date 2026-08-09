@@ -23,91 +23,456 @@
                         <label for="cliente"><i class="bi bi-person"></i> Cliente</label>
                         <input type="text" id="cliente" placeholder="Nome completo">
                     </div>
-                    
+
                     <div class="input-group">
                         <label for="modelo"><i class="bi bi-phone-vibrate"></i> Modelo do Aparelho</label>
                         <input type="text" id="modelo" placeholder="Ex: Samsung A54 / iPhone 11">
                     </div>
-                    
+
                     <div class="input-group">
                         <label for="telefone"><i class="bi bi-whatsapp"></i> WhatsApp do Cliente</label>
                         <input type="number" id="telefone" placeholder="Ex: 31988887777">
                     </div>
 
                     <div class="input-group">
-                        <label for="servicos"><i class="bi bi-phone"></i> Manutenção de Celulares</label>
+                        <label for="servicos"><i class="bi bi-phone"></i> Manutenção de Celulares e Tablets</label>
                         <select id="servicos">
                             <option value="50">Selecione o modelo e serviço...</option>
-                            
-                            <optgroup label="IPHONE - TELAS (LINHA PREMIUM)">
-                                <option value="ip_17pm_tela">iPhone 17 Pro Max - Tela</option>
-                                <option value="ip_17p_tela">iPhone 17 Pro - Tela</option>
-                                <option value="ip_17_tela">iPhone 17 / 17 Plus - Tela</option>
-                                <option value="ip_16pm_tela">iPhone 16 Pro Max - Tela</option>
-                                <option value="ip_16p_tela">iPhone 16 Pro - Tela</option>
-                                <option value="ip_16_tela">iPhone 16 / 16 Plus - Tela</option>
-                                <option value="ip_15pm_tela">iPhone 15 Pro Max - Tela</option>
-                                <option value="ip_15p_tela">iPhone 15 Pro - Tela</option>
-                                <option value="ip_15_tela">iPhone 15 / 15 Plus - Tela</option>
-                                <option value="ip_14pm_tela">iPhone 14 Pro Max - Tela</option>
-                                <option value="ip_14p_tela">iPhone 14 Pro - Tela</option>
-                                <option value="ip_14_tela">iPhone 14 / 14 Plus - Tela</option>
+
+                            <optgroup label="IPHONE - TELAS POR MODELO">
+                                <option value="ip_17pm_tela">Troca de Tela iPhone 17 Pro Max</option>
+                                <option value="ip_17p_tela">Troca de Tela iPhone 17 Pro</option>
+                                <option value="ip_17_tela">Troca de Tela iPhone 17</option>
+                                <option value="ip_17_air_tela">Troca de Tela iPhone Air</option>
+                                <option value="ip_17e_tela">Troca de Tela iPhone 17e</option>
+                                <option value="ip_16pm_tela">Troca de Tela iPhone 16 Pro Max</option>
+                                <option value="ip_16p_tela">Troca de Tela iPhone 16 Pro</option>
+                                <option value="ip_16_tela">Troca de Tela iPhone 16/16 Plus</option>
+                                <option value="ip_16e_tela">Troca de Tela iPhone 16e</option>
+                                <option value="ip_15pm_tela">Troca de Tela iPhone 15 Pro Max</option>
+                                <option value="ip_15p_tela">Troca de Tela iPhone 15 Pro</option>
+                                <option value="ip_15_tela">Troca de Tela iPhone 15/15 Plus</option>
+                                <option value="ip_14pm_tela">Troca de Tela iPhone 14 Pro Max</option>
+                                <option value="ip_14p_tela">Troca de Tela iPhone 14 Pro</option>
+                                <option value="ip_14_tela">Troca de Tela iPhone 14/14 Plus</option>
+                                <option value="ip_13pm_tela">Troca de Tela iPhone 13 Pro Max</option>
+                                <option value="ip_13p_tela">Troca de Tela iPhone 13 Pro</option>
+                                <option value="ip_13_tela">Troca de Tela iPhone 13</option>
+                                <option value="ip_13_mini_tela">Troca de Tela iPhone 13 mini</option>
+                                <option value="ip_12pm_tela">Troca de Tela iPhone 12 Pro Max</option>
+                                <option value="ip_12p_tela">Troca de Tela iPhone 12 Pro</option>
+                                <option value="ip_12_tela">Troca de Tela iPhone 12</option>
+                                <option value="ip_12_mini_tela">Troca de Tela iPhone 12 mini</option>
+                                <option value="ip_11pm_tela">Troca de Tela iPhone 11 Pro Max</option>
+                                <option value="ip_11p_tela">Troca de Tela iPhone 11 Pro</option>
+                                <option value="ip_11_tela">Troca de Tela iPhone 11</option>
+                                <option value="ip_xsmax_tela">Troca de Tela iPhone XS Max</option>
+                                <option value="ip_xs_tela">Troca de Tela iPhone XS</option>
+                                <option value="ip_xr_tela">Troca de Tela iPhone XR</option>
+                                <option value="ip_x_tela">Troca de Tela iPhone X</option>
+                                <option value="ip_se3_tela">Troca de Tela iPhone SE (3ª geração)</option>
+                                <option value="ip_se2_tela">Troca de Tela iPhone SE (2ª geração)</option>
+                                <option value="ip_8plus_tela">Troca de Tela iPhone 8 Plus</option>
+                                <option value="ip_8_tela">Troca de Tela iPhone 8</option>
                             </optgroup>
-                    
-                            <optgroup label="IPHONE - TELAS (LINHA PADRÃO)">
-                                <option value="ip_13_tela">iPhone 13 / 13 Pro - Tela</option>
-                                <option value="ip_12_tela">iPhone 12 / 12 Pro - Tela</option>
-                                <option value="ip_11pm_tela">iPhone 11 Pro Max - Tela</option>
-                                <option value="ip_11_tela">iPhone 11 - Tela</option>
-                                <option value="ip_xr_tela">iPhone XR - Tela</option>
-                                <option value="ip_x_tela">iPhone X / XS - Tela</option>
-                                <option value="ip_8_tela">iPhone 8 / SE (2020/22) - Tela</option>
+
+                            <optgroup label="IPHONE - REPARO DE TELA / DISPLAY">
+                                <option value="ip_vidro_tela">Troca do Vidro da Tela - Display Original</option>
+                                <option value="ip_reparo_touch">Reparo de Touch da Tela</option>
+                                <option value="ip_problema_touch">Diagnóstico de Falha no Touch</option>
+                                <option value="ip_problema_imagem">Diagnóstico de Falha de Imagem</option>
+                                <option value="ip_linhas_tela">Diagnóstico de Linhas na Tela</option>
+                                <option value="ip_tela_piscando">Diagnóstico de Tela Piscando</option>
+                                <option value="ip_tela_sem_brilho">Diagnóstico de Tela sem Brilho</option>
+                                <option value="ip_tela_manchas">Diagnóstico de Tela com Manchas</option>
+                                <option value="ip_tela_quebrada">Avaliação de Tela Quebrada</option>
                             </optgroup>
-                    
+
                             <optgroup label="IPHONE - BATERIAS">
-                                <option value="ip_16_17_bat">iPhone 16 / 17 Series - Bateria</option>
-                                <option value="ip_14_15_bat">iPhone 14 / 15 Series - Bateria</option>
-                                <option value="ip_12_13_bat">iPhone 12 / 13 Series - Bateria</option>
-                                <option value="ip_11_bat">iPhone 11 Series - Bateria</option>
-                                <option value="ip_x_bat">iPhone X / XR / XS - Bateria</option>
-                                <option value="ip_8_bat">iPhone 7 / 8 / SE - Bateria</option>
+                                <option value="ip_17_bat">Troca de Bateria iPhone 17 Series</option>
+                                <option value="ip_16_17_bat">Troca de Bateria iPhone 16/17</option>
+                                <option value="ip_16e_bat">Troca de Bateria iPhone 16e</option>
+                                <option value="ip_14_15_bat">Troca de Bateria iPhone 14/15</option>
+                                <option value="ip_12_13_bat">Troca de Bateria iPhone 12/13</option>
+                                <option value="ip_11_bat">Troca de Bateria iPhone 11 Series</option>
+                                <option value="ip_x_bat">Troca de Bateria iPhone X/XR/XS</option>
+                                <option value="ip_8_bat">Troca de Bateria iPhone 7/8/SE</option>
+                                <option value="ip_bat_diagnostico">Diagnóstico de Bateria iPhone</option>
+                                <option value="ip_bat_consumo">Diagnóstico de Consumo e Descarga de Bateria</option>
+                                <option value="ip_bat_conector">Reparo do Conector da Bateria</option>
                             </optgroup>
-                    
-                            <optgroup label="IPHONE - CARCAÇAS E TAMPAS">
-                                <option value="ip_tampa_comum">Troca de Tampa Traseira (Vidro)</option>
-                                <option value="ip_carcaca_completa">Troca de Carcaça Completa</option>
+
+                            <optgroup label="IPHONE - CONECTOR DE CARGA">
+                                <option value="conector_iphone">Reparo/Troca do Conector de Carga iPhone</option>
+                                <option value="ip_conector_limpeza">Limpeza do Conector de Carga iPhone</option>
+                                <option value="ip_conector_reparo">Reparo do Conector de Carga iPhone</option>
+                                <option value="ip_flex_carga">Troca do Flex/Conjunto de Carga iPhone</option>
+                                <option value="ip_nao_reconhece_cabo">Diagnóstico de Falha no Reconhecimento do Cabo</option>
+                                <option value="ip_falha_carregamento">Diagnóstico de Falha de Carregamento iPhone</option>
                             </optgroup>
-                    
-                            <optgroup label="ANDROID - SERVIÇOS">
-                                <option value="and_tela_premium">Android - Tela (OLED/Original)</option>
-                                <option value="and_tela_incell">Android - Tela (Incell/Simples)</option>
-                                <option value="and_bat">Android - Troca de Bateria</option>
-                                <option value="and_conector">Android - Conector de Carga</option>
-                                <option value="and_software">Android - Software / Desbloqueio</option>
+
+                            <optgroup label="IPHONE - ÁUDIO E MICROFONES">
+                                <option value="ip_alto_falante">Troca do Alto-Falante Inferior iPhone</option>
+                                <option value="ip_auricular">Troca do Alto-Falante de Chamadas iPhone</option>
+                                <option value="ip_audio_reparo">Reparo de Áudio iPhone</option>
+                                <option value="ip_audio_limpeza">Limpeza do Alto-Falante e Saídas de Áudio</option>
+                                <option value="ip_microfone_principal">Reparo/Troca do Microfone Principal iPhone</option>
+                                <option value="ip_microfone_secundario">Reparo/Troca do Microfone Secundário iPhone</option>
+                                <option value="ip_microfone_video">Reparo/Troca do Microfone de Vídeo iPhone</option>
+                                <option value="ip_audio_baixo">Diagnóstico de Áudio Baixo iPhone</option>
+                                <option value="ip_audio_distorcido">Diagnóstico de Áudio Distorcido iPhone</option>
+                                <option value="ip_falha_audio">Diagnóstico de Falha de Áudio iPhone</option>
                             </optgroup>
-                    
-                            <optgroup label="OUTROS REPAROS">
-                                <option value="desoxidacao">Limpeza Química (Caiu na água)</option>
-                                <option value="conector_iphone">Conector de Carga iPhone</option>
-                                <option value="camera_reparo">Reparo de Câmeras</option>
+
+                            <optgroup label="IPHONE - CÂMERAS">
+                                <option value="ip_camera_traseira">Troca da Câmera Traseira iPhone</option>
+                                <option value="ip_camera_principal">Troca da Câmera Principal iPhone</option>
+                                <option value="ip_camera_frontal">Troca da Câmera Frontal iPhone</option>
+                                <option value="ip_camera_ultrawide">Reparo/Troca da Câmera Ultra-Wide iPhone</option>
+                                <option value="ip_camera_teleobjetiva">Reparo/Troca da Câmera Teleobjetiva iPhone</option>
+                                <option value="ip_lente_camera">Troca do Vidro/Lente da Câmera iPhone</option>
+                                <option value="ip_camera_sem_foco">Diagnóstico de Câmera sem Foco iPhone</option>
+                                <option value="ip_camera_tremendo">Diagnóstico de Câmera Tremendo iPhone</option>
+                                <option value="ip_camera_manchas">Diagnóstico de Câmera com Manchas iPhone</option>
+                                <option value="ip_camera_sem_imagem">Diagnóstico de Câmera sem Imagem iPhone</option>
+                                <option value="camera_reparo">Reparo de Câmera iPhone</option>
                             </optgroup>
+
+                            <optgroup label="IPHONE - CARCAÇA, TAMPA E COMPONENTES EXTERNOS">
+                                <option value="ip_tampa_comum">Troca de Tampa Traseira iPhone</option>
+                                <option value="ip_carcaca_completa">Troca de Carcaça Completa iPhone</option>
+                                <option value="ip_aro_chassi">Troca de Aro/Chassi iPhone</option>
+                                <option value="ip_reparo_aro">Reparo de Aro/Estrutura iPhone</option>
+                                <option value="ip_vidro_traseiro">Troca do Vidro Traseiro iPhone</option>
+                                <option value="ip_botao_power">Reparo/Troca do Botão Power iPhone</option>
+                                <option value="ip_botoes_volume">Reparo/Troca dos Botões de Volume iPhone</option>
+                                <option value="ip_chave_silenciosa">Reparo/Troca da Chave Silenciosa iPhone</option>
+                                <option value="ip_bandeja_sim">Troca da Bandeja SIM iPhone</option>
+                                <option value="ip_lente_traseira_camera">Troca da Lente Traseira da Câmera iPhone</option>
+                            </optgroup>
+
+                            <optgroup label="IPHONE - FACE ID, TOUCH ID E SENSORES">
+                                <option value="ip_faceid_diagnostico">Diagnóstico de Face ID iPhone</option>
+                                <option value="ip_faceid_reparo">Reparo de Face ID iPhone</option>
+                                <option value="ip_sensor_proximidade">Reparo/Troca do Sensor de Proximidade</option>
+                                <option value="ip_sensor_luz">Reparo/Troca do Sensor de Luz</option>
+                                <option value="ip_flex_frontal">Reparo/Troca do Flex Frontal iPhone</option>
+                                <option value="ip_reconhecimento_facial">Diagnóstico de Falha no Reconhecimento Facial</option>
+                                <option value="ip_touchid_diagnostico">Diagnóstico de Touch ID iPhone</option>
+                                <option value="ip_home_reparo">Reparo/Troca do Botão Home iPhone</option>
+                            </optgroup>
+
+                            <optgroup label="IPHONE - SOFTWARE">
+                                <option value="ip_formatacao">Formatação e Configuração do iPhone</option>
+                                <option value="ip_restauracao">Restauração do Sistema iPhone</option>
+                                <option value="ip_atualizacao">Atualização do Sistema iPhone</option>
+                                <option value="ip_configuracao_inicial">Configuração Inicial do iPhone</option>
+                                <option value="ip_migracao_dados">Migração de Dados para iPhone</option>
+                                <option value="ip_backup">Backup de Dados iPhone</option>
+                                <option value="ip_recuperacao_software">Recuperação de Sistema iPhone</option>
+                                <option value="ip_travando">Diagnóstico de iPhone Travando</option>
+                                <option value="ip_reiniciando">Diagnóstico de iPhone Reiniciando</option>
+                                <option value="ip_software_diagnostico">Diagnóstico de Software iPhone</option>
+                                <option value="ip_configuracao_contas">Configuração de Conta e Serviços do iPhone</option>
+                                <option value="ip_limpeza_sistema">Otimização e Limpeza de Sistema iPhone</option>
+                            </optgroup>
+
+                            <optgroup label="IPHONE - PLACA / MICROELETRÔNICA">
+                                <option value="ip_placa_diagnostico">Diagnóstico de Placa iPhone</option>
+                                <option value="ip_placa_reparo">Reparo de Placa iPhone</option>
+                                <option value="ip_circuito_carga">Reparo do Circuito de Carga iPhone</option>
+                                <option value="ip_circuito_audio">Reparo do Circuito de Áudio iPhone</option>
+                                <option value="ip_circuito_imagem">Reparo do Circuito de Imagem iPhone</option>
+                                <option value="ip_alimentacao">Reparo do Circuito de Alimentação iPhone</option>
+                                <option value="ip_oxidacao">Reparo de Placa após Oxidação iPhone</option>
+                                <option value="ip_curto">Diagnóstico e Reparo de Curto iPhone</option>
+                                <option value="ip_nao_liga">Diagnóstico e Reparo de iPhone que Não Liga</option>
+                                <option value="ip_reinicia_placa">Diagnóstico e Reparo de Reinicialização iPhone</option>
+                                <option value="ip_consumo_anormal">Diagnóstico de Consumo Anormal iPhone</option>
+                                <option value="ip_comunicacao_componentes">Reparo de Comunicação entre Componentes iPhone</option>
+                                <option value="ip_microsolda">Micro-Solda em Placa iPhone</option>
+                            </optgroup>
+
+                            <optgroup label="ANDROID - TELAS">
+                                <option value="and_tela_premium">Troca de Tela Android OLED/AMOLED</option>
+                                <option value="and_tela_amoled">Troca de Tela Android AMOLED</option>
+                                <option value="and_tela_super_amoled">Troca de Tela Android Super AMOLED</option>
+                                <option value="and_tela_oled">Troca de Tela Android OLED</option>
+                                <option value="and_tela_lcd">Troca de Tela Android LCD</option>
+                                <option value="and_tela_incell">Troca de Tela Android Incell</option>
+                                <option value="and_tela_ips">Troca de Tela Android IPS</option>
+                                <option value="and_tela_compativel">Troca de Tela Android Compatível</option>
+                                <option value="and_vidro_tela">Troca de Vidro da Tela Android</option>
+                                <option value="and_reparo_touch">Reparo de Touch Android</option>
+                                <option value="and_display_quebrado">Avaliação de Display Android Quebrado</option>
+                                <option value="and_display_sem_imagem">Diagnóstico de Display sem Imagem Android</option>
+                                <option value="and_display_manchas">Diagnóstico de Display com Manchas Android</option>
+                                <option value="and_display_linhas">Diagnóstico de Display com Linhas Android</option>
+                                <option value="and_display_piscando">Diagnóstico de Display Piscando Android</option>
+                            </optgroup>
+
+                            <optgroup label="ANDROID - BATERIA">
+                                <option value="and_bat">Troca de Bateria Android</option>
+                                <option value="and_bat_diagnostico">Diagnóstico de Bateria Android</option>
+                                <option value="and_bat_estufada">Troca de Bateria Estufada Android</option>
+                                <option value="and_bat_descarga">Diagnóstico de Descarga Rápida Android</option>
+                                <option value="and_bat_carregamento">Diagnóstico de Bateria e Carregamento Android</option>
+                            </optgroup>
+
+                            <optgroup label="ANDROID - CONECTOR">
+                                <option value="and_conector">Troca do Conector de Carga USB-C Android</option>
+                                <option value="and_conector_micro_usb">Troca do Conector Micro USB Android</option>
+                                <option value="and_conector_reparo">Reparo do Conector de Carga Android</option>
+                                <option value="and_conector_limpeza">Limpeza do Conector de Carga Android</option>
+                                <option value="and_nao_carrega">Diagnóstico de Aparelho Android sem Carregamento</option>
+                                <option value="and_carga_lenta">Diagnóstico de Carregamento Lento Android</option>
+                                <option value="and_nao_reconhece_cabo">Diagnóstico de Falha no Reconhecimento do Cabo</option>
+                                <option value="and_placa_carga">Reparo de Placa Relacionado à Carga Android</option>
+                            </optgroup>
+
+                            <optgroup label="ANDROID - ÁUDIO">
+                                <option value="and_alto_falante">Troca do Alto-Falante Inferior Android</option>
+                                <option value="and_alto_falante_superior">Troca do Alto-Falante Superior Android</option>
+                                <option value="and_auricular">Troca do Auricular Android</option>
+                                <option value="and_audio_reparo">Reparo de Áudio Android</option>
+                                <option value="and_microfone">Troca/Reparo do Microfone Android</option>
+                                <option value="and_microfone_reparo">Reparo de Microfone Android</option>
+                                <option value="and_audio_limpeza">Limpeza do Alto-Falante Android</option>
+                                <option value="and_audio_baixo">Diagnóstico de Áudio Baixo Android</option>
+                                <option value="and_audio_distorcido">Diagnóstico de Áudio Distorcido Android</option>
+                                <option value="and_falha_audio">Diagnóstico de Falha de Áudio Android</option>
+                            </optgroup>
+
+                            <optgroup label="ANDROID - CÂMERAS">
+                                <option value="and_camera_frontal">Troca da Câmera Frontal Android</option>
+                                <option value="and_camera_traseira">Troca da Câmera Traseira Android</option>
+                                <option value="and_camera_principal">Troca da Câmera Principal Android</option>
+                                <option value="and_camera_ultrawide">Troca da Câmera Ultra-Wide Android</option>
+                                <option value="and_camera_macro">Troca da Câmera Macro Android</option>
+                                <option value="and_camera_tele">Troca da Câmera Teleobjetiva Android</option>
+                                <option value="and_lente_camera">Troca do Vidro/Lente da Câmera Android</option>
+                                <option value="and_camera_foco">Diagnóstico de Falha de Foco da Câmera Android</option>
+                                <option value="and_camera_sem_imagem">Diagnóstico de Câmera sem Imagem Android</option>
+                                <option value="and_camera_tremendo">Diagnóstico de Câmera Tremendo Android</option>
+                                <option value="and_camera_reparo">Reparo de Câmera Android</option>
+                            </optgroup>
+
+                            <optgroup label="ANDROID - CARCAÇA">
+                                <option value="and_tampa">Troca de Tampa Traseira Android</option>
+                                <option value="and_carcaca">Troca de Carcaça Completa Android</option>
+                                <option value="and_aro">Troca/Reparo de Aro Android</option>
+                                <option value="and_power">Reparo/Troca do Botão Power Android</option>
+                                <option value="and_volume">Reparo/Troca dos Botões de Volume Android</option>
+                                <option value="and_bandeja_sim">Troca da Bandeja SIM Android</option>
+                                <option value="and_tampa_camera">Troca da Tampa/Lente da Câmera Android</option>
+                                <option value="and_componentes_externos">Reparo de Componentes Externos Android</option>
+                            </optgroup>
+
+                            <optgroup label="ANDROID - SOFTWARE">
+                                <option value="and_software">Diagnóstico e Recuperação de Software Android</option>
+                                <option value="and_formatacao">Formatação Android</option>
+                                <option value="and_restauracao">Restauração do Sistema Android</option>
+                                <option value="and_atualizacao">Atualização do Sistema Android</option>
+                                <option value="and_configuracao">Configuração Inicial Android</option>
+                                <option value="and_migracao">Migração de Dados Android</option>
+                                <option value="and_backup">Backup de Dados Android</option>
+                                <option value="and_recuperacao">Recuperação de Sistema Android</option>
+                                <option value="and_diagnostico_software">Diagnóstico de Software Android</option>
+                                <option value="and_travando">Diagnóstico de Android Travando</option>
+                                <option value="and_reiniciando">Diagnóstico de Android Reiniciando</option>
+                                <option value="and_erros_sistema">Correção de Erros de Sistema Android</option>
+                            </optgroup>
+
+                            <optgroup label="ANDROID - PLACA / MICROELETRÔNICA">
+                                <option value="and_placa_diagnostico">Diagnóstico de Placa Android</option>
+                                <option value="and_placa_reparo">Reparo de Placa Android</option>
+                                <option value="and_placa_carga_reparo">Reparo do Circuito de Carga Android</option>
+                                <option value="and_placa_alimentacao">Reparo do Circuito de Alimentação Android</option>
+                                <option value="and_placa_oxidacao">Reparo de Placa após Oxidação Android</option>
+                                <option value="and_placa_curto">Diagnóstico e Reparo de Curto Android</option>
+                                <option value="and_nao_liga">Diagnóstico e Reparo de Android que Não Liga</option>
+                                <option value="and_reinicia_placa">Diagnóstico e Reparo de Reinicialização Android</option>
+                                <option value="and_falha_audio_placa">Reparo de Placa - Falha de Áudio Android</option>
+                                <option value="and_falha_imagem_placa">Reparo de Placa - Falha de Imagem Android</option>
+                                <option value="and_falha_rede">Reparo de Placa - Falha de Rede/Sinal Android</option>
+                                <option value="and_wifi_bluetooth">Reparo de Placa - Falha de Wi-Fi/Bluetooth Android</option>
+                                <option value="and_smd">Reparo de Componentes SMD Android</option>
+                                <option value="and_microsolda">Micro-Solda em Placa Android</option>
+                            </optgroup>
+
+                            <optgroup label="TABLETS — TELAS">
+                                <option value="tab_tela">Troca de Tela de Tablet</option>
+                                <option value="tab_vidro">Troca de Vidro de Tablet</option>
+                            </optgroup>
+
+                            <optgroup label="TABLETS — BATERIAS">
+                                <option value="tab_bateria">Troca de Bateria de Tablet</option>
+                            </optgroup>
+
+                            <optgroup label="TABLETS — CONECTORES">
+                                <option value="tab_conector">Troca de Conector de Carga de Tablet</option>
+                                <option value="tab_conector_reparo">Reparo de Conector de Carga de Tablet</option>
+                            </optgroup>
+
+                            <optgroup label="TABLETS — ÁUDIO">
+                                <option value="tab_alto_falante">Troca de Alto-Falante de Tablet</option>
+                                <option value="tab_auricular">Troca de Auricular de Tablet</option>
+                                <option value="tab_microfone">Reparo/Troca de Microfone de Tablet</option>
+                            </optgroup>
+
+                            <optgroup label="TABLETS — CÂMERAS">
+                                <option value="tab_camera">Reparo/Troca de Câmera de Tablet</option>
+                            </optgroup>
+
+                            <optgroup label="TABLETS — CARCAÇA">
+                                <option value="tab_tampa">Troca de Tampa Traseira de Tablet</option>
+                                <option value="tab_carcaca">Reparo/Troca de Carcaça de Tablet</option>
+                                <option value="tab_botoes">Reparo/Troca de Botões de Tablet</option>
+                            </optgroup>
+
+                            <optgroup label="TABLETS — SOFTWARE">
+                                <option value="tab_software">Formatação e Recuperação de Sistema de Tablet</option>
+                            </optgroup>
+
+                            <optgroup label="TABLETS — PLACA / DIAGNÓSTICO">
+                                <option value="tab_diagnostico">Diagnóstico Técnico de Tablet</option>
+                                <option value="tab_placa">Reparo de Placa de Tablet</option>
+                                <option value="tab_oxidacao">Reparo de Tablet após Oxidação</option>
+                            </optgroup>
+
+                            <optgroup label="GERAIS — DIAGNÓSTICO">
+                                <option value="diagnostico">Diagnóstico Técnico</option>
+                                <option value="avaliacao_aparelho">Avaliação Técnica do Aparelho</option>
+                                <option value="nao_liga">Diagnóstico de Aparelho que Não Liga</option>
+                                <option value="reiniciando">Diagnóstico de Aparelho Reiniciando</option>
+                                <option value="consumo_anormal">Diagnóstico de Consumo Anormal</option>
+                            </optgroup>
+
+                            <optgroup label="GERAIS — LIMPEZA / OXIDAÇÃO / LÍQUIDO">
+                                <option value="limpeza_interna">Limpeza Interna do Aparelho</option>
+                                <option value="limpeza_conectores">Limpeza de Conectores</option>
+                                <option value="desoxidacao">Desoxidação / Limpeza Técnica</option>
+                                <option value="liquido">Recuperação após Contato com Líquido</option>
+                            </optgroup>
+
+                            <optgroup label="GERAIS — DADOS / BACKUP">
+                                <option value="recuperacao_dados">Recuperação de Dados</option>
+                                <option value="transferencia_dados">Transferência de Dados</option>
+                                <option value="backup">Backup de Dados</option>
+                            </optgroup>
+
+                            <optgroup label="GERAIS — CONFIGURAÇÃO / SOFTWARE">
+                                <option value="configuracao_inicial">Configuração Inicial do Aparelho</option>
+                                <option value="instalacao_apps">Instalação e Configuração de Aplicativos</option>
+                            </optgroup>
+
                         </select>
                     </div>
-                    
+
                     <div class="input-group">
-                        <label for="servicospc"><i class="bi bi-pc-display"></i> Informática / Notebooks</label>
+                        <label for="servicospc"><i class="bi bi-pc-display"></i> Informática / Notebooks e Computadores</label>
                         <select id="servicospc">
                             <option value="50">Selecione o serviço...</option>
-                            <optgroup label="TELAS & DISPLAY">
-                                <option value="nb_tela_14">Troca de Tela Notebook 14"</option>
-                                <option value="nb_tela_15">Troca de Tela Notebook 15.6"</option>
+
+                            <optgroup label="NOTEBOOK - TELAS">
+                                <option value="nb_tela_13">Troca de Tela Notebook 13.3&quot;</option>
+                                <option value="nb_tela_14">Troca de Tela Notebook 14&quot;</option>
+                                <option value="nb_tela_15">Troca de Tela Notebook 15.6&quot;</option>
+                                <option value="nb_tela_17">Troca de Tela Notebook 17&quot;</option>
                             </optgroup>
-                            <optgroup label="HARDWARE & PERFORMANCE">
+
+                            <optgroup label="NOTEBOOK - COMPONENTES">
+                                <option value="nb_teclado">Troca de Teclado Notebook</option>
+                                <option value="nb_touchpad">Troca/Reparo de Touchpad Notebook</option>
+                                <option value="nb_bat">Troca de Bateria Notebook</option>
+                                <option value="nb_conector">Troca de Conector de Carga Notebook</option>
+                                <option value="nb_conector_reparo">Reparo de Conector de Carga Notebook</option>
+                                <option value="nb_cooler">Troca de Cooler/Ventoinha Notebook</option>
+                                <option value="nb_webcam">Reparo/Troca de Webcam Notebook</option>
+                                <option value="nb_microfone">Reparo/Troca de Microfone Notebook</option>
+                                <option value="nb_audio">Reparo/Troca de Alto-Falantes Notebook</option>
+                            </optgroup>
+
+                            <optgroup label="NOTEBOOK - MANUTENÇÃO">
+                                <option value="nb_limpeza">Limpeza Interna + Troca de Pasta Térmica</option>
+                                <option value="nb_limpeza_interna">Limpeza Interna Notebook</option>
+                                <option value="nb_pasta_termica">Troca de Pasta Térmica Notebook</option>
+                            </optgroup>
+
+                            <optgroup label="NOTEBOOK - ARMAZENAMENTO E MEMÓRIA">
                                 <option value="nb_ssd">Instalação de SSD + Sistema</option>
+                                <option value="nb_instalacao_ssd">Instalação de SSD</option>
                                 <option value="nb_ram">Upgrade de Memória RAM</option>
-                                <option value="nb_bat">Troca de Bateria Interna</option>
-                                <option value="nb_limpeza">Limpeza Interna + Pasta Térmica</option>
+                                <option value="nb_hd">Instalação/Troca de HD</option>
                             </optgroup>
+
+                            <optgroup label="NOTEBOOK - SOFTWARE">
+                                <option value="nb_formatacao">Formatação e Instalação do Sistema</option>
+                                <option value="nb_sistema">Instalação e Configuração do Sistema</option>
+                                <option value="nb_backup">Backup de Dados Notebook</option>
+                                <option value="nb_migracao">Migração de Dados Notebook</option>
+                                <option value="nb_windows_reparo">Reparo do Windows</option>
+                                <option value="nb_drivers">Instalação e Configuração de Drivers</option>
+                            </optgroup>
+
+                            <optgroup label="NOTEBOOK - CARCAÇA E ESTRUTURA">
+                                <option value="nb_carcaca">Reparo de Carcaça Notebook</option>
+                                <option value="nb_dobradiça">Reparo de Dobradiças Notebook</option>
+                                <option value="nb_usb">Reparo de USB Notebook</option>
+                                <option value="nb_hdmi">Reparo de HDMI Notebook</option>
+                                <option value="nb_wifi">Reparo de Wi-Fi/Rede Notebook</option>
+                            </optgroup>
+
+                            <optgroup label="NOTEBOOK - DIAGNÓSTICO E PLACA">
+                                <option value="nb_diagnostico">Diagnóstico de Hardware Notebook</option>
+                                <option value="nb_placa">Reparo de Placa Notebook</option>
+                                <option value="nb_oxidacao">Reparo de Placa após Oxidação Notebook</option>
+                            </optgroup>
+
+                            <optgroup label="COMPUTADOR — SOFTWARE">
+                                <option value="pc_formatacao">Formatação e Instalação do Sistema</option>
+                                <option value="pc_instalacao_sistema">Instalação e Configuração do Sistema</option>
+                                <option value="pc_configuracao">Configuração do Computador</option>
+                                <option value="pc_drivers">Instalação e Configuração de Drivers</option>
+                            </optgroup>
+
+                            <optgroup label="COMPUTADOR — HARDWARE">
+                                <option value="pc_gpu">Instalação de Placa de Vídeo</option>
+                                <option value="pc_reparo_hardware">Reparo de Hardware</option>
+                            </optgroup>
+
+                            <optgroup label="COMPUTADOR — ARMAZENAMENTO">
+                                <option value="pc_ssd">Instalação de SSD</option>
+                                <option value="pc_hd">Instalação de HD</option>
+                            </optgroup>
+
+                            <optgroup label="COMPUTADOR — MEMÓRIA">
+                                <option value="pc_ram">Upgrade de Memória RAM</option>
+                            </optgroup>
+
+                            <optgroup label="COMPUTADOR — LIMPEZA / MANUTENÇÃO">
+                                <option value="pc_manutencao">Manutenção Preventiva de Computador</option>
+                                <option value="pc_limpeza">Limpeza Interna de Computador</option>
+                                <option value="pc_pasta_termica">Troca de Pasta Térmica de Computador</option>
+                            </optgroup>
+
+                            <optgroup label="COMPUTADOR — REPAROS / DIAGNÓSTICO">
+                                <option value="pc_diagnostico">Diagnóstico de Hardware</option>
+                            </optgroup>
+
+                            <optgroup label="COMPUTADOR — MONTAGEM">
+                                <option value="pc_montagem">Montagem de Computador</option>
+                            </optgroup>
+
+                            <optgroup label="COMPUTADOR — REDE">
+                                <option value="pc_rede">Configuração de Rede</option>
+                            </optgroup>
+
+                            <optgroup label="COMPUTADOR — DADOS">
+                                <option value="pc_backup">Backup de Dados</option>
+                                <option value="pc_migracao">Migração de Dados</option>
+                            </optgroup>
+
                         </select>
                     </div>
 
@@ -156,7 +521,7 @@
                 </div>
 
                 <div id="erro"></div>
-                
+
                 <div id="resultado-container">
                     <div id="nome"></div>
                     <div id="res"></div>
@@ -171,7 +536,7 @@
             <div id="historico-lista">
                 <p style="text-align: center; color: #64748b; font-size: 0.9rem;">Nenhum orçamento salvo.</p>
             </div>
-            
+
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px;">
                 <button class="btn-new" onclick="limparHistorico()" style="background: #94a3b8; grid-column: span 1; margin:0;">
                     <i class="bi bi-trash"></i> Limpar
