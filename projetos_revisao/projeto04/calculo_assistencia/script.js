@@ -1,407 +1,306 @@
-// ==========================================
-// 1. ESTADO GLOBAL DA APLICAÇÃO
-// ==========================================
+// ============================================================
+// DIGITAL UNIVERSE
+// SISTEMA DE ORÇAMENTOS
+// ============================================================
+
+// ============================================================
+// ESTADO
+// ============================================================
 
 let itensOrcamento = [];
+let orcamentoAtualId = null;
+
+const STORAGE_KEY =
+    'digitalUniverse_orcamentos_v1';
+
+const NUMERO_KEY =
+    'digitalUniverse_proximoNumero_v1';
 
 
-// ==========================================
-// 2. INICIALIZAÇÃO
-// ==========================================
+// ============================================================
+// INICIALIZAÇÃO
+// ============================================================
 
 window.onload = function () {
 
     iniciarCascadingDropdowns();
 
-    const urgencia = document.getElementById('urgencia');
+    document
+        .getElementById('urgencia')
+        .addEventListener('change', recalcularValoresEAtualizar);
 
-    if (urgencia) {
-        urgencia.addEventListener('change', () => {
-            recalcularValoresEAtualizar();
-        });
-    }
+    document
+        .getElementById('entrega')
+        .addEventListener('input', recalcularValoresEAtualizar);
 
+    renderizarOrcamentosSalvos();
+
+    recalcularValoresEAtualizar();
 };
 
 
-// ==========================================
-// 3. DROPDOWNS EM CASCATA
-// ==========================================
+// ============================================================
+// DROPDOWNS
+// ============================================================
 
 function iniciarCascadingDropdowns() {
 
-    const elTipo = document.getElementById('tipoAparelho');
-    const elMarca = document.getElementById('marcaAparelho');
-    const elModelo = document.getElementById('modeloAparelho');
-    const elServico = document.getElementById('servicoAparelho');
+    const tipo =
+        document.getElementById('tipoAparelho');
+
+    const marca =
+        document.getElementById('marcaAparelho');
+
+    const modelo =
+        document.getElementById('modeloAparelho');
+
+    const servico =
+        document.getElementById('servicoAparelho');
 
 
-    const resetarSelect = (elemento, texto) => {
+    function resetar(elemento, texto) {
 
-        elemento.innerHTML = `<option value="">${texto}</option>`;
+        elemento.innerHTML =
+            `<option value="">${texto}</option>`;
+
         elemento.disabled = true;
+    }
 
-    };
 
+    if (typeof baseDadosServicos === 'undefined') {
 
-    // Preenche os tipos usando dados.js
-
-    Object.keys(baseDadosServicos).forEach(tipo => {
-
-        elTipo.add(
-            new Option(tipo, tipo)
+        mostrarStatus(
+            'Erro: dados.js não foi carregado.',
+            true
         );
 
-    });
+        return;
+    }
 
 
-    // ------------------------------------------
-    // TIPO
-    // ------------------------------------------
+    Object.keys(baseDadosServicos)
+        .forEach(nomeTipo => {
 
-    elTipo.addEventListener('change', function () {
-
-        resetarSelect(
-            elMarca,
-            "Selecione a Marca..."
-        );
-
-        resetarSelect(
-            elModelo,
-            "Selecione o Modelo..."
-        );
-
-        resetarSelect(
-            elServico,
-            "Selecione o Serviço..."
-        );
-
-
-        if (this.value) {
-
-            elMarca.disabled = false;
-
-            Object.keys(
-                baseDadosServicos[this.value]
-            ).forEach(marca => {
-
-                elMarca.add(
-                    new Option(marca, marca)
-                );
-
-            });
-
-        }
-
-    });
-
-
-    // ------------------------------------------
-    // MARCA
-    // ------------------------------------------
-
-    elMarca.addEventListener('change', function () {
-
-        resetarSelect(
-            elModelo,
-            "Selecione o Modelo..."
-        );
-
-        resetarSelect(
-            elServico,
-            "Selecione o Serviço..."
-        );
-
-
-        if (this.value) {
-
-            elModelo.disabled = false;
-
-            Object.keys(
-                baseDadosServicos[
-                    elTipo.value
-                ][this.value]
-            ).forEach(modelo => {
-
-                elModelo.add(
-                    new Option(modelo, modelo)
-                );
-
-            });
-
-        }
-
-    });
-
-
-    // ------------------------------------------
-    // MODELO
-    // ------------------------------------------
-
-    elModelo.addEventListener('change', function () {
-
-        resetarSelect(
-            elServico,
-            "Selecione o Serviço..."
-        );
-
-
-        if (this.value) {
-
-            elServico.disabled = false;
-
-            const servicos =
-                baseDadosServicos[
-                    elTipo.value
-                ][
-                    elMarca.value
-                ][
-                    this.value
-                ];
-
-
-            Object.entries(servicos).forEach(
-                ([id, config]) => {
-
-                    elServico.add(
-                        new Option(
-                            config.nome,
-                            id
-                        )
-                    );
-
-                }
+            tipo.add(
+                new Option(
+                    nomeTipo,
+                    nomeTipo
+                )
             );
 
-        }
+        });
+
+
+    tipo.addEventListener('change', function () {
+
+        resetar(
+            marca,
+            'Selecione a Marca...'
+        );
+
+        resetar(
+            modelo,
+            'Selecione o Modelo...'
+        );
+
+        resetar(
+            servico,
+            'Selecione o Serviço...'
+        );
+
+
+        if (!this.value) return;
+
+
+        marca.disabled = false;
+
+
+        Object.keys(
+            baseDadosServicos[this.value]
+        ).forEach(nomeMarca => {
+
+            marca.add(
+                new Option(
+                    nomeMarca,
+                    nomeMarca
+                )
+            );
+
+        });
 
     });
 
+
+    marca.addEventListener('change', function () {
+
+        resetar(
+            modelo,
+            'Selecione o Modelo...'
+        );
+
+        resetar(
+            servico,
+            'Selecione o Serviço...'
+        );
+
+
+        if (!this.value) return;
+
+
+        modelo.disabled = false;
+
+
+        Object.keys(
+            baseDadosServicos[
+                tipo.value
+            ][
+                this.value
+            ]
+        ).forEach(nomeModelo => {
+
+            modelo.add(
+                new Option(
+                    nomeModelo,
+                    nomeModelo
+                )
+            );
+
+        });
+
+    });
+
+
+    modelo.addEventListener('change', function () {
+
+        resetar(
+            servico,
+            'Selecione o Serviço...'
+        );
+
+
+        if (!this.value) return;
+
+
+        servico.disabled = false;
+
+
+        const servicos =
+            baseDadosServicos[
+                tipo.value
+            ][
+                marca.value
+            ][
+                this.value
+            ];
+
+
+        Object.entries(servicos)
+            .forEach(([id, config]) => {
+
+                servico.add(
+                    new Option(
+                        config.nome,
+                        id
+                    )
+                );
+
+            });
+
+    });
 }
 
 
-// ==========================================
-// 4. CÁLCULO DA MARGEM DA PEÇA
-// ==========================================
+// ============================================================
+// PREÇO DA PEÇA
+// ============================================================
 
 function calcularMargemPeca(valorCusto) {
 
-    if (!valorCusto || valorCusto <= 0) {
+    if (!valorCusto || valorCusto <= 0)
         return 0;
-    }
 
-
-    // Até 150 = +50%
-    if (valorCusto <= 150.00) {
+    if (valorCusto <= 150)
         return valorCusto * 1.50;
-    }
 
-
-    // Até 400 = +40%
-    if (valorCusto <= 400.00) {
+    if (valorCusto <= 400)
         return valorCusto * 1.40;
-    }
 
-
-    // Acima de 400 = +30%
     return valorCusto * 1.30;
-
 }
 
 
-// ==========================================
-// 5. DESCONTO DE COMBO
-// ==========================================
+// ============================================================
+// DESCONTO COMBO
+// ============================================================
 
-function obterDescontoCombo(posicaoItem) {
+function obterDescontoCombo(posicao) {
 
-    // 1º serviço = 0%
-    if (posicaoItem === 1) {
-        return 0.00;
-    }
+    if (posicao === 1)
+        return 0;
 
-
-    // 2º serviço = 20%
-    if (posicaoItem === 2) {
+    if (posicao === 2)
         return 0.20;
-    }
 
-
-    // 3º em diante = 30%
     return 0.30;
-
 }
 
 
-// ==========================================
-// 6. CAPTURAR DADOS DO CLIENTE
-// ==========================================
-
-function capturaDados() {
-
-    const nomeElemento =
-        document.getElementById('nome');
-
-    const telefoneElemento =
-        document.getElementById('telefone');
-
-    const tipoElemento =
-        document.getElementById('tipoAparelho');
-
-    const marcaElemento =
-        document.getElementById('marcaAparelho');
-
-    const modeloElemento =
-        document.getElementById('modeloAparelho');
-
-    const entregaElemento =
-        document.getElementById('entrega');
-
-
-    const nomeVal =
-        nomeElemento
-            ? nomeElemento.value.trim()
-            : '';
-
-
-    const telefoneVal =
-        telefoneElemento
-            ? telefoneElemento.value.trim()
-            : '';
-
-
-    const tipoVal =
-        tipoElemento
-            ? tipoElemento.value
-            : '';
-
-
-    const marcaVal =
-        marcaElemento
-            ? marcaElemento.value
-            : '';
-
-
-    const modeloVal =
-        modeloElemento
-            ? modeloElemento.value
-            : '';
-
-
-    const entrVal =
-        entregaElemento
-            ? Number(entregaElemento.value) || 0
-            : 0;
-
-
-    return {
-
-        nomeVal,
-        telefoneVal,
-
-        tipoVal,
-        marcaVal,
-        modeloVal,
-
-        entrVal
-
-    };
-
-}
-
-
-// ==========================================
-// 7. INSERIR SERVIÇO
-// ==========================================
+// ============================================================
+// INSERIR
+// ============================================================
 
 function inserir() {
 
     const tipo =
-        document.getElementById(
-            'tipoAparelho'
-        ).value;
-
+        document.getElementById('tipoAparelho').value;
 
     const marca =
-        document.getElementById(
-            'marcaAparelho'
-        ).value;
-
+        document.getElementById('marcaAparelho').value;
 
     const modelo =
-        document.getElementById(
-            'modeloAparelho'
-        ).value;
-
+        document.getElementById('modeloAparelho').value;
 
     const servicoId =
-        document.getElementById(
-            'servicoAparelho'
-        ).value;
-
+        document.getElementById('servicoAparelho').value;
 
     const risco =
         Number(
-            document.getElementById(
-                'risco'
-            ).value
+            document.getElementById('risco').value
         );
-
 
     const custoPeca =
         Number(
-            document.getElementById(
-                'peca'
-            ).value
+            document.getElementById('peca').value
         ) || 0;
 
-
-    const elErro =
+    const erro =
         document.getElementById('erro');
 
 
-    // ------------------------------------------
-    // Validação
-    // ------------------------------------------
+    if (!tipo || !marca || !modelo || !servicoId) {
 
-    if (
-        !tipo ||
-        !marca ||
-        !modelo ||
-        !servicoId
-    ) {
-
-        elErro.innerText =
-            "Por favor, selecione as 4 opções do aparelho e serviço.";
+        erro.innerText =
+            'Por favor, selecione as 4 opções do aparelho e serviço.';
 
         return;
-
     }
 
-
-    // ------------------------------------------
-    // Verifica duplicidade
-    // ------------------------------------------
 
     if (
         itensOrcamento.some(
-            item => item.servicoId === servicoId
+            item =>
+                item.servicoId === servicoId
         )
     ) {
 
-        elErro.innerText =
-            "Este serviço já foi adicionado ao orçamento atual.";
+        erro.innerText =
+            'Este serviço já foi adicionado ao orçamento atual.';
 
         return;
-
     }
 
 
-    // ------------------------------------------
-    // Busca configuração
-    // ------------------------------------------
-
-    const configServico =
+    const config =
         baseDadosServicos[
             tipo
         ][
@@ -413,201 +312,205 @@ function inserir() {
         ];
 
 
-    // ------------------------------------------
-    // Mão de obra
-    // ------------------------------------------
+    if (!config) {
+
+        erro.innerText =
+            'Serviço não encontrado na base de dados.';
+
+        return;
+    }
+
 
     const maoDeObraBase =
-        (risco === 0)
-
-            ? configServico.sMax
-
+        risco === 0
+            ? Number(config.sMax)
             : (
-                (
-                    configServico.sMax +
-                    configServico.sMin
-                ) / 2
-            );
+                Number(config.sMax) +
+                Number(config.sMin)
+            ) / 2;
 
-
-    // ------------------------------------------
-    // Peça
-    // ------------------------------------------
 
     const valorPecaFinal =
-        calcularMargemPeca(
-            custoPeca
-        );
+        calcularMargemPeca(custoPeca);
 
-
-    // ------------------------------------------
-    // Adiciona item
-    // ------------------------------------------
 
     itensOrcamento.push({
 
-        id: Date.now(),
+        id:
+            Date.now() +
+            Math.random(),
 
-        servicoId: servicoId,
+        servicoId,
+
+        tipo,
+
+        marca,
+
+        modelo,
+
+        nomeServico:
+            config.nome,
 
         descricao:
-            `${tipo} ${marca} ${modelo} - ${configServico.nome}`,
+            `${tipo} ${marca} ${modelo} - ${config.nome}`,
 
-        maoDeObraBase:
-            maoDeObraBase,
+        risco,
 
-        valorPecaFinal:
-            valorPecaFinal,
+        maoDeObraBase,
+
+        valorPecaFinal,
 
         custoPecaOriginal:
             custoPeca,
 
         valorFinalItem:
-            0
+            0,
+
+        teveDesconto:
+            false,
+
+        textoDesconto:
+            ''
 
     });
 
 
-    // Limpa campo da peça
+    document.getElementById('peca').value = '';
 
-    document.getElementById(
-        'peca'
-    ).value = '';
-
-
-    elErro.innerText = '';
-
+    erro.innerText = '';
 
     recalcularValoresEAtualizar();
-
 }
 
 
-// ==========================================
-// 8. REMOVER ITEM
-// ==========================================
+// ============================================================
+// REMOVER
+// ============================================================
 
 function remover(id) {
 
     itensOrcamento =
         itensOrcamento.filter(
-            item => item.id !== id
+            item =>
+                item.id !== id
         );
 
-
     recalcularValoresEAtualizar();
-
 }
 
 
-// ==========================================
-// 9. RECALCULAR VALORES
-// ==========================================
+// ============================================================
+// RECÁLCULO
+// ============================================================
 
 function recalcularValoresEAtualizar() {
 
-    const isUrgencia =
-        document.getElementById(
-            'urgencia'
-        ).checked;
+    const urgencia =
+        document.getElementById('urgencia')
+            .checked;
+
+    const entrega =
+        Number(
+            document.getElementById('entrega')
+                .value
+        ) || 0;
 
 
-    let totalGeral = 0;
+    let totalServicos = 0;
 
 
     itensOrcamento.forEach(
         (item, index) => {
 
-            const numeroServico =
-                index + 1;
-
-
-            const descontoPercentual =
+            const desconto =
                 obterDescontoCombo(
-                    numeroServico
+                    index + 1
                 );
 
-
-            // ----------------------------------
-            // Mão de obra
-            // ----------------------------------
 
             let maoDeObra =
-                item.maoDeObraBase *
-                (
-                    1 -
-                    descontoPercentual
-                );
+                Number(
+                    item.maoDeObraBase
+                ) *
+                (1 - desconto);
 
 
-            // ----------------------------------
-            // Urgência
-            // ----------------------------------
+            if (urgencia) {
 
-            if (isUrgencia) {
-
-                maoDeObra =
-                    maoDeObra * 1.20;
+                maoDeObra *= 1.20;
 
             }
 
 
-            // ----------------------------------
-            // Total do item
-            // ----------------------------------
-
             item.valorFinalItem =
                 maoDeObra +
-                item.valorPecaFinal;
+                Number(
+                    item.valorPecaFinal || 0
+                );
 
 
             item.teveDesconto =
-                descontoPercentual > 0;
+                desconto > 0;
 
 
             item.textoDesconto =
-                item.teveDesconto
-
-                    ? `(Combo: -${descontoPercentual * 100}% M.O.)`
-
+                desconto > 0
+                    ? `(Combo: -${desconto * 100}% M.O.)`
                     : '';
 
 
-            totalGeral +=
+            totalServicos +=
                 item.valorFinalItem;
 
         }
     );
 
 
-    atualizarResumoVisual(
-        totalGeral
-    );
+    const total =
+        totalServicos +
+        entrega;
 
+
+    atualizarResumoVisual(
+        totalServicos,
+        entrega,
+        total
+    );
 }
 
 
-// ==========================================
-// 10. ATUALIZAR INTERFACE
-// ==========================================
+// ============================================================
+// VISUAL DO ORÇAMENTO
+// ============================================================
 
 function atualizarResumoVisual(
-    totalGeral
+    totalServicos,
+    entrega,
+    total
 ) {
 
-    const listaHtml =
+    const lista =
         document.getElementById(
             'listaOrcamento'
         );
 
-
-    const labelTotal =
+    const valor =
         document.getElementById(
             'valorTotal'
         );
 
 
-    listaHtml.innerHTML = '';
+    lista.innerHTML = '';
+
+
+    if (itensOrcamento.length === 0) {
+
+        lista.innerHTML = `
+            <li class="vazio">
+                Nenhum serviço adicionado ao orçamento.
+            </li>
+        `;
+    }
 
 
     itensOrcamento.forEach(
@@ -616,20 +519,28 @@ function atualizarResumoVisual(
             const li =
                 document.createElement('li');
 
+            li.className =
+                'item-orcamento';
+
 
             const badge =
                 item.teveDesconto
-
-                    ? `<span class="badge-desconto">${item.textoDesconto}</span>`
-
+                    ? `
+                        <span class="badge-desconto">
+                            ${item.textoDesconto}
+                        </span>
+                    `
                     : '';
 
 
-            const textoPeca =
+            const peca =
                 item.valorPecaFinal > 0
-
-                    ? ` | Peça: R$ ${item.valorPecaFinal.toFixed(2)}`
-
+                    ? `
+                        | Peça:
+                        R$ ${formatarMoeda(
+                            item.valorPecaFinal
+                        )}
+                    `
                     : '';
 
 
@@ -638,24 +549,34 @@ function atualizarResumoVisual(
                 <div class="item-detalhes">
 
                     <span class="item-nome">
-                        ${item.descricao}
+
+                        ${escapeHtml(
+                            item.descricao
+                        )}
+
                         ${badge}
+
                     </span>
 
                     <span class="item-valores">
+
                         Total:
-                        R$ ${item.valorFinalItem.toFixed(2)}
-                        ${textoPeca}
+                        R$ ${formatarMoeda(
+                            item.valorFinalItem
+                        )}
+
+                        ${peca}
+
                     </span>
 
                 </div>
 
                 <button
-                    class="btn btn-danger"
-                    onclick="remover(${item.id})"
-                >
+                    class="btn btn-danger btn-small"
+                    onclick="remover(${item.id})">
 
                     <i class="bi bi-trash"></i>
+
                     Remover
 
                 </button>
@@ -663,216 +584,1082 @@ function atualizarResumoVisual(
             `;
 
 
-            listaHtml.appendChild(li);
+            lista.appendChild(li);
 
         }
     );
 
 
-    labelTotal.innerText =
-        totalGeral.toFixed(2);
+    if (entrega > 0) {
 
+        const li =
+            document.createElement('li');
+
+        li.className =
+            'item-orcamento';
+
+
+        li.innerHTML = `
+
+            <div class="item-detalhes">
+
+                <span class="item-nome">
+
+                    <i class="bi bi-truck"></i>
+
+                    Taxa de Entrega
+
+                </span>
+
+                <span class="item-valores">
+
+                    R$ ${formatarMoeda(
+                        entrega
+                    )}
+
+                </span>
+
+            </div>
+
+        `;
+
+
+        lista.appendChild(li);
+    }
+
+
+    valor.innerText =
+        formatarMoeda(total);
 }
 
-// ==========================================
-// NOVO ORÇAMENTO
-// ==========================================
- 
-function novoOrcamento() {
- 
-    // Se já existe um orçamento, pede confirmação
-    if (itensOrcamento.length > 0) {
- 
-        const confirmar = confirm(
-            "Deseja iniciar um novo orçamento?\n\n" +
-            "O orçamento atual será apagado."
+
+// ============================================================
+// CAPTURA DOS DADOS
+// ============================================================
+
+function capturaDados() {
+
+    const nomeVal =
+        document.getElementById('nome')
+            .value.trim();
+
+    const telefoneVal =
+        document.getElementById('telefone')
+            .value.trim();
+
+    const tipoVal =
+        document.getElementById('tipoAparelho')
+            .value;
+
+    const marcaVal =
+        document.getElementById('marcaAparelho')
+            .value;
+
+    const modeloVal =
+        document.getElementById('modeloAparelho')
+            .value;
+
+    const entrVal =
+        Number(
+            document.getElementById('entrega')
+                .value
+        ) || 0;
+
+    const urgenciaVal =
+        document.getElementById('urgencia')
+            .checked;
+
+
+    const totalServicos =
+        itensOrcamento.reduce(
+            (soma, item) =>
+                soma +
+                Number(
+                    item.valorFinalItem || 0
+                ),
+            0
         );
- 
-        if (!confirmar) {
+
+
+    return {
+
+        nomeVal,
+
+        telefoneVal,
+
+        tipoVal,
+
+        marcaVal,
+
+        modeloVal,
+
+        entrVal,
+
+        urgenciaVal,
+
+        totalServicos,
+
+        totalFinal:
+            totalServicos +
+            entrVal
+
+    };
+}
+
+
+// ============================================================
+// NOVO ORÇAMENTO
+// ============================================================
+
+function novoOrcamento() {
+
+    if (
+        itensOrcamento.length > 0 ||
+        orcamentoAtualId !== null
+    ) {
+
+        const confirmar =
+            confirm(
+                'Deseja iniciar um novo orçamento?\n\n' +
+                'As alterações não salvas serão descartadas.'
+            );
+
+
+        if (!confirmar)
             return;
-        }
     }
- 
- 
-    // ------------------------------------------
-    // Limpa os itens do orçamento
-    // ------------------------------------------
- 
+
+
+    limparFormularioCompleto();
+
+    mostrarStatus(
+        'Novo orçamento iniciado.'
+    );
+}
+
+
+function limparFormularioCompleto() {
+
     itensOrcamento = [];
- 
- 
-    // ------------------------------------------
-    // Limpa dados do cliente
-    // ------------------------------------------
- 
-    const nome =
-        document.getElementById('nome');
- 
-    const telefone =
-        document.getElementById('telefone');
- 
-    if (nome) {
-        nome.value = '';
-    }
- 
-    if (telefone) {
-        telefone.value = '';
-    }
- 
- 
-    // ------------------------------------------
-    // Limpa dados financeiros
-    // ------------------------------------------
- 
-    const peca =
-        document.getElementById('peca');
- 
-    const entrega =
-        document.getElementById('entrega');
- 
-    if (peca) {
-        peca.value = '';
-    }
- 
-    if (entrega) {
-        entrega.value = '0';
-    }
- 
- 
-    // ------------------------------------------
-    // Desmarca urgência
-    // ------------------------------------------
- 
-    const urgencia =
-        document.getElementById('urgencia');
- 
-    if (urgencia) {
-        urgencia.checked = false;
-    }
- 
- 
-    // ------------------------------------------
-    // Limpa mensagem de erro
-    // ------------------------------------------
- 
-    const erro =
-        document.getElementById('erro');
- 
-    if (erro) {
-        erro.innerText = '';
-    }
- 
- 
-    // ------------------------------------------
-    // Reseta os selects
-    // ------------------------------------------
- 
+
+    orcamentoAtualId = null;
+
+
+    document.getElementById('nome').value = '';
+
+    document.getElementById('telefone').value = '';
+
+    document.getElementById('peca').value = '';
+
+    document.getElementById('entrega').value = '0';
+
+    document.getElementById('urgencia').checked = false;
+
+    document.getElementById('risco').value = '0';
+
+    document.getElementById('erro').innerText = '';
+
+
     const tipo =
         document.getElementById('tipoAparelho');
- 
+
     const marca =
         document.getElementById('marcaAparelho');
- 
+
     const modelo =
         document.getElementById('modeloAparelho');
- 
+
     const servico =
         document.getElementById('servicoAparelho');
- 
- 
-    if (tipo) {
-        tipo.value = '';
-    }
- 
- 
-    if (marca) {
- 
-        marca.innerHTML =
-            '<option value="">Selecione a Marca...</option>';
- 
-        marca.value = '';
-        marca.disabled = true;
- 
-    }
- 
- 
-    if (modelo) {
- 
-        modelo.innerHTML =
-            '<option value="">Selecione o Modelo...</option>';
- 
-        modelo.value = '';
-        modelo.disabled = true;
- 
-    }
- 
- 
-    if (servico) {
- 
-        servico.innerHTML =
-            '<option value="">Selecione o Serviço...</option>';
- 
-        servico.value = '';
-        servico.disabled = true;
- 
-    }
- 
- 
-    // ------------------------------------------
-    // Reseta risco
-    // ------------------------------------------
- 
-    const risco =
-        document.getElementById('risco');
- 
-    if (risco) {
-        risco.value = '0';
-    }
- 
- 
-    // ------------------------------------------
-    // Atualiza a tela
-    // ------------------------------------------
- 
+
+
+    tipo.value = '';
+
+
+    marca.innerHTML =
+        '<option value="">Selecione a Marca...</option>';
+
+    marca.disabled = true;
+
+
+    modelo.innerHTML =
+        '<option value="">Selecione o Modelo...</option>';
+
+    modelo.disabled = true;
+
+
+    servico.innerHTML =
+        '<option value="">Selecione o Serviço...</option>';
+
+    servico.disabled = true;
+
+
     recalcularValoresEAtualizar();
- 
- 
-    // ------------------------------------------
-    // Volta para o topo
-    // ------------------------------------------
- 
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
- 
 }
 
 
-// ==========================================
-// 11. GERAR PDF
-// ==========================================
+// ============================================================
+// LOCAL STORAGE
+// ============================================================
 
-function gerarPDF() {
+function obterOrcamentosSalvos() {
 
-    // ------------------------------------------
-    // Verifica se há serviços
-    // ------------------------------------------
+    try {
+
+        const dados =
+            localStorage.getItem(
+                STORAGE_KEY
+            );
+
+
+        if (!dados)
+            return [];
+
+
+        const lista =
+            JSON.parse(dados);
+
+
+        return Array.isArray(lista)
+            ? lista
+            : [];
+
+    } catch (erro) {
+
+        console.error(
+            'Erro ao ler orçamentos:',
+            erro
+        );
+
+        return [];
+    }
+}
+
+
+function gravarOrcamentosSalvos(lista) {
+
+    try {
+
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(lista)
+        );
+
+        return true;
+
+    } catch (erro) {
+
+        console.error(
+            'Erro ao salvar:',
+            erro
+        );
+
+        mostrarStatus(
+            'Não foi possível salvar o orçamento.',
+            true
+        );
+
+        return false;
+    }
+}
+
+
+// ============================================================
+// NUMERAÇÃO
+// ============================================================
+
+function obterProximoNumero() {
+
+    let numero =
+        Number(
+            localStorage.getItem(
+                NUMERO_KEY
+            )
+        );
+
+
+    if (!numero || numero < 1)
+        numero = 1;
+
+
+    localStorage.setItem(
+        NUMERO_KEY,
+        String(numero + 1)
+    );
+
+
+    return String(numero)
+        .padStart(4, '0');
+}
+
+
+// ============================================================
+// SALVAR
+// ============================================================
+
+function salvarOrcamento() {
 
     if (itensOrcamento.length === 0) {
 
         alert(
-            "Adicione serviços antes de gerar o PDF."
+            'Adicione pelo menos um serviço antes de salvar.'
         );
 
         return;
-
     }
 
 
-    // ------------------------------------------
-    // Verifica jsPDF
-    // ------------------------------------------
+    const d =
+        capturaDados();
+
+
+    const lista =
+        obterOrcamentosSalvos();
+
+
+    const agora =
+        new Date()
+            .toISOString();
+
+
+    let existente = null;
+
+
+    if (orcamentoAtualId !== null) {
+
+        existente =
+            lista.find(
+                item =>
+                    item.id ===
+                    orcamentoAtualId
+            );
+    }
+
+
+    const registro = {
+
+        id:
+            orcamentoAtualId ||
+            gerarIdUnico(),
+
+        numero:
+            existente
+                ? existente.numero
+                : obterProximoNumero(),
+
+        criadoEm:
+            existente
+                ? existente.criadoEm
+                : agora,
+
+        atualizadoEm:
+            agora,
+
+        cliente: {
+
+            nome:
+                d.nomeVal,
+
+            telefone:
+                d.telefoneVal
+
+        },
+
+        aparelho: {
+
+            tipo:
+                d.tipoVal,
+
+            marca:
+                d.marcaVal,
+
+            modelo:
+                d.modeloVal
+
+        },
+
+        itens:
+            JSON.parse(
+                JSON.stringify(
+                    itensOrcamento
+                )
+            ),
+
+        entrega:
+            d.entrVal,
+
+        urgencia:
+            d.urgenciaVal,
+
+        totalServicos:
+            d.totalServicos,
+
+        totalFinal:
+            d.totalFinal
+
+    };
+
+
+    if (existente) {
+
+        const index =
+            lista.findIndex(
+                item =>
+                    item.id ===
+                    orcamentoAtualId
+            );
+
+
+        lista[index] =
+            registro;
+
+    } else {
+
+        lista.unshift(
+            registro
+        );
+
+        orcamentoAtualId =
+            registro.id;
+    }
+
+
+    if (
+        gravarOrcamentosSalvos(
+            lista
+        )
+    ) {
+
+        renderizarOrcamentosSalvos();
+
+        mostrarStatus(
+            `Orçamento nº ${registro.numero} salvo com sucesso.`
+        );
+    }
+}
+
+
+// ============================================================
+// LISTA DE ORÇAMENTOS SALVOS
+// ============================================================
+
+function renderizarOrcamentosSalvos() {
+
+    const container =
+        document.getElementById(
+            'listaOrcamentosSalvos'
+        );
+
+
+    const busca =
+        (
+            document.getElementById(
+                'buscaOrcamentos'
+            )?.value || ''
+        )
+        .toLowerCase()
+        .trim();
+
+
+    const lista =
+        obterOrcamentosSalvos();
+
+
+    const filtrados =
+        lista.filter(
+            orcamento => {
+
+                const texto = [
+
+                    orcamento.numero,
+
+                    orcamento.cliente?.nome,
+
+                    orcamento.cliente?.telefone,
+
+                    orcamento.aparelho?.tipo,
+
+                    orcamento.aparelho?.marca,
+
+                    orcamento.aparelho?.modelo
+
+                ]
+                .join(' ')
+                .toLowerCase();
+
+
+                return texto.includes(
+                    busca
+                );
+            }
+        );
+
+
+    container.innerHTML = '';
+
+
+    if (filtrados.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="vazio">
+
+                ${
+                    lista.length === 0
+                        ? 'Nenhum orçamento salvo ainda.'
+                        : 'Nenhum orçamento encontrado.'
+                }
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    filtrados.forEach(
+        orcamento => {
+
+            const div =
+                document.createElement(
+                    'div'
+                );
+
+
+            div.className =
+                'orcamento-salvo';
+
+
+            const aparelho = [
+
+                orcamento.aparelho?.tipo,
+
+                orcamento.aparelho?.marca,
+
+                orcamento.aparelho?.modelo
+
+            ]
+            .filter(Boolean)
+            .join(' ');
+
+
+            div.innerHTML = `
+
+                <div class="orcamento-info">
+
+                    <div class="orcamento-numero">
+
+                        #${escapeHtml(
+                            orcamento.numero
+                        )}
+
+                    </div>
+
+
+                    <div>
+
+                        <div class="orcamento-cliente">
+
+                            ${escapeHtml(
+                                orcamento.cliente?.nome ||
+                                'Cliente não informado'
+                            )}
+
+                        </div>
+
+
+                        <div class="orcamento-meta">
+
+                            ${escapeHtml(
+                                orcamento.cliente?.telefone ||
+                                'Sem telefone'
+                            )}
+
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <div>
+
+                            ${escapeHtml(
+                                aparelho ||
+                                'Aparelho não informado'
+                            )}
+
+                        </div>
+
+
+                        <div class="orcamento-meta">
+
+                            ${formatarData(
+                                orcamento.atualizadoEm
+                            )}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="orcamento-total">
+
+                        R$
+                        ${formatarMoeda(
+                            orcamento.totalFinal
+                        )}
+
+                    </div>
+
+                </div>
+
+
+                <div class="orcamento-acoes">
+
+                    <button
+                        class="btn btn-dark btn-small"
+                        onclick="abrirOrcamento('${orcamento.id}')">
+
+                        <i class="bi bi-pencil-square"></i>
+
+                        Abrir
+
+                    </button>
+
+
+                    <button
+                        class="btn btn-danger btn-small"
+                        onclick="gerarPDFSalvo('${orcamento.id}')">
+
+                        <i class="bi bi-file-pdf"></i>
+
+                        PDF
+
+                    </button>
+
+
+                    <button
+                        class="btn btn-success btn-small"
+                        onclick="enviarWhatsAppSalvo('${orcamento.id}')">
+
+                        <i class="bi bi-whatsapp"></i>
+
+                        WhatsApp
+
+                    </button>
+
+
+                    <button
+                        class="btn btn-secondary btn-small"
+                        onclick="excluirOrcamento('${orcamento.id}')">
+
+                        <i class="bi bi-trash"></i>
+
+                        Excluir
+
+                    </button>
+
+                </div>
+
+            `;
+
+
+            container.appendChild(div);
+        }
+    );
+}
+
+
+// ============================================================
+// ABRIR ORÇAMENTO
+// ============================================================
+
+function abrirOrcamento(id) {
+
+    const lista =
+        obterOrcamentosSalvos();
+
+
+    const orcamento =
+        lista.find(
+            item =>
+                String(item.id) ===
+                String(id)
+        );
+
+
+    if (!orcamento) {
+
+        alert(
+            'Orçamento não encontrado.'
+        );
+
+        return;
+    }
+
+
+    orcamentoAtualId =
+        orcamento.id;
+
+
+    document.getElementById('nome').value =
+        orcamento.cliente?.nome || '';
+
+
+    document.getElementById('telefone').value =
+        orcamento.cliente?.telefone || '';
+
+
+    document.getElementById('entrega').value =
+        Number(
+            orcamento.entrega || 0
+        );
+
+
+    document.getElementById('urgencia').checked =
+        Boolean(
+            orcamento.urgencia
+        );
+
+
+    itensOrcamento =
+        JSON.parse(
+            JSON.stringify(
+                orcamento.itens || []
+            )
+        );
+
+
+    carregarAparelho(
+        orcamento.aparelho?.tipo || '',
+        orcamento.aparelho?.marca || '',
+        orcamento.aparelho?.modelo || ''
+    );
+
+
+    recalcularValoresEAtualizar();
+
+
+    mostrarStatus(
+        `Orçamento nº ${orcamento.numero} carregado.`
+    );
+
+
+    window.scrollTo({
+
+        top: 0,
+
+        behavior: 'smooth'
+
+    });
+}
+
+
+// ============================================================
+// CARREGAR APARELHO
+// ============================================================
+
+function carregarAparelho(
+    tipo,
+    marca,
+    modelo
+) {
+
+    const elTipo =
+        document.getElementById(
+            'tipoAparelho'
+        );
+
+    const elMarca =
+        document.getElementById(
+            'marcaAparelho'
+        );
+
+    const elModelo =
+        document.getElementById(
+            'modeloAparelho'
+        );
+
+    const elServico =
+        document.getElementById(
+            'servicoAparelho'
+        );
+
+
+    if (!tipo ||
+        !baseDadosServicos[tipo])
+        return;
+
+
+    elTipo.value =
+        tipo;
+
+
+    elMarca.innerHTML =
+        '<option value="">Selecione a Marca...</option>';
+
+
+    Object.keys(
+        baseDadosServicos[tipo]
+    ).forEach(
+        nomeMarca => {
+
+            elMarca.add(
+                new Option(
+                    nomeMarca,
+                    nomeMarca
+                )
+            );
+
+        }
+    );
+
+
+    elMarca.disabled = false;
+
+    elMarca.value =
+        marca;
+
+
+    if (
+        !baseDadosServicos[tipo][marca]
+    )
+        return;
+
+
+    elModelo.innerHTML =
+        '<option value="">Selecione o Modelo...</option>';
+
+
+    Object.keys(
+        baseDadosServicos[tipo][marca]
+    ).forEach(
+        nomeModelo => {
+
+            elModelo.add(
+                new Option(
+                    nomeModelo,
+                    nomeModelo
+                )
+            );
+
+        }
+    );
+
+
+    elModelo.disabled = false;
+
+    elModelo.value =
+        modelo;
+
+
+    if (
+        !baseDadosServicos[tipo][marca][modelo]
+    )
+        return;
+
+
+    elServico.innerHTML =
+        '<option value="">Selecione o Serviço...</option>';
+
+
+    const servicos =
+        baseDadosServicos[
+            tipo
+        ][
+            marca
+        ][
+            modelo
+        ];
+
+
+    Object.entries(servicos)
+        .forEach(
+            ([id, config]) => {
+
+                elServico.add(
+                    new Option(
+                        config.nome,
+                        id
+                    )
+                );
+
+            }
+        );
+
+
+    elServico.disabled = false;
+}
+
+
+// ============================================================
+// EXCLUIR
+// ============================================================
+
+function excluirOrcamento(id) {
+
+    const lista =
+        obterOrcamentosSalvos();
+
+
+    const orcamento =
+        lista.find(
+            item =>
+                String(item.id) ===
+                String(id)
+        );
+
+
+    if (!orcamento)
+        return;
+
+
+    const confirmar =
+        confirm(
+            `Excluir o orçamento nº ${orcamento.numero}?\n\n` +
+            'Essa ação não poderá ser desfeita.'
+        );
+
+
+    if (!confirmar)
+        return;
+
+
+    const novaLista =
+        lista.filter(
+            item =>
+                String(item.id) !==
+                String(id)
+        );
+
+
+    if (
+        gravarOrcamentosSalvos(
+            novaLista
+        )
+    ) {
+
+        if (
+            String(orcamentoAtualId) ===
+            String(id)
+        ) {
+
+            limparFormularioCompleto();
+        }
+
+
+        renderizarOrcamentosSalvos();
+
+
+        mostrarStatus(
+            `Orçamento nº ${orcamento.numero} excluído.`
+        );
+    }
+}
+
+
+// ============================================================
+// PDF
+// ============================================================
+
+function gerarPDF() {
+
+    if (itensOrcamento.length === 0) {
+
+        alert(
+            'Adicione pelo menos um serviço para gerar o PDF.'
+        );
+
+        return;
+    }
+
+
+    const d =
+        capturaDados();
+
+
+    gerarPDFComDados({
+
+        ...d,
+
+        numero:
+            obterNumeroAtual(),
+
+        itens:
+            itensOrcamento
+
+    });
+}
+
+
+function gerarPDFSalvo(id) {
+
+    const lista =
+        obterOrcamentosSalvos();
+
+
+    const orcamento =
+        lista.find(
+            item =>
+                String(item.id) ===
+                String(id)
+        );
+
+
+    if (!orcamento) {
+
+        alert(
+            'Orçamento não encontrado.'
+        );
+
+        return;
+    }
+
+
+    gerarPDFComDados({
+
+        nomeVal:
+            orcamento.cliente?.nome || '',
+
+        telefoneVal:
+            orcamento.cliente?.telefone || '',
+
+        tipoVal:
+            orcamento.aparelho?.tipo || '',
+
+        marcaVal:
+            orcamento.aparelho?.marca || '',
+
+        modeloVal:
+            orcamento.aparelho?.modelo || '',
+
+        entrVal:
+            Number(
+                orcamento.entrega || 0
+            ),
+
+        urgenciaVal:
+            Boolean(
+                orcamento.urgencia
+            ),
+
+        numero:
+            orcamento.numero,
+
+        itens:
+            orcamento.itens || []
+
+    });
+}
+
+
+// ============================================================
+// GERAÇÃO DO PDF
+// ============================================================
+
+function gerarPDFComDados(d) {
 
     if (
         !window.jspdf ||
@@ -880,11 +1667,10 @@ function gerarPDF() {
     ) {
 
         alert(
-            "A biblioteca de PDF não foi carregada. Verifique sua conexão com a internet e tente novamente."
+            'A biblioteca PDF não foi carregada.'
         );
 
         return;
-
     }
 
 
@@ -896,82 +1682,51 @@ function gerarPDF() {
         new jsPDF();
 
 
-    // ------------------------------------------
-    // Captura dados
-    // ------------------------------------------
+    const azul =
+        [37, 99, 235];
 
-    const d =
-        capturaDados();
+    const cinza =
+        [30, 41, 59];
 
-
-    // ------------------------------------------
-    // Data atual
-    // ------------------------------------------
-
-    const dataAtual =
-        new Date().toLocaleString(
-            'pt-BR'
-        );
+    const claro =
+        [241, 245, 249];
 
 
-    // ------------------------------------------
-    // Soma dos serviços
-    // ------------------------------------------
-
-    const somaItens =
-        itensOrcamento.reduce(
-            (acc, item) =>
-                acc + item.valorFinalItem,
+    const totalServicos =
+        (d.itens || [])
+        .reduce(
+            (soma, item) =>
+                soma +
+                Number(
+                    item.valorFinalItem || 0
+                ),
             0
         );
 
 
-    // ------------------------------------------
-    // Total final
-    // ------------------------------------------
-
-    const totalFinal =
-        somaItens +
-        d.entrVal;
+    const entrega =
+        Number(
+            d.entrVal || 0
+        );
 
 
-    // ================================================================
-    // CONFIGURAÇÃO DE CORES
-    // ================================================================
-
-    const azulPrimario =
-        [37, 99, 235];
+    const total =
+        totalServicos +
+        entrega;
 
 
-    const cinzaEscuro =
-        [30, 41, 59];
-
-
-    const cinzaClaro =
-        [241, 245, 249];
-
-
-    // ================================================================
     // CABEÇALHO
-    // ================================================================
 
-    doc.setFillColor(
-        azulPrimario[0],
-        azulPrimario[1],
-        azulPrimario[2]
-    );
-
+    doc.setFillColor(...azul);
 
     doc.rect(
         0,
         0,
         210,
-        40,
+        38,
         'F'
     );
 
-
-    // Texto branco
 
     doc.setTextColor(
         255,
@@ -980,110 +1735,82 @@ function gerarPDF() {
     );
 
 
+    doc.setFontSize(20);
+
     doc.setFont(
-        "helvetica",
-        "bold"
+        undefined,
+        'bold'
     );
 
 
-    doc.setFontSize(22);
-
-
     doc.text(
-        "DIGITAL UNIVERSE",
-        10,
-        20
+        'DIGITAL UNIVERSE',
+        15,
+        14
     );
 
 
     doc.setFontSize(10);
 
-
     doc.setFont(
-        "helvetica",
-        "normal"
+        undefined,
+        'normal'
     );
 
 
     doc.text(
-        "Assistência Técnica Especializada",
-        10,
-        26
+        'Assistência Técnica Especializada',
+        15,
+        21
     );
 
 
     doc.text(
-        "Celulares | Computadores | Notebooks",
-        10,
-        31
+        'Celulares | Computadores | Notebooks',
+        15,
+        27
     );
 
 
-    // Data
+    doc.text(
+        'Betim - MG',
+        15,
+        33
+    );
+
 
     doc.setFontSize(9);
 
 
     doc.text(
-        `Data: ${dataAtual}`,
-        195,
-        20,
-        {
-            align: "right"
-        }
+        `Orçamento Nº ${d.numero || '---'}`,
+        145,
+        16
     );
 
 
     doc.text(
-        "Betim - MG",
-        195,
-        26,
-        {
-            align: "right"
-        }
+        new Date()
+            .toLocaleString('pt-BR'),
+        145,
+        22
     );
 
 
-    // ================================================================
-    // INFORMAÇÕES DO CLIENTE
-    // ================================================================
-
-    doc.setTextColor(
-        cinzaEscuro[0],
-        cinzaEscuro[1],
-        cinzaEscuro[2]
-    );
+    let y = 48;
 
 
-    doc.setFontSize(12);
-
-
-    doc.setFont(
-        "helvetica",
-        "bold"
-    );
-
-
-    doc.text(
-        "ORÇAMENTO DE SERVIÇO",
-        10,
-        50
-    );
-
-
-    // Caixa
+    // CLIENTE
 
     doc.setFillColor(
-        cinzaClaro[0],
-        cinzaClaro[1],
-        cinzaClaro[2]
+        ...claro
     );
 
 
     doc.roundedRect(
-        10,
-        55,
-        190,
+        12,
+        y - 5,
+        186,
         32,
         3,
         3,
@@ -1091,727 +1818,912 @@ function gerarPDF() {
     );
 
 
+    doc.setTextColor(
+        ...cinza
+    );
+
+
     doc.setFontSize(10);
 
-
     doc.setFont(
-        "helvetica",
-        "bold"
+        undefined,
+        'bold'
     );
 
 
     doc.text(
-        "CLIENTE:",
-        15,
-        63
-    );
-
-
-    doc.text(
-        "APARELHO:",
-        15,
-        71
-    );
-
-
-    doc.text(
-        "CONTATO:",
-        15,
-        79
+        'CLIENTE',
+        17,
+        y + 3
     );
 
 
     doc.setFont(
-        "helvetica",
-        "normal"
+        undefined,
+        'normal'
     );
 
 
     doc.text(
-        d.nomeVal ||
-        "Não informado",
-        45,
-        63
-    );
-
-
-    const aparelho =
-        [
-            d.tipoVal,
-            d.marcaVal,
-            d.modeloVal
-        ]
-        .filter(Boolean)
-        .join(" ");
-
-
-    doc.text(
-        aparelho ||
-        "Não informado",
-        45,
-        71
-    );
-
-
-    doc.text(
-        d.telefoneVal ||
-        "Não informado",
-        45,
-        79
-    );
-
-
-    // ================================================================
-    // TABELA DE SERVIÇOS
-    // ================================================================
-
-    let y = 100;
-
-
-    doc.setFont(
-        "helvetica",
-        "bold"
-    );
-
-
-    doc.setFillColor(
-        azulPrimario[0],
-        azulPrimario[1],
-        azulPrimario[2]
-    );
-
-
-    doc.setTextColor(
-        255,
-        255,
-        255
-    );
-
-
-    doc.rect(
-        10,
-        y,
-        190,
-        8,
-        'F'
-    );
-
-
-    doc.text(
-        "DESCRIÇÃO DO SERVIÇO",
-        15,
-        y + 5.5
-    );
-
-
-    doc.text(
-        "VALOR",
-        195,
-        y + 5.5,
-        {
-            align: "right"
-        }
-    );
-
-
-    doc.setTextColor(
-        cinzaEscuro[0],
-        cinzaEscuro[1],
-        cinzaEscuro[2]
+        limitarTexto(
+            d.nomeVal ||
+            'Não informado',
+            70
+        ),
+        17,
+        y + 10
     );
 
 
     doc.setFont(
-        "helvetica",
-        "normal"
+        undefined,
+        'bold'
     );
 
 
-    y += 15;
-
-
-    // ================================================================
-    // ITENS
-    // ================================================================
-
-    itensOrcamento.forEach(
-        (item, index) => {
-
-            // --------------------------------------
-            // Verifica espaço na página
-            // --------------------------------------
-
-            if (y > 245) {
-
-                doc.addPage();
-
-                y = 20;
-
-            }
-
-
-            // --------------------------------------
-            // Fundo alternado
-            // --------------------------------------
-
-            if (index % 2 === 0) {
-
-                doc.setFillColor(
-                    250,
-                    250,
-                    250
-                );
-
-
-                doc.rect(
-                    10,
-                    y - 5,
-                    190,
-                    8,
-                    'F'
-                );
-
-            }
-
-
-            // --------------------------------------
-            // Descrição
-            // --------------------------------------
-
-            doc.setFont(
-                "helvetica",
-                "normal"
-            );
-
-
-            doc.setFontSize(9);
-
-
-            let descricao =
-                item.descricao;
-
-
-            // Limita descrição para não
-            // invadir a coluna de valor
-
-            if (descricao.length > 72) {
-
-                descricao =
-                    descricao.substring(
-                        0,
-                        69
-                    ) + "...";
-
-            }
-
-
-            doc.text(
-                descricao,
-                15,
-                y
-            );
-
-
-            // --------------------------------------
-            // Valor
-            // --------------------------------------
-
-            doc.text(
-                `R$ ${item.valorFinalItem.toFixed(2)}`,
-                195,
-                y,
-                {
-                    align: "right"
-                }
-            );
-
-
-            // --------------------------------------
-            // Peça / desconto
-            // --------------------------------------
-
-            let detalhes = [];
-
-
-            if (item.valorPecaFinal > 0) {
-
-                detalhes.push(
-                    `Peça: R$ ${item.valorPecaFinal.toFixed(2)}`
-                );
-
-            }
-
-
-            if (item.teveDesconto) {
-
-                detalhes.push(
-                    item.textoDesconto
-                );
-
-            }
-
-
-            if (detalhes.length > 0) {
-
-                y += 4;
-
-
-                doc.setFontSize(7);
-
-
-                doc.setTextColor(
-                    100,
-                    116,
-                    139
-                );
-
-
-                doc.text(
-                    detalhes.join(" | "),
-                    15,
-                    y
-                );
-
-
-                doc.setTextColor(
-                    cinzaEscuro[0],
-                    cinzaEscuro[1],
-                    cinzaEscuro[2]
-                );
-
-            }
-
-
-            y += 8;
-
-        }
+    doc.text(
+        'CONTATO',
+        105,
+        y + 3
     );
 
 
-    // ================================================================
-    // TOTAIS
-    // ================================================================
-
-    y += 5;
-
-
-    // Linha
-
-    doc.setDrawColor(
-        200,
-        200,
-        200
+    doc.setFont(
+        undefined,
+        'normal'
     );
 
 
-    doc.line(
-        10,
-        y,
-        200,
-        y
+    doc.text(
+        limitarTexto(
+            d.telefoneVal ||
+            'Não informado',
+            55
+        ),
+        105,
+        y + 10
     );
 
 
-    y += 10;
+    doc.setFont(
+        undefined,
+        'bold'
+    );
 
 
-    // ------------------------------------------
-    // Taxa de entrega
-    // ------------------------------------------
-
-    if (d.entrVal > 0) {
-
-        doc.setFontSize(10);
+    doc.text(
+        'APARELHO',
+        17,
+        y + 20
+    );
 
 
-        doc.setFont(
-            "helvetica",
-            "normal"
-        );
+    doc.setFont(
+        undefined,
+        'normal'
+    );
 
 
-        doc.setTextColor(
-            cinzaEscuro[0],
-            cinzaEscuro[1],
-            cinzaEscuro[2]
-        );
+    doc.text(
+        limitarTexto(
+            [
+                d.tipoVal,
+                d.marcaVal,
+                d.modeloVal
+            ]
+            .filter(Boolean)
+            .join(' ') ||
+            'Não informado',
+            95
+        ),
+        17,
+        y + 26
+    );
 
 
-        doc.text(
-            "Taxa de Entrega/Busca:",
-            140,
-            y
-        );
+    y += 38;
 
 
-        doc.text(
-            `R$ ${d.entrVal.toFixed(2)}`,
-            195,
-            y,
-            {
-                align: "right"
+    // TABELA
+
+    const linhas =
+        (d.itens || [])
+        .map(
+            (item, index) => {
+
+                const mao =
+                    calcularMaoDeObra(
+                        item,
+                        index,
+                        d.urgenciaVal
+                    );
+
+
+                return [
+
+                    index + 1,
+
+                    item.descricao ||
+                    item.nomeServico ||
+                    'Serviço',
+
+                    `R$ ${formatarMoeda(mao)}`,
+
+                    Number(
+                        item.valorPecaFinal || 0
+                    ) > 0
+                        ? `R$ ${formatarMoeda(
+                            item.valorPecaFinal
+                        )}`
+                        : '-',
+
+                    `R$ ${formatarMoeda(
+                        item.valorFinalItem
+                    )}`
+
+                ];
             }
         );
 
 
-        y += 7;
+    if (
+        typeof doc.autoTable ===
+        'function'
+    ) {
+
+        doc.autoTable({
+
+            startY: y,
+
+            head: [[
+                '#',
+                'Serviço',
+                'Mão de Obra',
+                'Peça',
+                'Total'
+            ]],
+
+            body: linhas,
+
+            theme: 'grid',
+
+            headStyles: {
+
+                fillColor:
+                    azul,
+
+                textColor:
+                    255,
+
+                fontStyle:
+                    'bold'
+
+            },
+
+            styles: {
+
+                fontSize:
+                    8.5,
+
+                cellPadding:
+                    3,
+
+                textColor:
+                    cinza
+
+            },
+
+            margin: {
+
+                left:
+                    12,
+
+                right:
+                    12
+
+            }
+
+        });
+
+
+        y =
+            doc.lastAutoTable.finalY +
+            10;
 
     }
 
 
-    // ------------------------------------------
-    // Total
-    // ------------------------------------------
+    // TOTAL
 
-    doc.setFontSize(14);
+    if (y > 245) {
+
+        doc.addPage();
+
+        y = 20;
+    }
 
 
-    doc.setFont(
-        "helvetica",
-        "bold"
+    doc.setFillColor(
+        ...claro
+    );
+
+
+    doc.roundedRect(
+        118,
+        y,
+        80,
+        32,
+        3,
+        3,
+        'F'
     );
 
 
     doc.setTextColor(
-        azulPrimario[0],
-        azulPrimario[1],
-        azulPrimario[2]
+        ...cinza
+    );
+
+
+    doc.setFontSize(9);
+
+    doc.setFont(
+        undefined,
+        'normal'
     );
 
 
     doc.text(
-        "VALOR TOTAL:",
-        120,
-        y + 5
+        'Subtotal serviços:',
+        123,
+        y + 8
     );
 
 
     doc.text(
-        `R$ ${totalFinal.toFixed(2)}`,
-        195,
-        y + 5,
+        `R$ ${formatarMoeda(
+            totalServicos
+        )}`,
+        193,
+        y + 8,
         {
-            align: "right"
+            align:
+                'right'
         }
     );
 
 
-    // ================================================================
-    // RODAPÉ
-    // ================================================================
+    doc.text(
+        'Entrega:',
+        123,
+        y + 16
+    );
 
-    const alturaPagina =
-        doc.internal.pageSize.getHeight();
+
+    doc.text(
+        `R$ ${formatarMoeda(
+            entrega
+        )}`,
+        193,
+        y + 16,
+        {
+            align:
+                'right'
+        }
+    );
 
 
-    const yRodape =
-        alturaPagina - 27;
+    doc.setFontSize(12);
+
+    doc.setFont(
+        undefined,
+        'bold'
+    );
+
+
+    doc.text(
+        'TOTAL:',
+        123,
+        y + 26
+    );
+
+
+    doc.text(
+        `R$ ${formatarMoeda(
+            total
+        )}`,
+        193,
+        y + 26,
+        {
+            align:
+                'right'
+        }
+    );
+
+
+    const altura =
+        doc.internal.pageSize
+            .getHeight();
 
 
     doc.setDrawColor(
-        200,
-        200,
-        200
+        ...azul
     );
 
 
     doc.line(
-        10,
-        yRodape,
-        200,
-        yRodape
+        15,
+        altura - 28,
+        195,
+        altura - 28
     );
 
 
     doc.setFontSize(8);
 
-
-    doc.setTextColor(
-        100,
-        116,
-        139
-    );
-
-
     doc.setFont(
-        "helvetica",
-        "italic"
-    );
-
-
-    const garantia =
-        "Garantia legal de 90 dias sobre o serviço realizado. Orçamento válido por 5 dias.";
-
-
-    doc.text(
-        garantia,
-        105,
-        yRodape + 7,
-        {
-            align: "center"
-        }
-    );
-
-
-    doc.setFont(
-        "helvetica",
-        "bold"
+        undefined,
+        'normal'
     );
 
 
     doc.text(
-        "Obrigado pela confiança!",
-        105,
-        yRodape + 12,
+        'Garantia legal de 90 dias sobre o serviço realizado.',
+        15,
+        altura - 20
+    );
+
+
+    doc.text(
+        'Orçamento válido por 5 dias.',
+        15,
+        altura - 15
+    );
+
+
+    doc.text(
+        'Obrigado pela confiança!',
+        195,
+        altura - 15,
         {
-            align: "center"
+            align:
+                'right'
         }
     );
 
 
-    // ================================================================
-    // SALVAR PDF
-    // ================================================================
-
-    let nomeArquivo =
-        d.nomeVal ||
-        "Cliente";
-
-
-    nomeArquivo =
-        nomeArquivo
-            .replace(/[\\/:*?"<>|]/g, '')
-            .replace(/\s+/g, '_');
-
-
-    if (!nomeArquivo) {
-        nomeArquivo = "Cliente";
-    }
+    const nomeArquivo =
+        sanitizarNomeArquivo(
+            d.nomeVal ||
+            'Cliente'
+        );
 
 
     doc.save(
-        `Orcamento_${nomeArquivo}.pdf`
+        `Orcamento_${d.numero || 'novo'}_${nomeArquivo}.pdf`
     );
-
 }
 
 
-// ==========================================
-// 12. ENVIAR WHATSAPP
-// ==========================================
+// ============================================================
+// WHATSAPP
+// ============================================================
 
 function enviarWhatsApp() {
-
-    // ------------------------------------------
-    // Verifica serviços
-    // ------------------------------------------
 
     if (itensOrcamento.length === 0) {
 
         alert(
-            "Adicione pelo menos um serviço para enviar."
+            'Adicione pelo menos um serviço para enviar.'
         );
 
         return;
-
     }
 
-
-    // ------------------------------------------
-    // Captura dados
-    // ------------------------------------------
 
     const d =
         capturaDados();
 
 
-    // ------------------------------------------
-    // Soma
-    // ------------------------------------------
+    enviarWhatsAppComDados({
 
-    let somaItens = 0;
+        ...d,
 
+        numero:
+            obterNumeroAtual(),
 
-    itensOrcamento.forEach(
-        item => {
+        itens:
+            itensOrcamento
 
-            somaItens +=
-                item.valorFinalItem;
-
-        }
-    );
+    });
+}
 
 
-    const totalFinal =
-        somaItens +
-        d.entrVal;
+function enviarWhatsAppSalvo(id) {
+
+    const lista =
+        obterOrcamentosSalvos();
 
 
-    // ------------------------------------------
-    // Monta mensagem
-    // ------------------------------------------
-
-    let mensagem =
-        "*DIGITAL UNIVERSE*\n";
-
-    mensagem +=
-        "*ORÇAMENTO DE SERVIÇO*\n\n";
+    const orcamento =
+        lista.find(
+            item =>
+                String(item.id) ===
+                String(id)
+        );
 
 
-    // ------------------------------------------
-    // Cliente
-    // ------------------------------------------
+    if (!orcamento) {
 
-    mensagem +=
-        `*Cliente:* ${d.nomeVal || "Não informado"}\n`;
+        alert(
+            'Orçamento não encontrado.'
+        );
 
-
-    mensagem +=
-        `*Telefone:* ${d.telefoneVal || "Não informado"}\n`;
-
-
-    // ------------------------------------------
-    // Aparelho
-    // ------------------------------------------
-
-    const aparelho =
-        [
-            d.tipoVal,
-            d.marcaVal,
-            d.modeloVal
-        ]
-        .filter(Boolean)
-        .join(" ");
-
-
-    mensagem +=
-        `*Aparelho:* ${aparelho || "Não informado"}\n\n`;
-
-
-    mensagem +=
-        "*SERVIÇOS:*\n\n";
-
-
-    // ------------------------------------------
-    // Itens
-    // ------------------------------------------
-
-    itensOrcamento.forEach(
-        item => {
-
-            mensagem +=
-                `• ${item.descricao}\n`;
-
-            mensagem +=
-                `  Valor: R$ ${item.valorFinalItem.toFixed(2)}\n`;
-
-
-
-            if (item.teveDesconto) {
-
-                mensagem +=
-                    `  ${item.textoDesconto}\n`;
-
-            }
-
-
-            mensagem += "\n";
-
-        }
-    );
-
-
-    // ------------------------------------------
-    // Entrega
-    // ------------------------------------------
-
-    if (d.entrVal > 0) {
-
-        mensagem +=
-            `*Taxa de Entrega/Busca:* R$ ${d.entrVal.toFixed(2)}\n`;
-
+        return;
     }
 
 
-    // ------------------------------------------
-    // Total
-    // ------------------------------------------
+    enviarWhatsAppComDados({
+
+        nomeVal:
+            orcamento.cliente?.nome || '',
+
+        telefoneVal:
+            orcamento.cliente?.telefone || '',
+
+        tipoVal:
+            orcamento.aparelho?.tipo || '',
+
+        marcaVal:
+            orcamento.aparelho?.marca || '',
+
+        modeloVal:
+            orcamento.aparelho?.modelo || '',
+
+        entrVal:
+            Number(
+                orcamento.entrega || 0
+            ),
+
+        urgenciaVal:
+            Boolean(
+                orcamento.urgencia
+            ),
+
+        numero:
+            orcamento.numero,
+
+        itens:
+            orcamento.itens || []
+
+    });
+}
+
+
+function enviarWhatsAppComDados(d) {
+
+    let mensagem = '';
+
 
     mensagem +=
-        `\n*VALOR TOTAL: R$ ${totalFinal.toFixed(2)}*\n\n`;
+        '*DIGITAL UNIVERSE*\n';
+
+    mensagem +=
+        `*ORÇAMENTO Nº ${d.numero || '---'}*\n\n`;
+
+
+    if (d.nomeVal) {
+
+        mensagem +=
+            `*Cliente:* ${d.nomeVal}\n`;
+    }
+
+
+    if (d.telefoneVal) {
+
+        mensagem +=
+            `*Contato:* ${d.telefoneVal}\n`;
+    }
+
+
+    const aparelho = [
+
+        d.tipoVal,
+        d.marcaVal,
+        d.modeloVal
+
+    ]
+    .filter(Boolean)
+    .join(' ');
+
+
+    if (aparelho) {
+
+        mensagem +=
+            `*Aparelho:* ${aparelho}\n`;
+    }
 
 
     mensagem +=
-        "Orçamento válido por 5 dias.";
+        '\n*SERVIÇOS:*\n';
 
 
-    // ------------------------------------------
-    // Codifica mensagem
-    // ------------------------------------------
+    let total =
+        0;
 
-    const textoCodificado =
+
+    d.itens.forEach(
+        (item, index) => {
+
+            mensagem +=
+                `\n${index + 1}. ${item.descricao}\n`;
+
+
+            const mao =
+                calcularMaoDeObra(
+                    item,
+                    index,
+                    d.urgenciaVal
+                );
+
+
+            mensagem +=
+                `   Mão de obra: R$ ${formatarMoeda(mao)}\n`;
+
+
+            if (
+                Number(
+                    item.valorPecaFinal || 0
+                ) > 0
+            ) {
+
+                mensagem +=
+                    `   Peça: R$ ${formatarMoeda(
+                        item.valorPecaFinal
+                    )}\n`;
+            }
+
+
+            mensagem +=
+                `   Total: R$ ${formatarMoeda(
+                    item.valorFinalItem
+                )}\n`;
+
+
+            total +=
+                Number(
+                    item.valorFinalItem || 0
+                );
+        }
+    );
+
+
+    const entrega =
+        Number(
+            d.entrVal || 0
+        );
+
+
+    total +=
+        entrega;
+
+
+    if (entrega > 0) {
+
+        mensagem +=
+            `\n*Taxa de entrega:* R$ ${formatarMoeda(
+                entrega
+            )}\n`;
+    }
+
+
+    if (d.urgenciaVal) {
+
+        mensagem +=
+            '*Taxa de urgência:* +20% na mão de obra\n';
+    }
+
+
+    mensagem +=
+        `\n*TOTAL: R$ ${formatarMoeda(total)}*\n\n`;
+
+
+    mensagem +=
+        'Orçamento válido por 5 dias.\n';
+
+
+    mensagem +=
+        'Garantia legal de 90 dias sobre o serviço realizado.\n\n';
+
+
+    mensagem +=
+        'Obrigado pela confiança!';
+
+
+    const texto =
         encodeURIComponent(
             mensagem
         );
 
 
-    // ------------------------------------------
-    // Número do WhatsApp
-    // ------------------------------------------
-
-    let telefone =
-        d.telefoneVal
-            ? d.telefoneVal.replace(
-                /\D/g,
-                ''
-            )
-            : '';
+    const telefone =
+        normalizarTelefone(
+            d.telefoneVal
+        );
 
 
-    /*
-     * Se o número tiver 10 ou 11 dígitos,
-     * adiciona o código do Brasil (55).
-     */
+    const url =
+        telefone
+            ? `https://wa.me/${telefone}?text=${texto}`
+            : `https://wa.me/?text=${texto}`;
 
-    if (
-        telefone.length === 10 ||
-        telefone.length === 11
-    ) {
-
-        telefone =
-            '55' +
-            telefone;
-
-    }
-
-
-    // ------------------------------------------
-    // URL
-    // ------------------------------------------
-
-    let url;
-
-
-    if (telefone) {
-
-        url =
-            `https://wa.me/${telefone}?text=${textoCodificado}`;
-
-    } else {
-
-        url =
-            `https://wa.me/?text=${textoCodificado}`;
-
-    }
-
-
-    // ------------------------------------------
-    // Abre WhatsApp
-    // ------------------------------------------
 
     window.open(
         url,
         '_blank'
     );
+}
 
+
+// ============================================================
+// FUNÇÕES AUXILIARES
+// ============================================================
+
+function calcularMaoDeObra(
+    item,
+    index,
+    urgencia
+) {
+
+    const desconto =
+        obterDescontoCombo(
+            index + 1
+        );
+
+
+    let valor =
+        Number(
+            item.maoDeObraBase || 0
+        ) *
+        (1 - desconto);
+
+
+    if (urgencia)
+        valor *= 1.20;
+
+
+    return valor;
+}
+
+
+function obterNumeroAtual() {
+
+    if (
+        orcamentoAtualId !== null
+    ) {
+
+        const lista =
+            obterOrcamentosSalvos();
+
+
+        const atual =
+            lista.find(
+                item =>
+                    item.id ===
+                    orcamentoAtualId
+            );
+
+
+        if (atual)
+            return atual.numero;
+    }
+
+
+    return 'NOVO';
+}
+
+
+function normalizarTelefone(telefone) {
+
+    let numero =
+        String(
+            telefone || ''
+        )
+        .replace(
+            /\D/g,
+            ''
+        );
+
+
+    if (!numero)
+        return '';
+
+
+    if (
+        numero.startsWith('55')
+    )
+        return numero;
+
+
+    if (
+        numero.length === 10 ||
+        numero.length === 11
+    )
+        return '55' + numero;
+
+
+    return numero;
+}
+
+
+function gerarIdUnico() {
+
+    return (
+        Date.now().toString(36) +
+        Math.random()
+            .toString(36)
+            .substring(2, 9)
+    );
+}
+
+
+function formatarMoeda(valor) {
+
+    return Number(
+        valor || 0
+    )
+    .toFixed(2)
+    .replace(
+        '.',
+        ','
+    );
+}
+
+
+function formatarData(data) {
+
+    if (!data)
+        return '';
+
+
+    const d =
+        new Date(data);
+
+
+    if (
+        Number.isNaN(
+            d.getTime()
+        )
+    )
+        return '';
+
+
+    return d.toLocaleString(
+        'pt-BR'
+    );
+}
+
+
+function sanitizarNomeArquivo(nome) {
+
+    return String(
+        nome || 'Cliente'
+    )
+    .normalize('NFD')
+    .replace(
+        /[\u0300-\u036f]/g,
+        ''
+    )
+    .replace(
+        /[^a-zA-Z0-9_-]+/g,
+        '_'
+    )
+    .replace(
+        /^_+|_+$/g,
+        ''
+    )
+    .substring(
+        0,
+        50
+    ) || 'Cliente';
+}
+
+
+function limitarTexto(
+    texto,
+    tamanho
+) {
+
+    texto =
+        String(
+            texto || ''
+        );
+
+
+    if (
+        texto.length <= tamanho
+    )
+        return texto;
+
+
+    return (
+        texto.substring(
+            0,
+            tamanho - 3
+        ) +
+        '...'
+    );
+}
+
+
+function escapeHtml(texto) {
+
+    return String(
+        texto ?? ''
+    )
+    .replace(
+        /&/g,
+        '&amp;'
+    )
+    .replace(
+        /</g,
+        '&lt;'
+    )
+    .replace(
+        />/g,
+        '&gt;'
+    )
+    .replace(
+        /"/g,
+        '&quot;'
+    )
+    .replace(
+        /'/g,
+        '&#039;'
+    );
+}
+
+
+function mostrarStatus(
+    mensagem,
+    erro = false
+) {
+
+    const status =
+        document.getElementById(
+            'status'
+        );
+
+
+    if (!status)
+        return;
+
+
+    status.textContent =
+        mensagem;
+
+
+    status.className =
+        erro
+            ? 'status erro'
+            : 'status ok';
+
+
+    clearTimeout(
+        window.statusTimer
+    );
+
+
+    window.statusTimer =
+        setTimeout(
+            () => {
+
+                status.className =
+                    'status';
+
+                status.textContent =
+                    '';
+
+            },
+            4000
+        );
 }

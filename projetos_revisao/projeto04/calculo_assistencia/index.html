@@ -4,85 +4,70 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Sistema de Orçamentos</title>
+    <title>DIGITAL UNIVERSE - Orçamentos</title>
 
-    <!-- Bootstrap Icons -->
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
-    >
-
-    <!-- jsPDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6;
+            background: #f4f7f6;
             padding: 20px;
             margin: 0;
+            color: #1e293b;
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1100px;
             margin: 0 auto;
             background: #fff;
             padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,.08);
         }
 
         h2 {
-            color: #333;
-            border-bottom: 2px solid #007BFF;
+            color: #1e3a8a;
+            border-bottom: 2px solid #2563eb;
             padding-bottom: 10px;
-            margin-bottom: 20px;
+            margin: 0 0 20px;
         }
 
         h3 {
-            color: #333;
+            margin-top: 0;
+        }
+
+        .section {
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 18px;
+            margin-bottom: 20px;
+            background: #fff;
         }
 
         .section-title {
-            margin-top: 25px;
+            font-size: 1.05rem;
+            font-weight: 700;
             margin-bottom: 15px;
-            color: #333;
-            font-size: 18px;
+            color: #334155;
         }
 
         .cascading-group {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 15px;
             margin-bottom: 20px;
         }
 
-        .input-group {
-            min-width: 0;
-        }
-
-        .input-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #555;
-        }
-
-        select,
-        input[type="number"],
-        input[type="text"],
-        input[type="tel"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-            font-size: 15px;
-        }
-
-        select:disabled {
-            background-color: #e9ecef;
-            cursor: not-allowed;
+        .client-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
         }
 
         .form-row {
@@ -91,142 +76,33 @@
             margin-bottom: 20px;
         }
 
-        .form-row .input-group {
+        .input-group {
             flex: 1;
         }
 
-        .cliente-box {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 18px;
-            margin-bottom: 20px;
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #475569;
         }
 
-        .cliente-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 15px;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            color: #fff;
-            transition: 0.3s;
-        }
-
-        .btn-primary {
-            background-color: #007BFF;
+        select,
+        input[type="number"],
+        input[type="text"],
+        input[type="tel"],
+        input[type="search"] {
             width: 100%;
-            font-size: 1.1em;
-            margin-bottom: 15px;
+            padding: 10px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 15px;
+            background: #fff;
         }
 
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
-
-        .btn-danger {
-            background-color: #dc3545;
-            padding: 5px 10px;
-            font-size: 0.9em;
-        }
-
-        .btn-danger:hover {
-            background-color: #bb2d3b;
-        }
-
-        .btn-success {
-            background-color: #28a745;
-        }
-
-        .btn-success:hover {
-            background-color: #218838;
-        }
-
-        .btn-pdf {
-            background-color: #dc3545;
-        }
-
-        .btn-pdf:hover {
-            background-color: #bb2d3b;
-        }
-
-        #erro {
-            color: #dc3545;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 15px;
-            min-height: 20px;
-        }
-
-        .carrinho {
-            margin-top: 30px;
-            border-top: 2px dashed #ccc;
-            padding-top: 20px;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        li {
-            background: #f8f9fa;
-            margin-bottom: 10px;
-            padding: 15px;
-            border-left: 4px solid #007BFF;
-            border-radius: 4px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .item-detalhes {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            min-width: 0;
-        }
-
-        .item-nome {
-            font-weight: bold;
-            font-size: 1.1em;
-            color: #333;
-        }
-
-        .item-valores {
-            font-size: 0.9em;
-            color: #666;
-        }
-
-        .badge-desconto {
-            background: #28a745;
-            color: white;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 0.8em;
-            margin-left: 10px;
-        }
-
-        .resumo-total {
-            font-size: 1.5em;
-            font-weight: bold;
-            text-align: right;
-            margin-top: 20px;
-            color: #333;
-        }
-
-        .acoes-finais {
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-            margin-top: 20px;
+        select:disabled {
+            background: #e9ecef;
+            cursor: not-allowed;
         }
 
         .urgencia-group {
@@ -240,14 +116,250 @@
 
         .urgencia-group input {
             width: auto;
-            transform: scale(1.5);
+            transform: scale(1.35);
         }
 
-        .info-entrega {
-            margin-bottom: 20px;
+        .btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 700;
+            color: #fff;
+            transition: .2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
         }
 
-        @media (max-width: 650px) {
+        .btn:hover {
+            filter: brightness(.92);
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            width: 100%;
+            font-size: 1.05em;
+            margin-bottom: 15px;
+        }
+
+        .btn-secondary {
+            background: #64748b;
+        }
+
+        .btn-success {
+            background: #16a34a;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+        }
+
+        .btn-warning {
+            background: #d97706;
+        }
+
+        .btn-dark {
+            background: #334155;
+        }
+
+        .btn-small {
+            padding: 7px 10px;
+            font-size: .85rem;
+        }
+
+        #erro {
+            color: #dc3545;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 15px;
+            min-height: 20px;
+        }
+
+        .carrinho {
+            margin-top: 25px;
+            border-top: 2px dashed #cbd5e1;
+            padding-top: 20px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .item-orcamento {
+            background: #f8fafc;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-left: 4px solid #2563eb;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .item-detalhes {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .item-nome {
+            font-weight: bold;
+            font-size: 1.05em;
+            color: #334155;
+        }
+
+        .item-valores {
+            font-size: .9em;
+            color: #64748b;
+        }
+
+        .badge-desconto {
+            background: #16a34a;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: .8em;
+            margin-left: 8px;
+        }
+
+        .resumo-total {
+            font-size: 1.5em;
+            font-weight: bold;
+            text-align: right;
+            margin-top: 20px;
+            color: #1e293b;
+        }
+
+        .acoes-finais {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .acoes-finais .btn {
+            min-width: 150px;
+        }
+
+        .orcamentos-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .orcamentos-header h3 {
+            margin: 0;
+        }
+
+        .busca {
+            flex: 1;
+            min-width: 240px;
+            max-width: 400px;
+        }
+
+        .lista-salvos {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .orcamento-salvo {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 14px;
+            background: #f8fafc;
+        }
+
+        .orcamento-info {
+            display: grid;
+            grid-template-columns: 100px 1fr 1fr 130px;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .orcamento-numero {
+            font-weight: 800;
+            color: #2563eb;
+        }
+
+        .orcamento-cliente {
+            font-weight: 700;
+        }
+
+        .orcamento-meta {
+            color: #64748b;
+            font-size: .88rem;
+        }
+
+        .orcamento-total {
+            font-weight: 800;
+            text-align: right;
+        }
+
+        .orcamento-acoes {
+            display: flex;
+            gap: 7px;
+            justify-content: flex-end;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .vazio {
+            color: #64748b;
+            text-align: center;
+            padding: 25px 10px;
+        }
+
+        .status {
+            padding: 9px 12px;
+            border-radius: 6px;
+            margin: 10px 0 0;
+            display: none;
+            font-weight: 600;
+        }
+
+        .status.ok {
+            display: block;
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status.erro {
+            display: block;
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .nota-storage {
+            font-size: .85rem;
+            color: #64748b;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 800px) {
+            .cascading-group {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .orcamento-info {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .orcamento-total {
+                text-align: left;
+            }
+        }
+
+        @media (max-width: 600px) {
             body {
                 padding: 10px;
             }
@@ -256,7 +368,8 @@
                 padding: 15px;
             }
 
-            .cliente-grid {
+            .cascading-group,
+            .client-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -264,12 +377,12 @@
                 flex-direction: column;
             }
 
-            li {
-                flex-direction: column;
+            .item-orcamento {
                 align-items: flex-start;
+                flex-direction: column;
             }
 
-            li .btn-danger {
+            .item-orcamento .btn {
                 width: 100%;
             }
 
@@ -279,6 +392,14 @@
 
             .acoes-finais .btn {
                 width: 100%;
+            }
+
+            .orcamento-info {
+                grid-template-columns: 1fr;
+            }
+
+            .orcamento-total {
+                text-align: left;
             }
         }
     </style>
@@ -290,269 +411,208 @@
 
     <h2>
         <i class="bi bi-tools"></i>
-        Orçamento
+        DIGITAL UNIVERSE — Orçamento
     </h2>
 
-    <!-- ========================================================= -->
-    <!-- DADOS DO CLIENTE -->
-    <!-- ========================================================= -->
+    <!-- ================================================= -->
+    <!-- CLIENTE -->
+    <!-- ================================================= -->
 
-    <div class="cliente-box">
+    <div class="section">
 
         <div class="section-title">
             <i class="bi bi-person"></i>
             Dados do Cliente
         </div>
 
-        <div class="cliente-grid">
+        <div class="client-grid">
 
             <div class="input-group">
-                <label for="nome">
-                    <i class="bi bi-person-fill"></i>
-                    Nome do Cliente
-                </label>
+                <label for="nome">Nome do Cliente</label>
 
                 <input
                     type="text"
                     id="nome"
-                    placeholder="Digite o nome do cliente"
-                >
+                    placeholder="Nome completo">
             </div>
 
             <div class="input-group">
-                <label for="telefone">
-                    <i class="bi bi-whatsapp"></i>
-                    Telefone / WhatsApp
-                </label>
+                <label for="telefone">WhatsApp / Telefone</label>
 
                 <input
                     type="tel"
                     id="telefone"
-                    placeholder="(31) 99999-9999"
-                >
+                    placeholder="(31) 99999-9999">
             </div>
 
         </div>
 
     </div>
 
-
-    <!-- ========================================================= -->
+    <!-- ================================================= -->
     <!-- APARELHO -->
-    <!-- ========================================================= -->
+    <!-- ================================================= -->
 
-    <div class="section-title">
-        <i class="bi bi-phone"></i>
-        Dados do Aparelho e Serviço
-    </div>
+    <div class="section">
 
-    <!-- Grupo Cascading: Tipo > Marca > Modelo > Serviço -->
+        <div class="section-title">
+            <i class="bi bi-display"></i>
+            Aparelho e Serviço
+        </div>
 
-    <div class="cascading-group">
+        <div class="cascading-group">
 
-        <div class="input-group">
+            <div class="input-group">
 
-            <label for="tipoAparelho">
-                <i class="bi bi-display"></i>
-                1. Tipo
-            </label>
+                <label for="tipoAparelho">
+                    1. Tipo
+                </label>
 
-            <select id="tipoAparelho">
+                <select id="tipoAparelho">
 
-                <option value="">
-                    Selecione o Tipo...
-                </option>
+                    <option value="">
+                        Selecione o Tipo...
+                    </option>
 
-            </select>
+                </select>
+
+            </div>
+
+            <div class="input-group">
+
+                <label for="marcaAparelho">
+                    2. Marca
+                </label>
+
+                <select id="marcaAparelho" disabled>
+
+                    <option value="">
+                        Selecione a Marca...
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="input-group">
+
+                <label for="modeloAparelho">
+                    3. Modelo
+                </label>
+
+                <select id="modeloAparelho" disabled>
+
+                    <option value="">
+                        Selecione o Modelo...
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="input-group">
+
+                <label for="servicoAparelho">
+                    4. Serviço
+                </label>
+
+                <select id="servicoAparelho" disabled>
+
+                    <option value="">
+                        Selecione o Serviço...
+                    </option>
+
+                </select>
+
+            </div>
 
         </div>
 
+        <div class="form-row">
 
-        <div class="input-group">
+            <div class="input-group">
 
-            <label for="marcaAparelho">
-                <i class="bi bi-tags"></i>
-                2. Marca
-            </label>
+                <label for="risco">
+                    Nível de Risco
+                </label>
 
-            <select
-                id="marcaAparelho"
-                disabled
-            >
+                <select id="risco">
 
-                <option value="">
-                    Selecione a Marca...
-                </option>
+                    <option value="0">
+                        Baixo (Cobra Valor Máximo)
+                    </option>
 
-            </select>
+                    <option value="1">
+                        Alto (Cobra Média Max/Min)
+                    </option>
 
-        </div>
+                </select>
 
+            </div>
 
-        <div class="input-group">
+            <div class="input-group">
 
-            <label for="modeloAparelho">
-                <i class="bi bi-phone"></i>
-                3. Modelo
-            </label>
+                <label for="peca">
+                    Custo da Peça (R$)
+                </label>
 
-            <select
-                id="modeloAparelho"
-                disabled
-            >
+                <input
+                    type="number"
+                    id="peca"
+                    placeholder="Ex: 120.50"
+                    step="0.01"
+                    min="0">
 
-                <option value="">
-                    Selecione o Modelo...
-                </option>
+            </div>
 
-            </select>
+            <div class="input-group">
 
-        </div>
+                <label for="entrega">
+                    Taxa de Entrega (R$)
+                </label>
 
+                <input
+                    type="number"
+                    id="entrega"
+                    placeholder="0.00"
+                    step="0.01"
+                    min="0"
+                    value="0">
 
-        <div class="input-group">
-
-            <label for="servicoAparelho">
-                <i class="bi bi-wrench"></i>
-                4. Serviço
-            </label>
-
-            <select
-                id="servicoAparelho"
-                disabled
-            >
-
-                <option value="">
-                    Selecione o Serviço...
-                </option>
-
-            </select>
+            </div>
 
         </div>
 
-    </div>
-
-
-    <!-- ========================================================= -->
-    <!-- DADOS FINANCEIROS -->
-    <!-- ========================================================= -->
-
-    <div class="section-title">
-        <i class="bi bi-cash-stack"></i>
-        Dados Financeiros
-    </div>
-
-    <div class="form-row">
-
-        <div class="input-group">
-
-            <label for="risco">
-                <i class="bi bi-exclamation-triangle"></i>
-                Nível de Risco
-            </label>
-
-            <select id="risco">
-
-                <option value="0">
-                    Baixo (Cobra Valor Máximo)
-                </option>
-
-                <option value="1">
-                    Alto (Cobra Média Max/Min)
-                </option>
-
-            </select>
-
-        </div>
-
-
-        <div class="input-group">
-
-            <label for="peca">
-                <i class="bi bi-currency-dollar"></i>
-                Custo da Peça (R$)
-            </label>
+        <div class="urgencia-group">
 
             <input
-                type="number"
-                id="peca"
-                placeholder="Ex: 120.50"
-                step="0.01"
-                min="0"
-            >
+                type="checkbox"
+                id="urgencia">
 
-        </div>
-
-    </div>
-
-
-    <!-- ========================================================= -->
-    <!-- ENTREGA / BUSCA -->
-    <!-- ========================================================= -->
-
-    <div class="form-row info-entrega">
-
-        <div class="input-group">
-
-            <label for="entrega">
-                <i class="bi bi-truck"></i>
-                Taxa de Entrega/Busca (R$)
+            <label for="urgencia">
+                Aplicar Taxa de Urgência
+                (+20% na mão de obra)
             </label>
 
-            <input
-                type="number"
-                id="entrega"
-                placeholder="Ex: 20.00"
-                step="0.01"
-                min="0"
-                value="0"
-            >
-
         </div>
 
-    </div>
+        <div id="erro"></div>
 
+        <button
+            class="btn btn-primary"
+            onclick="inserir()">
 
-    <!-- ========================================================= -->
-    <!-- URGÊNCIA -->
-    <!-- ========================================================= -->
+            <i class="bi bi-plus-circle"></i>
 
-    <div class="urgencia-group">
+            Adicionar ao Orçamento
 
-        <input
-            type="checkbox"
-            id="urgencia"
-        >
-
-        <label for="urgencia">
-            Aplicar Taxa de Urgência
-            (Adiciona 20% na mão de obra)
-        </label>
+        </button>
 
     </div>
 
-
-    <div id="erro"></div>
-
-
-    <!-- ========================================================= -->
-    <!-- ADICIONAR -->
-    <!-- ========================================================= -->
-
-    <button
-        class="btn btn-primary"
-        onclick="inserir()"
-    >
-
-        <i class="bi bi-plus-circle"></i>
-        Adicionar ao Orçamento
-
-    </button>
-
-
-    <!-- ========================================================= -->
-    <!-- RESUMO -->
-    <!-- ========================================================= -->
+    <!-- ================================================= -->
+    <!-- ORÇAMENTO ATUAL -->
+    <!-- ================================================= -->
 
     <div class="carrinho">
 
@@ -561,67 +621,121 @@
             Serviços Adicionados
         </h3>
 
-        <ul id="listaOrcamento">
-            <!-- Itens inseridos via JS -->
-        </ul>
-
+        <ul id="listaOrcamento"></ul>
 
         <div class="resumo-total">
 
-            Total Estimado:
+            Total:
             R$
 
             <span id="valorTotal">
-                0.00
+                0,00
             </span>
 
         </div>
 
-
-        <!-- ===================================================== -->
-        <!-- AÇÕES -->
-        <!-- ===================================================== -->
+        <div id="status" class="status"></div>
 
         <div class="acoes-finais">
- 
-    <button
-        class="btn"
-        style="background-color: #6c757d;"
-        onclick="novoOrcamento()"
-    >
-        <i class="bi bi-file-earmark-plus"></i>
-        Novo Orçamento
-    </button>
- 
-    <button
-        class="btn btn-success"
-        onclick="enviarWhatsApp()"
-    >
-        <i class="bi bi-whatsapp"></i>
-        Enviar WhatsApp
-    </button>
- 
-    <button
-        class="btn btn-pdf"
-        onclick="gerarPDF()"
-    >
-        <i class="bi bi-file-pdf"></i>
-        Gerar PDF
-    </button>
- 
-</div>
+
+            <button
+                class="btn btn-secondary"
+                onclick="novoOrcamento()">
+
+                <i class="bi bi-file-earmark-plus"></i>
+                Novo Orçamento
+
+            </button>
+
+            <button
+                class="btn btn-warning"
+                onclick="salvarOrcamento()">
+
+                <i class="bi bi-save"></i>
+                Salvar Orçamento
+
+            </button>
+
+            <button
+                class="btn btn-success"
+                onclick="enviarWhatsApp()">
+
+                <i class="bi bi-whatsapp"></i>
+                WhatsApp
+
+            </button>
+
+            <button
+                class="btn btn-danger"
+                onclick="gerarPDF()">
+
+                <i class="bi bi-file-pdf"></i>
+                Gerar PDF
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- ================================================= -->
+    <!-- ORÇAMENTOS SALVOS -->
+    <!-- ================================================= -->
+
+    <div class="section" style="margin-top:30px;">
+
+        <div class="orcamentos-header">
+
+            <h3>
+                <i class="bi bi-folder2-open"></i>
+                Orçamentos Salvos
+            </h3>
+
+            <input
+                type="search"
+                id="buscaOrcamentos"
+                class="busca"
+                placeholder="Pesquisar por nº, cliente, telefone ou aparelho..."
+                oninput="renderizarOrcamentosSalvos()">
+
+        </div>
+
+        <div
+            id="listaOrcamentosSalvos"
+            class="lista-salvos">
+
+        </div>
+
+        <div class="nota-storage">
+
+            <i class="bi bi-info-circle"></i>
+
+            Os orçamentos ficam armazenados neste navegador/dispositivo.
+
+        </div>
 
     </div>
 
 </div>
 
+<!-- ================================================= -->
+<!-- DADOS -->
+<!-- ================================================= -->
 
-<!-- ============================================================= -->
-<!-- ORDEM DOS SCRIPTS -->
-<!-- ============================================================= -->
-
-<!-- dados.js precisa vir antes do script.js -->
 <script src="dados.js"></script>
+
+<!-- ================================================= -->
+<!-- PDF -->
+<!-- ================================================= -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
+<!-- ================================================= -->
+<!-- SISTEMA -->
+<!-- ================================================= -->
+
 <script src="script.js"></script>
 
 </body>
