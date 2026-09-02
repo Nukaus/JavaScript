@@ -674,6 +674,180 @@ function atualizarResumoVisual(
 
 }
 
+// ==========================================
+// NOVO ORÇAMENTO
+// ==========================================
+ 
+function novoOrcamento() {
+ 
+    // Se já existe um orçamento, pede confirmação
+    if (itensOrcamento.length > 0) {
+ 
+        const confirmar = confirm(
+            "Deseja iniciar um novo orçamento?\n\n" +
+            "O orçamento atual será apagado."
+        );
+ 
+        if (!confirmar) {
+            return;
+        }
+    }
+ 
+ 
+    // ------------------------------------------
+    // Limpa os itens do orçamento
+    // ------------------------------------------
+ 
+    itensOrcamento = [];
+ 
+ 
+    // ------------------------------------------
+    // Limpa dados do cliente
+    // ------------------------------------------
+ 
+    const nome =
+        document.getElementById('nome');
+ 
+    const telefone =
+        document.getElementById('telefone');
+ 
+    if (nome) {
+        nome.value = '';
+    }
+ 
+    if (telefone) {
+        telefone.value = '';
+    }
+ 
+ 
+    // ------------------------------------------
+    // Limpa dados financeiros
+    // ------------------------------------------
+ 
+    const peca =
+        document.getElementById('peca');
+ 
+    const entrega =
+        document.getElementById('entrega');
+ 
+    if (peca) {
+        peca.value = '';
+    }
+ 
+    if (entrega) {
+        entrega.value = '0';
+    }
+ 
+ 
+    // ------------------------------------------
+    // Desmarca urgência
+    // ------------------------------------------
+ 
+    const urgencia =
+        document.getElementById('urgencia');
+ 
+    if (urgencia) {
+        urgencia.checked = false;
+    }
+ 
+ 
+    // ------------------------------------------
+    // Limpa mensagem de erro
+    // ------------------------------------------
+ 
+    const erro =
+        document.getElementById('erro');
+ 
+    if (erro) {
+        erro.innerText = '';
+    }
+ 
+ 
+    // ------------------------------------------
+    // Reseta os selects
+    // ------------------------------------------
+ 
+    const tipo =
+        document.getElementById('tipoAparelho');
+ 
+    const marca =
+        document.getElementById('marcaAparelho');
+ 
+    const modelo =
+        document.getElementById('modeloAparelho');
+ 
+    const servico =
+        document.getElementById('servicoAparelho');
+ 
+ 
+    if (tipo) {
+        tipo.value = '';
+    }
+ 
+ 
+    if (marca) {
+ 
+        marca.innerHTML =
+            '<option value="">Selecione a Marca...</option>';
+ 
+        marca.value = '';
+        marca.disabled = true;
+ 
+    }
+ 
+ 
+    if (modelo) {
+ 
+        modelo.innerHTML =
+            '<option value="">Selecione o Modelo...</option>';
+ 
+        modelo.value = '';
+        modelo.disabled = true;
+ 
+    }
+ 
+ 
+    if (servico) {
+ 
+        servico.innerHTML =
+            '<option value="">Selecione o Serviço...</option>';
+ 
+        servico.value = '';
+        servico.disabled = true;
+ 
+    }
+ 
+ 
+    // ------------------------------------------
+    // Reseta risco
+    // ------------------------------------------
+ 
+    const risco =
+        document.getElementById('risco');
+ 
+    if (risco) {
+        risco.value = '0';
+    }
+ 
+ 
+    // ------------------------------------------
+    // Atualiza a tela
+    // ------------------------------------------
+ 
+    recalcularValoresEAtualizar();
+ 
+ 
+    // ------------------------------------------
+    // Volta para o topo
+    // ------------------------------------------
+ 
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+ 
+}
+
 
 // ==========================================
 // 11. GERAR PDF
