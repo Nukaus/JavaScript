@@ -941,8 +941,51 @@ const baseDadosServicos = {
                 "tabs9fe_conector": { nome: "Troca de Conector USB-C", sMax: 280, sMin: 190 },
                 "tabs9fe_camera": { nome: "Reparo de Câmera/Placa", sMax: 450, sMin: 290 }
             }
-        }
+
+
+        },
+
+// ========================================================
+     // POSITIVO TABLETS
+     // ========================================================
+
+	"Positivo": {
+  "Vision Tab 7": {
+    "vision7_tela": { "nome": "Troca de Tela", "sMax": 200, "sMin": 120 },
+    "vision7_bateria": { "nome": "Troca de Bateria", "sMax": 150, "sMin": 90 },
+    "vision7_conector": { "nome": "Troca de Conector de Carga", "sMax": 160, "sMin": 100 },
+    "vision7_camera": { "nome": "Reparo de Câmera/Placa", "sMax": 250, "sMin": 150 }
+  },
+  "Vision Tab 10": {
+    "vision10_tela": { "nome": "Troca de Tela", "sMax": 320, "sMin": 220 },
+    "vision10_bateria": { "nome": "Troca de Bateria", "sMax": 220, "sMin": 140 },
+    "vision10_conector": { "nome": "Troca de Conector de Carga", "sMax": 180, "sMin": 110 },
+    "vision10_camera": { "nome": "Reparo de Câmera/Placa", "sMax": 350, "sMin": 220 }
+  },
+  "Vision Tab 11": {
+    "vision11_tela": { "nome": "Troca de Tela", "sMax": 380, "sMin": 260 },
+    "vision11_bateria": { "nome": "Troca de Bateria", "sMax": 250, "sMin": 160 },
+    "vision11_conector": { "nome": "Troca de Conector de Carga", "sMax": 200, "sMin": 120 },
+    "vision11_camera": { "nome": "Reparo de Câmera/Placa", "sMax": 400, "sMin": 250 }
+  },
+  "Twist Tab": {
+    "twist_tela": { "nome": "Troca de Tela", "sMax": 180, "sMin": 100 },
+    "twist_bateria": { "nome": "Troca de Bateria", "sMax": 140, "sMin": 80 },
+    "twist_conector": { "nome": "Troca de Conector de Carga", "sMax": 150, "sMin": 90 },
+    "twist_camera": { "nome": "Reparo de Câmera/Placa", "sMax": 220, "sMin": 130 }
+  },
+  "Tab Q8": {
+    "q8_tela": { "nome": "Troca de Tela", "sMax": 220, "sMin": 140 },
+    "q8_bateria": { "nome": "Troca de Bateria", "sMax": 160, "sMin": 100 },
+    "q8_conector": { "nome": "Troca de Conector de Carga", "sMax": 170, "sMin": 100 },
+    "q8_camera": { "nome": "Reparo de Câmera/Placa", "sMax": 280, "sMin": 170 }
+  }
+},
+
     },
+
+     
+
 
     // ============================================================
     // ============================================================
