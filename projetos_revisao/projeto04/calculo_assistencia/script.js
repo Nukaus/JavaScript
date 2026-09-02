@@ -1686,34 +1686,71 @@ function obterDescontoCombo(numeroServico) {
 
 
 // ================================================================
-// INSERIR SERVIÇO
+// INSERIR SERVIÇO (MODIFICADO COM MARGEM DE LUCRO INTELIGENTE)
 // ================================================================
-
 function inserir() {
-
     const dados = capturaDados();
-
+ 
     if (dados.servId === "50" && dados.servPcId === "50") {
-
-        document.getElementById('erro').innerText =
-            "Selecione um serviço primeiro!";
-
+        document.getElementById('erro').innerText = "Selecione um serviço primeiro!";
         return;
     }
-
-
+ 
     const infoServico = calculoTotal(dados);
-
-
+ 
     // Proteção contra serviço sem configuração
     if (!infoServico.servNome) {
-
-        document.getElementById('erro').innerText =
-            "O serviço selecionado ainda não possui configuração de preço.";
-
+        document.getElementById('erro').innerText = "O serviço selecionado ainda não possui configuração de preço.";
         return;
     }
-
+ 
+    // VERIFICA SE O MESMO SERVIÇO JÁ FOI ADICIONADO
+    const servicoDuplicado = itensOrcamento.some(
+        item => item.servicoId === dados.servId && item.pecaId === dados.servPcId
+    );
+ 
+    if (servicoDuplicado) {
+        document.getElementById('erro').innerText = "Este serviço já foi adicionado ao orçamento.";
+        return;
+    }
+ 
+    // 💡 NOVA LÓGICA: CÁLCULO DE MARGEM DE LUCRO/GARANTIA DA PEÇA
+    let custoPeca = dados.pecVal;
+    let valorPecaComMargem = custoPeca;
+ 
+    if (custoPeca > 0) {
+        if (custoPeca <= 150) {
+            // Telas mais baratas (como o A14 de R$ 100) ganham 50% de margem
+            valorPecaComMargem = custoPeca * 1.50;
+        } else if (custoPeca <= 300) {
+            // Peças intermediárias ganham 40% de margem
+            valorPecaComMargem = custoPeca * 1.40;
+        } else {
+            // Peças caras (telas OLED/Premium) ganham 30% de margem para não travar a venda
+            valorPecaComMargem = custoPeca * 1.30;
+        }
+    }
+ 
+    // ADICIONA O SERVIÇO COM A PEÇA JÁ PRECIFICADA
+    itensOrcamento.push({
+        descricao: infoServico.servNome,
+        maoDeObraBase: infoServico.maoDeObraBase, // Mão de obra limpa puxada do switch case
+        valorPeca: valorPecaComMargem,            // Peça com a taxa de garantia inclusa
+        servicoId: dados.servId,
+        pecaId: dados.servPcId,
+        valor: 0,
+        desconto: false,
+        descontoPercentual: 0
+    });
+ 
+    // RECALCULA TODOS OS DESCONTOS (Preserva sua lógica de combos)
+    recalcularDescontosCombo();
+    atualizarResumoVisual();
+ 
+    // Limpa o campo de peça para o próximo serviço e zera erros
+    document.getElementById('peca').value = "";
+    document.getElementById('erro').innerText = "";
+}
 
     // ============================================================
     // VERIFICA SE O MESMO SERVIÇO JÁ FOI ADICIONADO
