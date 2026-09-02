@@ -1656,7 +1656,7 @@ function gerarPDFSalvo(id) {
 
 
 // ============================================================
-// GERAÇÃO DO PDF
+// GERAÇÃO DO PDF (Removidas as colunas de Mão de Obra e Peça)
 // ============================================================
 
 function gerarPDFComDados(d) {
@@ -1924,20 +1924,12 @@ function gerarPDFComDados(d) {
     y += 38;
 
 
-    // TABELA
+    // TABELA (Apenas Nº, Serviço e Total do Item)
 
     const linhas =
         (d.itens || [])
         .map(
             (item, index) => {
-
-                const mao =
-                    calcularMaoDeObra(
-                        item,
-                        index,
-                        d.urgenciaVal
-                    );
-
 
                 return [
 
@@ -1946,16 +1938,6 @@ function gerarPDFComDados(d) {
                     item.descricao ||
                     item.nomeServico ||
                     'Serviço',
-
-                    `R$ ${formatarMoeda(mao)}`,
-
-                    Number(
-                        item.valorPecaFinal || 0
-                    ) > 0
-                        ? `R$ ${formatarMoeda(
-                            item.valorPecaFinal
-                        )}`
-                        : '-',
 
                     `R$ ${formatarMoeda(
                         item.valorFinalItem
@@ -1978,8 +1960,6 @@ function gerarPDFComDados(d) {
             head: [[
                 '#',
                 'Serviço',
-                'Mão de Obra',
-                'Peça',
                 'Total'
             ]],
 
@@ -2299,6 +2279,10 @@ function enviarWhatsAppSalvo(id) {
 }
 
 
+// ============================================================
+// GERAÇÃO DO WHATSAPP (Removidos detalhes de Mão de Obra e Peça por item)
+// ============================================================
+
 function enviarWhatsAppComDados(d) {
 
     let mensagem = '';
@@ -2358,31 +2342,6 @@ function enviarWhatsAppComDados(d) {
                 `\n${index + 1}. ${item.descricao}\n`;
 
 
-            const mao =
-                calcularMaoDeObra(
-                    item,
-                    index,
-                    d.urgenciaVal
-                );
-
-
-            mensagem +=
-                `   Mão de obra: R$ ${formatarMoeda(mao)}\n`;
-
-
-            if (
-                Number(
-                    item.valorPecaFinal || 0
-                ) > 0
-            ) {
-
-                mensagem +=
-                    `   Peça: R$ ${formatarMoeda(
-                        item.valorPecaFinal
-                    )}\n`;
-            }
-
-
             mensagem +=
                 `   Total: R$ ${formatarMoeda(
                     item.valorFinalItem
@@ -2419,7 +2378,7 @@ function enviarWhatsAppComDados(d) {
     if (d.urgenciaVal) {
 
         mensagem +=
-            '*Taxa de urgência:* +20% na mão de obra\n';
+            '*Taxa de urgência aplicada*\n';
     }
 
 
