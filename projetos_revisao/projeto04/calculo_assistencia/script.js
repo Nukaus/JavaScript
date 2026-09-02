@@ -1706,13 +1706,6 @@ function enviarWhatsApp() {
                 `  Valor: R$ ${item.valorFinalItem.toFixed(2)}\n`;
 
 
-            if (item.valorPecaFinal > 0) {
-
-                mensagem +=
-                    `  Peça: R$ ${item.valorPecaFinal.toFixed(2)}\n`;
-
-            }
-
 
             if (item.teveDesconto) {
 
